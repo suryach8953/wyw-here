@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="WYW Here - Discover useful products, trending finds and smart picks.">
+  <title>WYW Here | Smart Product Picks</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <a class="logo" href="index.html">WYW<span>HERE</span></a>
+    <nav>
+      <a href="#products">Products</a>
+      <a href="#categories">Categories</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">CURATED FOR YOU</p>
+        <h1>Find products<br><span>worth buying.</span></h1>
+        <p class="hero-text">Trending gadgets, home essentials, watches and more — handpicked in one place.</p>
+        <a class="primary-btn" href="#products">Explore Products</a>
+      </div>
+      <div class="hero-card">
+        <div class="spark">✦</div>
+        <p>Today's Pick</p>
+        <h3>Discover something<br>you'll love.</h3>
+      </div>
+    </section>
+
+    <section id="categories" class="section">
+      <div class="section-head">
+        <div><p class="eyebrow">BROWSE</p><h2>Categories</h2></div>
+      </div>
+      <div class="categories">
+        <button data-category="All" class="cat active">All</button>
+        <button data-category="Gadgets" class="cat">Gadgets</button>
+        <button data-category="Watches" class="cat">Watches</button>
+        <button data-category="Kitchen" class="cat">Kitchen</button>
+        <button data-category="Home" class="cat">Home</button>
+        <button data-category="Fitness" class="cat">Fitness</button>
+      </div>
+    </section>
+
+    <section id="products" class="section">
+      <div class="section-head products-head">
+        <div><p class="eyebrow">OUR PICKS</p><h2>Trending Products</h2></div>
+        <input id="search" class="search" type="search" placeholder="Search products...">
+      </div>
+      <div id="productGrid" class="product-grid"></div>
+    </section>
+
+    <section id="about" class="about">
+      <p class="eyebrow">ABOUT WYW HERE</p>
+      <h2>Less scrolling.<br>Better picks.</h2>
+      <p>We curate useful and interesting products so you can discover your next purchase faster.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="logo">WYW<span>HERE</span></div>
+    <p>Affiliate disclosure: Some links on this website may earn us a commission at no extra cost to you.</p>
+  </footer>
+
+  <script src="products.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f7f7f4;--ink:#151515;--muted:#6c6c67;--card:#fff;--line:#e5e5df}
+body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--ink)}
+.header{height:76px;padding:0 6%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:#f7f7f4;position:sticky;top:0;z-index:10}
+.logo{font-family:"Space Grotesk";font-weight:700;font-size:23px;letter-spacing:-1.5px;color:var(--ink);text-decoration:none}.logo span{font-weight:400}
+nav{display:flex;gap:28px}nav a{color:var(--ink);text-decoration:none;font-size:14px}
+.hero{max-width:1200px;margin:auto;min-height:500px;padding:90px 6%;display:grid;grid-template-columns:1.3fr .7fr;gap:50px;align-items:center}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;color:#777}
+h1,h2,h3{font-family:"Space Grotesk",sans-serif;letter-spacing:-2px}
+h1{font-size:clamp(50px,7vw,84px);line-height:.95;margin:18px 0}h1 span{color:#777}
+.hero-text{max-width:500px;color:var(--muted);font-size:17px;line-height:1.6;margin-bottom:28px}
+.primary-btn{display:inline-block;background:#151515;color:white;text-decoration:none;padding:14px 22px;border-radius:100px;font-weight:600;font-size:14px}
+.hero-card{background:#181818;color:white;border-radius:28px;min-height:300px;padding:35px;display:flex;flex-direction:column;justify-content:flex-end;box-shadow:0 20px 50px #0002}.hero-card p{color:#aaa;font-size:12px;text-transform:uppercase;letter-spacing:2px}.hero-card h3{font-size:30px;line-height:1.05;margin-top:12px}.spark{font-size:55px;position:absolute;align-self:flex-end;margin-bottom:170px;color:#fff}
+.section{max-width:1200px;margin:auto;padding:55px 6%}.section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:25px}h2{font-size:38px;margin-top:7px}
+.categories{display:flex;gap:9px;flex-wrap:wrap}.cat{border:1px solid var(--line);background:white;border-radius:100px;padding:11px 18px;cursor:pointer}.cat.active{background:#151515;color:white}
+.search{border:1px solid var(--line);background:white;border-radius:100px;padding:12px 18px;width:240px;outline:none}
+.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.product{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:.2s}.product:hover{transform:translateY(-4px);box-shadow:0 15px 35px #0000000d}
+.product-img{height:220px;background:#eee;display:flex;align-items:center;justify-content:center;overflow:hidden}.product-img img{width:100%;height:100%;object-fit:cover}.placeholder{font-size:45px;color:#aaa}
+.product-info{padding:17px}.tag{font-size:10px;text-transform:uppercase;letter-spacing:1.4px;color:#888}.product h3{font-size:20px;letter-spacing:-.7px;margin:7px 0}.desc{font-size:13px;color:#777;line-height:1.45;min-height:38px}.bottom{display:flex;align-items:center;justify-content:space-between;margin-top:16px}.price{font-weight:700}.buy{background:#151515;color:#fff;text-decoration:none;padding:9px 13px;border-radius:9px;font-size:12px;font-weight:700}
+.about{max-width:1200px;margin:60px auto;padding:70px 6%;background:#e9e9e3;border-radius:30px}.about h2{font-size:55px;line-height:1;margin:12px 0 20px}.about p:last-child{max-width:500px;color:#666;line-height:1.6}
+footer{padding:45px 6%;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:30px;align-items:center;color:#777;font-size:12px}footer p{max-width:550px;text-align:right}
+@media(max-width:850px){.hero{grid-template-columns:1fr;padding-top:60px}.hero-card{min-height:220px}.product-grid{grid-template-columns:repeat(2,1fr)}.products-head{align-items:start;flex-direction:column;gap:15px}.search{width:100%}}
+@media(max-width:520px){nav{display:none}.header{padding:0 5%}.section{padding:40px 5%}.product-grid{grid-template-columns:1fr}.hero{padding:55px 5%}.about{margin:30px 5%;padding:45px 7%}.about h2{font-size:42px}footer{flex-direction:column;align-items:flex-start}footer p{text-align:left}}
