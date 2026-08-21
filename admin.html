@@ -1,123 +1,1133 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
+
 <title>WYW HERE | Admin</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f5f2;color:#151515}
-.topbar{background:#151515;color:#fff;padding:18px 6%;display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:23px;font-weight:700}.logo span{font-weight:400}.top-actions{display:flex;gap:15px;align-items:center}.top-actions a,.logout{color:#fff;background:none;border:0;cursor:pointer;text-decoration:none;font-size:14px}
-.container{max-width:1000px;margin:35px auto;padding:0 20px}.card{background:#fff;padding:28px;border-radius:18px;box-shadow:0 10px 30px #0000000b;margin-bottom:22px}
-h1,h2{margin-top:0}.subtitle{color:#777}.field{margin:16px 0}label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
-input,textarea,select{width:100%;padding:12px;border:1px solid #ddd;border-radius:9px;font-size:14px}textarea{min-height:85px}
-.btn{border:0;border-radius:9px;padding:12px 16px;background:#151515;color:#fff;font-weight:700;cursor:pointer}.secondary{background:#eee;color:#151515}.danger{background:#eee;color:#b00020}
-.actions{display:flex;gap:10px}.success{display:none;margin-top:14px;padding:12px;border-radius:9px;background:#e8f7e8;color:#28752b}
-#app{display:none}.login{max-width:430px;margin:100px auto;padding:0 20px}.login .card{text-align:left}.error{color:#b00020;font-size:13px;display:none;margin-bottom:12px}
-.row{border:1px solid #eee;border-radius:12px;padding:14px;margin-top:10px;display:flex;justify-content:space-between;gap:15px;align-items:center}.row h3{margin:0 0 5px;font-size:16px}.row p{margin:0;color:#777;font-size:13px}
-@media(max-width:600px){.row{align-items:flex-start}.actions{flex-wrap:wrap}}
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f5f5f2;
+color:#151515;
+}
+
+.topbar{
+background:#151515;
+color:#fff;
+padding:18px 6%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+font-size:23px;
+font-weight:700;
+}
+
+.logo span{
+font-weight:400;
+}
+
+.top-actions{
+display:flex;
+gap:15px;
+align-items:center;
+}
+
+.top-actions a,
+.logout{
+color:#fff;
+background:none;
+border:0;
+cursor:pointer;
+text-decoration:none;
+font-size:14px;
+}
+
+.container{
+max-width:1000px;
+margin:35px auto;
+padding:0 20px;
+}
+
+.card{
+background:#fff;
+padding:28px;
+border-radius:18px;
+box-shadow:0 10px 30px #0000000b;
+margin-bottom:22px;
+}
+
+h1,h2{
+margin-top:0;
+}
+
+.subtitle{
+color:#777;
+}
+
+.field{
+margin:16px 0;
+}
+
+label{
+display:block;
+font-size:13px;
+font-weight:700;
+margin-bottom:7px;
+}
+
+input,
+textarea,
+select{
+width:100%;
+padding:12px;
+border:1px solid #ddd;
+border-radius:9px;
+font-size:14px;
+}
+
+textarea{
+min-height:85px;
+}
+
+.btn{
+border:0;
+border-radius:9px;
+padding:12px 16px;
+background:#151515;
+color:#fff;
+font-weight:700;
+cursor:pointer;
+}
+
+.secondary{
+background:#eee;
+color:#151515;
+}
+
+.danger{
+background:#eee;
+color:#b00020;
+}
+
+.actions{
+display:flex;
+gap:10px;
+}
+
+.success{
+display:none;
+margin-top:14px;
+padding:12px;
+border-radius:9px;
+background:#e8f7e8;
+color:#28752b;
+}
+
+.error{
+color:#b00020;
+font-size:13px;
+display:none;
+margin-bottom:12px;
+}
+
+#app{
+display:none;
+}
+
+.login{
+max-width:430px;
+margin:100px auto;
+padding:0 20px;
+}
+
+.login .card{
+text-align:left;
+}
+
+.row{
+border:1px solid #eee;
+border-radius:12px;
+padding:14px;
+margin-top:10px;
+display:flex;
+justify-content:space-between;
+gap:15px;
+align-items:center;
+}
+
+.row h3{
+margin:0 0 5px;
+font-size:16px;
+}
+
+.row p{
+margin:0;
+color:#777;
+font-size:13px;
+}
+
+@media(max-width:600px){
+
+.row{
+align-items:flex-start;
+}
+
+.actions{
+flex-wrap:wrap;
+}
+
+}
+
 </style>
+
 </head>
+
+
 <body>
 
+
 <header class="topbar">
-  <div class="logo">WYW<span>HERE</span></div>
-  <div class="top-actions">
-    <a href="index.html">View Website</a>
-    <button class="logout" onclick="logout()">Logout</button>
-  </div>
+
+<div class="logo">
+WYW<span>HERE</span>
+</div>
+
+<div class="top-actions">
+
+<a href="index.html">
+View Website
+</a>
+
+<button
+class="logout"
+onclick="logout()">
+Logout
+</button>
+
+</div>
+
 </header>
 
+
 <section id="login" class="login">
-  <div class="card">
-    <h1>Admin Login</h1>
-    <p class="subtitle">Sign in to manage WYW HERE products.</p>
-    <div id="loginError" class="error">Invalid username or password.</div>
-    <div class="field"><label>Username</label><input id="username" value="admin"></div>
-    <div class="field"><label>Password</label><input id="password" type="password" placeholder="Enter password"></div>
-    <button class="btn" style="width:100%" onclick="login()">LOGIN</button>
-  </div>
+
+<div class="card">
+
+<h1>Admin Login</h1>
+
+<p class="subtitle">
+Sign in to manage WYW HERE products.
+</p>
+
+<div id="loginError"
+class="error">
+Invalid username or password.
+</div>
+
+
+<div class="field">
+
+<label>
+Username
+</label>
+
+<input
+id="username"
+value="admin">
+
+</div>
+
+
+<div class="field">
+
+<label>
+Password
+</label>
+
+<input
+id="password"
+type="password"
+placeholder="Enter password">
+
+</div>
+
+
+<button
+class="btn"
+style="width:100%"
+onclick="login()">
+
+LOGIN
+
+</button>
+
+</div>
+
 </section>
 
-<section id="app" class="container">
-  <div class="card">
-    <h1 id="formTitle">Add Product</h1>
-    <p class="subtitle">Create or update a product and its affiliate link.</p>
-    <input type="hidden" id="editIndex" value="-1">
 
-    <div class="field"><label>Product Name</label><input id="name" placeholder="Premium Smart Watch"></div>
-    <div class="field"><label>Category</label>
-      <select id="category"><option value="">Select Category</option><option>Gadgets</option><option>Watches</option><option>Kitchen</option><option>Home</option><option>Fitness</option></select>
-    </div>
-    <div class="field"><label>Price</label><input id="price" placeholder="₹2,999"></div>
-    <div class="field"><label>Product Image URL</label><input id="image" placeholder="https://..."></div>
-    <div class="field"><label>Short Description</label><textarea id="description" placeholder="Write 1-2 lines about the product"></textarea></div>
-    <div class="field"><label>Affiliate Link</label><input id="link" placeholder="Paste Amazon affiliate link"></div>
 
-    <div class="actions">
-      <button class="btn" onclick="saveProduct()">SAVE PRODUCT</button>
-      <button id="cancelBtn" class="btn secondary" style="display:none" onclick="resetForm()">CANCEL EDIT</button>
-    </div>
-    <div id="success" class="success">✅ Saved successfully.</div>
-  </div>
+<section id="app"
+class="container">
 
-  <div class="card">
-    <h2>Products</h2>
-    <div id="list"></div>
-  </div>
+
+<div class="card">
+
+<h1 id="formTitle">
+Add Product
+</h1>
+
+<p class="subtitle">
+Create or update a product.
+</p>
+
+
+<div class="field">
+
+<label>
+Product Name
+</label>
+
+<input
+id="name"
+placeholder="Premium Smart Watch">
+
+</div>
+
+
+<div class="field">
+
+<label>
+Category
+</label>
+
+<select id="category">
+
+<option value="">
+Select Category
+</option>
+
+<option>
+Gadgets
+</option>
+
+<option>
+Watches
+</option>
+
+<option>
+Kitchen
+</option>
+
+<option>
+Home
+</option>
+
+<option>
+Fitness
+</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Price
+</label>
+
+<input
+id="price"
+type="number"
+placeholder="2999">
+
+</div>
+
+
+<div class="field">
+
+<label>
+Product Image URL
+</label>
+
+<input
+id="image"
+placeholder="https://...">
+
+</div>
+
+
+<div class="field">
+
+<label>
+Short Description
+</label>
+
+<textarea
+id="description"
+placeholder="Write 1-2 lines about the product">
+</textarea>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Amazon Affiliate Link
+</label>
+
+<input
+id="link"
+placeholder="Paste your affiliate link">
+
+</div>
+
+
+<div class="actions">
+
+<button
+class="btn"
+onclick="saveProduct()">
+
+SAVE PRODUCT
+
+</button>
+
+
+<button
+id="cancelBtn"
+class="btn secondary"
+style="display:none"
+onclick="resetForm()">
+
+CANCEL EDIT
+
+</button>
+
+</div>
+
+
+<div
+id="success"
+class="success">
+
+✅ Product saved successfully.
+
+</div>
+
+</div>
+
+
+
+<div class="card">
+
+<h2>
+Products
+</h2>
+
+<div id="list">
+Loading...
+</div>
+
+</div>
+
+
 </section>
+
+
 
 <script>
-const KEY="wyw_here_products";
-const USER="admin";
-const PASS="wyw123";
 
-function products(){try{return JSON.parse(localStorage.getItem(KEY))||[]}catch(e){return[]}}
-function setProducts(x){localStorage.setItem(KEY,JSON.stringify(x))}
+
+/* =========================
+   SUPABASE CONFIG
+========================= */
+
+const SUPABASE_URL =
+"https://ncavpnittrdgylogbjfp.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_7E-WPJlMCarIj-FA3quJAw_Z6XFLWqP";
+
+
+/* =========================
+   ADMIN LOGIN
+========================= */
+
+const USER = "admin";
+
+const PASS = "wyw123";
+
+
+/* =========================
+   LOGIN
+========================= */
+
 function login(){
-  const u=document.getElementById("username").value;
-  const p=document.getElementById("password").value;
-  if(u===USER&&p===PASS){sessionStorage.setItem("wyw_admin","1");showApp()}
-  else document.getElementById("loginError").style.display="block";
+
+const username =
+document.getElementById("username").value;
+
+const password =
+document.getElementById("password").value;
+
+
+if(
+username === USER &&
+password === PASS
+){
+
+sessionStorage.setItem(
+"wyw_admin",
+"1"
+);
+
+showApp();
+
 }
-function logout(){sessionStorage.removeItem("wyw_admin");location.reload()}
+else{
+
+document.getElementById(
+"loginError"
+).style.display="block";
+
+}
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+function logout(){
+
+sessionStorage.removeItem(
+"wyw_admin"
+);
+
+location.reload();
+
+}
+
+
+/* =========================
+   SHOW ADMIN
+========================= */
+
 function showApp(){
-  document.getElementById("login").style.display="none";
-  document.getElementById("app").style.display="block";
-  render();
+
+document.getElementById(
+"login"
+).style.display="none";
+
+document.getElementById(
+"app"
+).style.display="block";
+
+loadProducts();
+
 }
-function val(id){return document.getElementById(id).value.trim()}
-function saveProduct(){
-  const p={name:val("name"),category:val("category"),price:val("price"),image:val("image"),description:val("description"),affiliateLink:val("link")};
-  if(!p.name||!p.category||!p.price||!p.description||!p.affiliateLink){alert("Please fill all required fields.");return}
-  const items=products(), i=Number(document.getElementById("editIndex").value);
-  if(i>=0) items[i]=p; else items.push(p);
-  setProducts(items); resetForm(); render();
-  document.getElementById("success").style.display="block";
-  setTimeout(()=>document.getElementById("success").style.display="none",1800);
+
+
+/* =========================
+   LOAD PRODUCTS
+========================= */
+
+async function loadProducts(){
+
+const list =
+document.getElementById("list");
+
+try{
+
+const response = await fetch(
+
+`${SUPABASE_URL}/rest/v1/products?select=*&order=id.desc`,
+
+{
+
+headers:{
+
+apikey:SUPABASE_KEY,
+
+Authorization:
+`Bearer ${SUPABASE_KEY}`
+
 }
-function editProduct(i){
-  const p=products()[i];
-  document.getElementById("name").value=p.name;document.getElementById("category").value=p.category;
-  document.getElementById("price").value=p.price;document.getElementById("image").value=p.image||"";
-  document.getElementById("description").value=p.description;document.getElementById("link").value=p.affiliateLink;
-  document.getElementById("editIndex").value=i;document.getElementById("formTitle").textContent="Edit Product";
-  document.getElementById("cancelBtn").style.display="inline-block";window.scrollTo({top:0,behavior:"smooth"});
+
 }
-function deleteProduct(i){
-  if(confirm("Delete this product?")){const x=products();x.splice(i,1);setProducts(x);render()}
+
+);
+
+
+if(!response.ok){
+
+throw new Error(
+await response.text()
+);
+
 }
+
+
+const products =
+await response.json();
+
+
+renderProducts(products);
+
+
+}
+
+catch(error){
+
+console.error(error);
+
+list.innerHTML = `
+
+<p style="color:red">
+
+Products load nahi ho rahe.
+
+</p>
+
+`;
+
+}
+
+}
+
+
+/* =========================
+   SAVE PRODUCT
+========================= */
+
+async function saveProduct(){
+
+const name =
+document.getElementById("name").value.trim();
+
+const category =
+document.getElementById("category").value.trim();
+
+const price =
+document.getElementById("price").value.trim();
+
+const image =
+document.getElementById("image").value.trim();
+
+const description =
+document.getElementById("description").value.trim();
+
+const link =
+document.getElementById("link").value.trim();
+
+
+if(
+!name ||
+!category ||
+!price ||
+!description ||
+!link
+){
+
+alert(
+"Please fill all required fields."
+);
+
+return;
+
+}
+
+
+const product = {
+
+name:name,
+
+category:category,
+
+price:Number(price),
+
+image_url:image || null,
+
+description:description,
+
+affiliate_link:link
+
+};
+
+
+const editId =
+document.getElementById(
+"editId"
+).value;
+
+
+try{
+
+
+let response;
+
+
+if(editId){
+
+
+/* UPDATE */
+
+response = await fetch(
+
+`${SUPABASE_URL}/rest/v1/products?id=eq.${editId}`,
+
+{
+
+method:"PATCH",
+
+headers:{
+
+apikey:SUPABASE_KEY,
+
+Authorization:
+`Bearer ${SUPABASE_KEY}`,
+
+"Content-Type":
+"application/json",
+
+Prefer:"return=minimal"
+
+},
+
+body:JSON.stringify(product)
+
+}
+
+);
+
+}
+else{
+
+
+/* INSERT */
+
+response = await fetch(
+
+`${SUPABASE_URL}/rest/v1/products`,
+
+{
+
+method:"POST",
+
+headers:{
+
+apikey:SUPABASE_KEY,
+
+Authorization:
+`Bearer ${SUPABASE_KEY}`,
+
+"Content-Type":
+"application/json",
+
+Prefer:"return=minimal"
+
+},
+
+body:JSON.stringify(product)
+
+}
+
+);
+
+}
+
+
+if(!response.ok){
+
+throw new Error(
+await response.text()
+);
+
+}
+
+
+resetForm();
+
+showSuccess();
+
+loadProducts();
+
+
+}
+
+catch(error){
+
+console.error(error);
+
+alert(
+"Error: " + error.message
+);
+
+}
+
+}
+
+
+/* =========================
+   EDIT PRODUCT
+========================= */
+
+function editProduct(product){
+
+document.getElementById(
+"formTitle"
+).textContent =
+"Edit Product";
+
+
+document.getElementById(
+"editId"
+).value =
+product.id;
+
+
+document.getElementById(
+"name"
+).value =
+product.name;
+
+
+document.getElementById(
+"category"
+).value =
+product.category;
+
+
+document.getElementById(
+"price"
+).value =
+product.price;
+
+
+document.getElementById(
+"image"
+).value =
+product.image_url || "";
+
+
+document.getElementById(
+"description"
+).value =
+product.description || "";
+
+
+document.getElementById(
+"link"
+).value =
+product.affiliate_link;
+
+
+document.getElementById(
+"cancelBtn"
+).style.display =
+"inline-block";
+
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+
+/* =========================
+   DELETE PRODUCT
+========================= */
+
+async function deleteProduct(id){
+
+if(
+!confirm(
+"Delete this product?"
+)
+){
+
+return;
+
+}
+
+
+try{
+
+const response =
+await fetch(
+
+`${SUPABASE_URL}/rest/v1/products?id=eq.${id}`,
+
+{
+
+method:"DELETE",
+
+headers:{
+
+apikey:SUPABASE_KEY,
+
+Authorization:
+`Bearer ${SUPABASE_KEY}`
+
+}
+
+}
+
+);
+
+
+if(!response.ok){
+
+throw new Error(
+await response.text()
+);
+
+}
+
+
+loadProducts();
+
+}
+
+catch(error){
+
+console.error(error);
+
+alert(
+"Delete failed: " +
+error.message
+);
+
+}
+
+}
+
+
+/* =========================
+   RENDER PRODUCTS
+========================= */
+
+function renderProducts(products){
+
+const list =
+document.getElementById("list");
+
+
+if(!products.length){
+
+list.innerHTML =
+"<p class='subtitle'>No products added yet.</p>";
+
+return;
+
+}
+
+
+list.innerHTML = products.map(
+
+product => `
+
+<div class="row">
+
+<div>
+
+<h3>
+${esc(product.name)}
+</h3>
+
+<p>
+${esc(product.category)}
+ · ₹${Number(product.price).toLocaleString("en-IN")}
+</p>
+
+</div>
+
+
+<div class="actions">
+
+<button
+class="btn secondary"
+onclick='editProduct(${JSON.stringify(product)})'>
+
+Edit
+
+</button>
+
+
+<button
+class="btn danger"
+onclick="deleteProduct(${product.id})">
+
+Delete
+
+</button>
+
+</div>
+
+</div>
+
+`
+
+).join("");
+
+}
+
+
+/* =========================
+   RESET FORM
+========================= */
+
 function resetForm(){
-  ["name","price","image","description","link"].forEach(id=>document.getElementById(id).value="");
-  document.getElementById("category").value="";document.getElementById("editIndex").value="-1";
-  document.getElementById("formTitle").textContent="Add Product";document.getElementById("cancelBtn").style.display="none";
+
+document.getElementById(
+"editId"
+).value = "";
+
+
+document.getElementById(
+"name"
+).value = "";
+
+
+document.getElementById(
+"category"
+).value = "";
+
+
+document.getElementById(
+"price"
+).value = "";
+
+
+document.getElementById(
+"image"
+).value = "";
+
+
+document.getElementById(
+"description"
+).value = "";
+
+
+document.getElementById(
+"link"
+).value = "";
+
+
+document.getElementById(
+"formTitle"
+).textContent =
+"Add Product";
+
+
+document.getElementById(
+"cancelBtn"
+).style.display =
+"none";
+
 }
-function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function render(){
-  const list=document.getElementById("list"),x=products();
-  list.innerHTML=x.length?x.map((p,i)=>`<div class="row"><div><h3>${esc(p.name)}</h3><p>${esc(p.category)} · ${esc(p.price)}</p></div><div class="actions"><button class="btn secondary" onclick="editProduct(${i})">Edit</button><button class="btn danger" onclick="deleteProduct(${i})">Delete</button></div></div>`).join(""):'<p class="subtitle">No products added yet.</p>';
+
+
+/* =========================
+   SUCCESS MESSAGE
+========================= */
+
+function showSuccess(){
+
+const box =
+document.getElementById(
+"success"
+);
+
+box.style.display =
+"block";
+
+
+setTimeout(
+()=>box.style.display="none",
+2000
+);
+
 }
-if(sessionStorage.getItem("wyw_admin")==="1")showApp();
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function esc(value){
+
+return String(
+value || ""
+).replace(
+/[&<>"']/g,
+
+function(m){
+
+return {
+
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+
+}[m];
+
+}
+
+);
+
+}
+
+
+/* =========================
+   AUTO LOGIN
+========================= */
+
+if(
+sessionStorage.getItem(
+"wyw_admin"
+) === "1"
+){
+
+showApp();
+
+}
+
 </script>
+
+
+<!-- Hidden edit ID -->
+
+<input
+type="hidden"
+id="editId"
+value="">
+
+
 </body>
+
 </html>
