@@ -7,20 +7,43 @@ const search = document.getElementById("search");
 let category = "All";
 let products = [];
 
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, function (match) {
+    return {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    }[match];
+  });
+}
+
+function escapeAttribute(value) {
+  return escapeHtml(value);
+}
+
 async function loadProducts() {
+  grid.innerHTML = `
+    <p style="color:#777">
+      Loading products...
+    </p>
+  `;
+
   try {
     const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?select=*`,
+      `${SUPABASE_URL}/rest/v1/products?select=*&order=id.desc`,
       {
+        method: "GET",
         headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${SUPABASE_KEY}`
+          apikey: SUPABASE_KEY
         }
       }
     );
 
     if (!response.ok) {
-      throw new Error(await response.text());
+      const errorText = await response.text();
+      throw new Error(errorText);
     }
 
     products = await response.json();
@@ -31,7 +54,7 @@ async function loadProducts() {
     console.error("Supabase Error:", error);
 
     grid.innerHTML = `
-      <p style="color:red">
+      <p style="color:#b00020">
         Products could not be loaded.
       </p>
     `;
@@ -42,91 +65,164 @@ function render() {
 
   const q = search.value.toLowerCase().trim();
 
-  const filtered = products.filter(p =>
-    (category === "All" || p.category === category) &&
-    (
-      p.name.toLowerCase().includes(q) ||
-      (p.description || "").toLowerCase().includes(q)
-    )
-  );
+  const filtered = products.filter(p => {
+
+    const name =
+      String(p.name || "").toLowerCase();
+
+    const description =
+      String(p.description || "").toLowerCase();
+
+    const productCategory =
+      String(p.category || "");
+
+    return (
+      (category === "All" ||
+        productCategory === category) &&
+      (
+        name.includes(q) ||
+        description.includes(q)
+      )
+    );
+
+  });
 
   if (!filtered.length) {
+
     grid.innerHTML = `
       <p style="color:#777">
         No products found.
       </p>
     `;
+
     return;
   }
 
-  grid.innerHTML = filtered.map(p => `
+  grid.innerHTML = filtered.map(p => {
 
-    <article
-      class="product"
-      onclick="location.href='product.html?id=${p.id}'"
-      style="cursor:pointer"
-    >
+    const id =
+      Number(p.id);
 
-      <div class="product-img">
+    const name =
+      escapeHtml(p.name);
 
-        ${
-          p.image_url
-            ? `<img src="${p.image_url}" alt="${p.name}">`
-            : `<div class="placeholder">✦</div>`
-        }
+    const categoryName =
+      escapeHtml(p.category);
 
-      </div>
+    const description =
+      escapeHtml(p.description || "");
 
-      <div class="product-info">
+    const price =
+      Number(p.price || 0)
+        .toLocaleString("en-IN");
 
-        <span class="tag">${p.category}</span>
+    const image =
+      escapeAttribute(p.image_url || "");
 
-        <h3>${p.name}</h3>
+    const affiliateLink =
+      escapeAttribute(p.affiliate_link || "");
 
-        <p class="desc">${p.description || ""}</p>
+    return `
 
-        <div class="bottom">
+      <article
+        class="product"
+        onclick="location.href='product.html?id=${id}'"
+        style="cursor:pointer"
+      >
 
-          <span class="price">
-            ₹${Number(p.price).toLocaleString("en-IN")}
-          </span>
+        <div class="product-img">
 
-          <a
-            class="buy"
-            href="${p.affiliate_link}"
-            target="_blank"
-            rel="nofollow sponsored noopener"
-            onclick="event.stopPropagation()"
-          >
-            BUY NOW ↗
-          </a>
+          ${
+            image
+              ? `
+                <img
+                  src="${image}"
+                  alt="${name}"
+                  loading="lazy"
+                >
+              `
+              : `
+                <div class="placeholder">
+                  ✦
+                </div>
+              `
+          }
 
         </div>
 
-      </div>
 
-    </article>
+        <div class="product-info">
 
-  `).join("");
+          <span class="tag">
+            ${categoryName}
+          </span>
+
+          <h3>
+            ${name}
+          </h3>
+
+          <p class="desc">
+            ${description}
+          </p>
+
+
+          <div class="bottom">
+
+            <span class="price">
+              ₹${price}
+            </span>
+
+
+            <a
+              class="buy"
+              href="${affiliateLink}"
+              target="_blank"
+              rel="nofollow sponsored noopener"
+              onclick="event.stopPropagation()"
+            >
+              BUY NOW ↗
+            </a>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    `;
+
+  }).join("");
 }
 
-document.querySelectorAll(".cat").forEach(button => {
 
-  button.addEventListener("click", () => {
+document
+  .querySelectorAll(".cat")
+  .forEach(button => {
 
-    document
-      .querySelectorAll(".cat")
-      .forEach(x => x.classList.remove("active"));
+    button.addEventListener("click", () => {
 
-    button.classList.add("active");
+      document
+        .querySelectorAll(".cat")
+        .forEach(x =>
+          x.classList.remove("active")
+        );
 
-    category = button.dataset.category;
+      button.classList.add("active");
 
-    render();
+      category =
+        button.dataset.category;
+
+      render();
+
+    });
+
   });
 
-});
 
-search.addEventListener("input", render);
+search.addEventListener(
+  "input",
+  render
+);
+
 
 loadProducts();
