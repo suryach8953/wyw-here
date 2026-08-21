@@ -87,7 +87,15 @@ function editProduct(p){$("formTitle").textContent="Edit Product";$("editId").va
 async function deleteProduct(id){if(!confirm("Delete this product?"))return;const {error}=await supabase.from("products").delete().eq("id",id);if(error){alert("Delete failed: "+error.message);return}loadProducts()}
 function renderProducts(ps){$("list").innerHTML=ps.length?ps.map(p=>`<div class="row"><div><h3>${esc(p.name)}</h3><p>${esc(p.category)} · ₹${Number(p.price).toLocaleString("en-IN")}</p></div><div class="actions"><button class="btn secondary" onclick='editProduct(${JSON.stringify(p).replace(/'/g,"&#39;")})'>Edit</button><button class="btn danger" onclick="deleteProduct(${Number(p.id)})">Delete</button></div></div>`).join(""):"<p class='subtitle'>No products added yet.</p>"}
 function resetForm(){$("editId").value="";$("name").value="";$("category").value="";$("price").value="";$("image").value="";$("description").value="";$("link").value="";$("formTitle").textContent="Add Product";$("cancelBtn").style.display="none";hide("formError")}
-function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m])}
+function esc(v){
+  return String(v ?? "").replace(/[&<>"']/g, m => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  }[m]));
+}
 async function init(){const {data:{user}}=await supabase.auth.getUser();if(user&&user.email.toLowerCase()===ADMIN_EMAIL.toLowerCase())showApp();else{$("login").style.display="block";$("app").style.display="none"}}
 supabase.auth.onAuthStateChange((_event,session)=>{if(session?.user)showApp()});
 init();
