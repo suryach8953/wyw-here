@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
@@ -9,6 +10,7 @@
 <link rel="stylesheet" href="style.css">
 
 <style>
+
 .detail{
   max-width:1100px;
   margin:60px auto;
@@ -16,7 +18,7 @@
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:55px;
-  align-items:center
+  align-items:center;
 }
 
 .detail-image{
@@ -26,25 +28,25 @@
   display:flex;
   align-items:center;
   justify-content:center;
-  overflow:hidden
+  overflow:hidden;
 }
 
 .detail-image img{
   width:100%;
   height:100%;
-  object-fit:cover
+  object-fit:cover;
 }
 
 .placeholder{
   font-size:80px;
-  color:#aaa
+  color:#aaa;
 }
 
 .detail-info .tag{
   font-size:11px;
   text-transform:uppercase;
   letter-spacing:2px;
-  color:#777
+  color:#777;
 }
 
 .detail-info h1{
@@ -52,19 +54,19 @@
   font-size:52px;
   line-height:1;
   margin:12px 0;
-  letter-spacing:-2px
+  letter-spacing:-2px;
 }
 
 .detail-price{
   font-size:25px;
   font-weight:700;
-  margin:18px 0
+  margin:18px 0;
 }
 
 .detail-desc{
   color:#666;
   line-height:1.7;
-  max-width:520px
+  max-width:520px;
 }
 
 .buy-large{
@@ -75,7 +77,7 @@
   text-decoration:none;
   padding:16px 28px;
   border-radius:12px;
-  font-weight:700
+  font-weight:700;
 }
 
 .back-link{
@@ -83,172 +85,406 @@
   margin-top:20px;
   color:#555;
   text-decoration:none;
-  font-size:14px
+  font-size:14px;
 }
 
 .not-found{
   max-width:700px;
   margin:100px auto;
   padding:30px;
-  text-align:center
+  text-align:center;
+}
+
+.loading{
+  max-width:700px;
+  margin:100px auto;
+  padding:30px;
+  text-align:center;
+  color:#777;
 }
 
 @media(max-width:750px){
+
   .detail{
     grid-template-columns:1fr;
     margin-top:35px;
-    gap:30px
+    gap:30px;
   }
 
   .detail-image{
-    height:350px
+    height:350px;
   }
 
   .detail-info h1{
-    font-size:40px
+    font-size:40px;
   }
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <header class="header">
 
-<a class="logo" href="index.html">
-WYW<span>HERE</span>
-</a>
+  <a class="logo" href="index.html">
+    WYW<span>HERE</span>
+  </a>
 
-<nav>
-<a href="index.html#products">Products</a>
-<a href="index.html#categories">Categories</a>
-</nav>
+  <nav>
+
+    <a href="index.html#products">
+      Products
+    </a>
+
+    <a href="index.html#categories">
+      Categories
+    </a>
+
+  </nav>
 
 </header>
 
-<main id="content"></main>
+
+
+<main id="content">
+
+  <div class="loading">
+    Loading product...
+  </div>
+
+</main>
+
+
 
 <script>
 
+/* ==========================================
+   SUPABASE
+========================================== */
+
 const SUPABASE_URL =
-"https://ncavpnittrdgylogbjfp.supabase.co";
+  "https://ncavpnittrdgylogbjfp.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_7E-WPJlMCarIj-FA3quJAw_Z6XFLWqP";
+  "sb_publishable_7E-WPJlMCarIj-FA3quJAw_Z6XFLWqP";
 
 
-const content = document.getElementById("content");
+/* ==========================================
+   ELEMENTS
+========================================== */
+
+const content =
+  document.getElementById("content");
+
+
+/* ==========================================
+   PRODUCT ID
+========================================== */
+
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
 
 const id =
-new URLSearchParams(location.search).get("id");
+  params.get("id");
 
+
+/* ==========================================
+   ESCAPE HTML
+========================================== */
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replace(
+      /[&<>"']/g,
+      function(match){
+
+        return {
+
+          "&":"&amp;",
+          "<":"&lt;",
+          ">":"&gt;",
+          '"':"&quot;",
+          "'":"&#039;"
+
+        }[match];
+
+      }
+    );
+
+}
+
+
+/* ==========================================
+   LOAD PRODUCT
+========================================== */
 
 async function loadProduct(){
 
   try{
 
+    /* No product ID */
+
     if(!id){
+
       showNotFound();
+
       return;
+
     }
 
-    const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?id=eq.${id}&select=*`,
-      {
-        headers:{
-          apikey:SUPABASE_KEY,
-          Authorization:`Bearer ${SUPABASE_KEY}`
+
+    /* Fetch product from Supabase */
+
+    const response =
+      await fetch(
+
+        `${SUPABASE_URL}/rest/v1/products?id=eq.${encodeURIComponent(id)}&select=*`,
+
+        {
+
+          method:"GET",
+
+          headers:{
+
+            apikey:
+              SUPABASE_KEY
+
+          }
+
         }
-      }
-    );
+
+      );
+
+
+    /* Check response */
 
     if(!response.ok){
-      throw new Error(await response.text());
+
+      const errorText =
+        await response.text();
+
+      throw new Error(
+        errorText ||
+        "Unable to load product."
+      );
+
     }
 
-    const data = await response.json();
 
-    if(!data.length){
+    const products =
+      await response.json();
+
+
+    /* Product doesn't exist */
+
+    if(
+      !Array.isArray(products) ||
+      products.length === 0
+    ){
+
       showNotFound();
+
       return;
+
     }
 
-    const p = data[0];
 
-    document.title = "WYW HERE | " + p.name;
+    const product =
+      products[0];
+
+
+    /* Update browser title */
+
+    document.title =
+      "WYW HERE | " +
+      product.name;
+
+
+    /* Safe values */
+
+    const name =
+      escapeHtml(
+        product.name
+      );
+
+    const category =
+      escapeHtml(
+        product.category
+      );
+
+    const description =
+      escapeHtml(
+        product.description || ""
+      );
+
+    const imageUrl =
+      escapeHtml(
+        product.image_url || ""
+      );
+
+    const affiliateLink =
+      escapeHtml(
+        product.affiliate_link || ""
+      );
+
+    const price =
+      Number(
+        product.price || 0
+      ).toLocaleString(
+        "en-IN"
+      );
+
+
+    /* Product image */
+
+    const imageHTML =
+      imageUrl
+
+      ?
+
+      `
+        <img
+          src="${imageUrl}"
+          alt="${name}"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+        >
+
+        <div
+          class="placeholder"
+          style="display:none"
+        >
+          ✦
+        </div>
+      `
+
+      :
+
+      `
+        <div class="placeholder">
+          ✦
+        </div>
+      `;
+
+
+    /* Product page */
 
     content.innerHTML = `
 
       <section class="detail">
 
+
         <div class="detail-image">
 
-          ${
-            p.image_url
-            ?
-            `<img
-              src="${escapeHtml(p.image_url)}"
-              alt="${escapeHtml(p.name)}"
-            >`
-            :
-            `<div class="placeholder">✦</div>`
-          }
+          ${imageHTML}
 
         </div>
 
 
         <div class="detail-info">
 
+
           <span class="tag">
-            ${escapeHtml(p.category)}
+
+            ${category}
+
           </span>
 
+
           <h1>
-            ${escapeHtml(p.name)}
+
+            ${name}
+
           </h1>
 
+
           <div class="detail-price">
-            ₹${Number(p.price).toLocaleString("en-IN")}
+
+            ₹${price}
+
           </div>
 
+
           <p class="detail-desc">
-            ${escapeHtml(p.description || "")}
+
+            ${description}
+
           </p>
 
-          <a
-            class="buy-large"
-            href="${escapeHtml(p.affiliate_link)}"
-            target="_blank"
-            rel="nofollow sponsored noopener"
-          >
-            CHECK PRICE / BUY NOW ↗
-          </a>
+
+          ${
+            affiliateLink
+
+            ?
+
+            `
+              <a
+                class="buy-large"
+                href="${affiliateLink}"
+                target="_blank"
+                rel="nofollow sponsored noopener"
+              >
+
+                CHECK PRICE / BUY NOW ↗
+
+              </a>
+            `
+
+            :
+
+            `
+              <p style="color:#999;margin-top:25px">
+                Affiliate link not available.
+              </p>
+            `
+          }
+
 
           <br>
+
 
           <a
             class="back-link"
             href="index.html"
           >
+
             ← Back to products
+
           </a>
 
+
         </div>
+
 
       </section>
 
     `;
 
+
   }
 
   catch(error){
 
-    console.error(error);
+    console.error(
+      "Product Error:",
+      error
+    );
+
 
     content.innerHTML = `
+
       <div class="not-found">
 
-        <h1>Something went wrong</h1>
+        <h1>
+          Something went wrong
+        </h1>
 
         <p>
           Product load nahi ho raha.
@@ -258,21 +494,33 @@ async function loadProduct(){
           class="back-link"
           href="index.html"
         >
+
           ← Back to products
+
         </a>
 
       </div>
+
     `;
+
   }
+
 }
 
+
+/* ==========================================
+   PRODUCT NOT FOUND
+========================================== */
 
 function showNotFound(){
 
   content.innerHTML = `
+
     <div class="not-found">
 
-      <h1>Product not found</h1>
+      <h1>
+        Product not found
+      </h1>
 
       <p>
         Please go back and choose another product.
@@ -282,37 +530,26 @@ function showNotFound(){
         class="back-link"
         href="index.html"
       >
+
         ← Back to products
+
       </a>
 
     </div>
+
   `;
-}
-
-
-function escapeHtml(value){
-
-  return String(value || "").replace(
-    /[&<>"']/g,
-    function(m){
-
-      return {
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#039;"
-      }[m];
-
-    }
-  );
 
 }
 
+
+/* ==========================================
+   START
+========================================== */
 
 loadProduct();
 
 </script>
+
 
 </body>
 </html>
