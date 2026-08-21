@@ -1,5 +1,5 @@
 const SUPABASE_URL = "https://ncavpnittrdgylogbjfp.supabase.co";
-const SUPABASE_KEY = "YOUR_PUBLISHABLE_KEY";
+const SUPABASE_KEY = "sb_publishable_7E-WPJlMCarIj-FA3quJAw_Z6XFLWqP";
 
 const grid = document.getElementById("productGrid");
 const search = document.getElementById("search");
