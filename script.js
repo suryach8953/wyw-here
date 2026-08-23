@@ -7,43 +7,25 @@ const search = document.getElementById("search");
 let category = "All";
 let products = [];
 
-function escapeHtml(value) {
-  return String(value ?? "").replace(/[&<>"']/g, function (match) {
-    return {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#039;"
-    }[match];
-  });
-}
-
-function escapeAttribute(value) {
-  return escapeHtml(value);
-}
+/* =========================
+   LOAD PRODUCTS
+========================= */
 
 async function loadProducts() {
-  grid.innerHTML = `
-    <p style="color:#777">
-      Loading products...
-    </p>
-  `;
-
   try {
+
     const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?select=*&order=id.desc`,
+      `${SUPABASE_URL}/rest/v1/products?select=*`,
       {
-        method: "GET",
         headers: {
-          apikey: SUPABASE_KEY
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`
         }
       }
     );
 
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(errorText);
+      throw new Error(await response.text());
     }
 
     products = await response.json();
@@ -51,41 +33,78 @@ async function loadProducts() {
     render();
 
   } catch (error) {
+
     console.error("Supabase Error:", error);
 
     grid.innerHTML = `
-      <p style="color:#b00020">
+      <p style="color:red">
         Products could not be loaded.
       </p>
     `;
   }
 }
 
+
+/* =========================
+   TRACK AFFILIATE CLICK
+========================= */
+
+async function trackAffiliateClick(product) {
+
+  try {
+
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/affiliate_clicks`,
+      {
+        method: "POST",
+
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`,
+          "Content-Type": "application/json",
+          Prefer: "return=minimal"
+        },
+
+        body: JSON.stringify({
+          product_id: product.id,
+          product_name: product.name
+        })
+      }
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Affiliate tracking error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================
+   RENDER PRODUCTS
+========================= */
+
 function render() {
 
-  const q = search.value.toLowerCase().trim();
+  const q =
+    search.value.toLowerCase().trim();
 
-  const filtered = products.filter(p => {
-
-    const name =
-      String(p.name || "").toLowerCase();
-
-    const description =
-      String(p.description || "").toLowerCase();
-
-    const productCategory =
-      String(p.category || "");
-
-    return (
+  const filtered =
+    products.filter(p =>
       (category === "All" ||
-        productCategory === category) &&
+       p.category === category) &&
       (
-        name.includes(q) ||
-        description.includes(q)
+        p.name.toLowerCase().includes(q) ||
+        (p.description || "")
+          .toLowerCase()
+          .includes(q)
       )
     );
 
-  });
 
   if (!filtered.length) {
 
@@ -98,54 +117,29 @@ function render() {
     return;
   }
 
-  grid.innerHTML = filtered.map(p => {
 
-    const id =
-      Number(p.id);
-
-    const name =
-      escapeHtml(p.name);
-
-    const categoryName =
-      escapeHtml(p.category);
-
-    const description =
-      escapeHtml(p.description || "");
-
-    const price =
-      Number(p.price || 0)
-        .toLocaleString("en-IN");
-
-    const image =
-      escapeAttribute(p.image_url || "");
-
-    const affiliateLink =
-      escapeAttribute(p.affiliate_link || "");
-
-    return `
+  grid.innerHTML =
+    filtered.map(p => `
 
       <article
         class="product"
-        onclick="location.href='product.html?id=${id}'"
+        onclick="location.href='product.html?id=${p.id}'"
         style="cursor:pointer"
       >
 
         <div class="product-img">
 
           ${
-            image
-              ? `
-                <img
-                  src="${image}"
-                  alt="${name}"
-                  loading="lazy"
-                >
-              `
-              : `
-                <div class="placeholder">
-                  ✦
-                </div>
-              `
+            p.image_url
+            ?
+            `<img
+              src="${p.image_url}"
+              alt="${p.name}"
+            >`
+            :
+            `<div class="placeholder">
+              ✦
+            </div>`
           }
 
         </div>
@@ -154,31 +148,35 @@ function render() {
         <div class="product-info">
 
           <span class="tag">
-            ${categoryName}
+            ${p.category}
           </span>
 
           <h3>
-            ${name}
+            ${p.name}
           </h3>
 
           <p class="desc">
-            ${description}
+            ${p.description || ""}
           </p>
 
 
           <div class="bottom">
 
             <span class="price">
-              ₹${price}
+              ₹${Number(p.price)
+                .toLocaleString("en-IN")}
             </span>
 
 
             <a
               class="buy"
-              href="${affiliateLink}"
+              href="${p.affiliate_link}"
               target="_blank"
               rel="nofollow sponsored noopener"
-              onclick="event.stopPropagation()"
+              onclick="
+                event.stopPropagation();
+                trackAffiliateClick(${JSON.stringify(p)});
+              "
             >
               BUY NOW ↗
             </a>
@@ -189,40 +187,54 @@ function render() {
 
       </article>
 
-    `;
+    `).join("");
 
-  }).join("");
 }
 
+
+/* =========================
+   CATEGORY FILTER
+========================= */
 
 document
   .querySelectorAll(".cat")
   .forEach(button => {
 
-    button.addEventListener("click", () => {
+    button.addEventListener(
+      "click",
+      () => {
 
-      document
-        .querySelectorAll(".cat")
-        .forEach(x =>
-          x.classList.remove("active")
-        );
+        document
+          .querySelectorAll(".cat")
+          .forEach(x =>
+            x.classList.remove("active")
+          );
 
-      button.classList.add("active");
+        button.classList.add("active");
 
-      category =
-        button.dataset.category;
+        category =
+          button.dataset.category;
 
-      render();
+        render();
 
-    });
+      }
+    );
 
   });
 
+
+/* =========================
+   SEARCH
+========================= */
 
 search.addEventListener(
   "input",
   render
 );
 
+
+/* =========================
+   START
+========================= */
 
 loadProducts();
