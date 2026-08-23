@@ -1,12 +1,17 @@
 <!doctype html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>WYW HERE | Admin</title>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -50,7 +55,7 @@ body{
 }
 
 .container{
-  max-width:1000px;
+  max-width:1100px;
   margin:35px auto;
   padding:0 20px;
 }
@@ -63,7 +68,9 @@ body{
   margin-bottom:22px;
 }
 
-h1,h2{
+h1,
+h2,
+h3{
   margin-top:0;
 }
 
@@ -90,10 +97,18 @@ select{
   border:1px solid #ddd;
   border-radius:9px;
   font-size:14px;
+  outline:none;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+  border-color:#151515;
 }
 
 textarea{
   min-height:85px;
+  resize:vertical;
 }
 
 .btn{
@@ -124,6 +139,7 @@ textarea{
 .actions{
   display:flex;
   gap:10px;
+  flex-wrap:wrap;
 }
 
 .message{
@@ -181,7 +197,76 @@ textarea{
   margin-top:5px;
 }
 
-@media(max-width:600px){
+.image-count{
+  font-size:12px;
+  color:#777;
+  margin-top:4px;
+}
+
+
+/* =========================
+   ANALYTICS
+========================= */
+
+.analytics-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+  margin-top:20px;
+}
+
+.stat{
+  background:#f5f5f2;
+  padding:20px;
+  border-radius:14px;
+}
+
+.stat-label{
+  margin:0;
+  color:#777;
+  font-size:13px;
+}
+
+.stat-value{
+  margin:8px 0 0;
+  font-size:28px;
+}
+
+.analytics-table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+}
+
+.analytics-table th,
+.analytics-table td{
+  text-align:left;
+  padding:13px 10px;
+  border-bottom:1px solid #eee;
+  font-size:14px;
+}
+
+.analytics-table th{
+  font-size:12px;
+  color:#777;
+  text-transform:uppercase;
+}
+
+.empty{
+  color:#777;
+  padding:15px 0;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:700px){
+
+  .analytics-grid{
+    grid-template-columns:1fr;
+  }
 
   .row{
     align-items:flex-start;
@@ -189,14 +274,26 @@ textarea{
   }
 
   .actions{
-    flex-wrap:wrap;
+    width:100%;
+  }
+
+  .actions .btn{
+    flex:1;
   }
 
 }
+
 </style>
+
 </head>
 
+
 <body>
+
+
+<!-- =========================
+     TOP BAR
+========================= -->
 
 <header class="topbar">
 
@@ -220,6 +317,7 @@ textarea{
   </div>
 
 </header>
+
 
 
 <!-- =========================
@@ -254,6 +352,7 @@ textarea{
 
     </div>
 
+
     <div class="field">
 
       <label>Password</label>
@@ -266,6 +365,7 @@ textarea{
       >
 
     </div>
+
 
     <button
       id="loginBtn"
@@ -281,11 +381,17 @@ textarea{
 </section>
 
 
+
 <!-- =========================
      ADMIN APP
 ========================= -->
 
 <section id="app" class="container">
+
+
+  <!-- =========================
+       PRODUCT FORM
+  ========================= -->
 
   <div class="card">
 
@@ -297,15 +403,18 @@ textarea{
       Create or update a product.
     </p>
 
+
     <div
       id="formError"
       class="message error"
     ></div>
 
+
     <div
       id="success"
       class="message success"
     ></div>
+
 
     <input
       type="hidden"
@@ -388,7 +497,7 @@ textarea{
 
 
     <!-- =========================
-         PRODUCT IMAGES
+         IMAGE 1
     ========================= -->
 
     <div class="field">
@@ -410,6 +519,8 @@ textarea{
     </div>
 
 
+    <!-- IMAGE 2 -->
+
     <div class="field">
 
       <label>
@@ -424,6 +535,8 @@ textarea{
 
     </div>
 
+
+    <!-- IMAGE 3 -->
 
     <div class="field">
 
@@ -440,6 +553,8 @@ textarea{
     </div>
 
 
+    <!-- IMAGE 4 -->
+
     <div class="field">
 
       <label>
@@ -454,6 +569,8 @@ textarea{
 
     </div>
 
+
+    <!-- IMAGE 5 -->
 
     <div class="field">
 
@@ -515,6 +632,7 @@ textarea{
         SAVE PRODUCT
       </button>
 
+
       <button
         id="cancelBtn"
         class="btn secondary"
@@ -529,8 +647,9 @@ textarea{
   </div>
 
 
+
   <!-- =========================
-       PRODUCTS LIST
+       PRODUCTS
   ========================= -->
 
   <div class="card">
@@ -545,95 +664,112 @@ textarea{
 
   </div>
 
+
+
   <!-- =========================
-     ANALYTICS
-========================= -->
+       ANALYTICS
+  ========================= -->
 
-<div class="card">
+  <div class="card">
 
-  <h2>Analytics</h2>
+    <h2>
+      Analytics
+    </h2>
 
-  <p class="subtitle">
-    Track affiliate clicks from your website.
-  </p>
+    <p class="subtitle">
+      Track affiliate clicks from your website.
+    </p>
 
-  <div style="
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:15px;
-    margin-top:20px;
-  ">
 
-    <div style="
-      background:#f5f5f2;
-      padding:20px;
-      border-radius:14px;
-    ">
-      <p style="margin:0;color:#777;font-size:13px;">
-        Total Clicks
-      </p>
+    <div class="analytics-grid">
 
-      <h2 id="totalClicks" style="margin:8px 0 0;">
-        0
-      </h2>
+
+      <!-- TOTAL -->
+
+      <div class="stat">
+
+        <p class="stat-label">
+          Total Clicks
+        </p>
+
+        <h2
+          id="totalClicks"
+          class="stat-value"
+        >
+          0
+        </h2>
+
+      </div>
+
+
+      <!-- TODAY -->
+
+      <div class="stat">
+
+        <p class="stat-label">
+          Today's Clicks
+        </p>
+
+        <h2
+          id="todayClicks"
+          class="stat-value"
+        >
+          0
+        </h2>
+
+      </div>
+
+
+      <!-- TOP PRODUCT -->
+
+      <div class="stat">
+
+        <p class="stat-label">
+          Top Product
+        </p>
+
+        <h3
+          id="topProduct"
+          style="margin:8px 0 0"
+        >
+          —
+        </h3>
+
+      </div>
+
     </div>
 
 
-    <div style="
-      background:#f5f5f2;
-      padding:20px;
-      border-radius:14px;
-    ">
-      <p style="margin:0;color:#777;font-size:13px;">
-        Today's Clicks
-      </p>
+    <!-- PRODUCT WISE -->
 
-      <h2 id="todayClicks" style="margin:8px 0 0;">
-        0
-      </h2>
+    <h3 style="margin-top:30px">
+      Product-wise Clicks
+    </h3>
+
+    <div id="productAnalytics">
+      Loading...
     </div>
 
 
-    <div style="
-      background:#f5f5f2;
-      padding:20px;
-      border-radius:14px;
-    ">
-      <p style="margin:0;color:#777;font-size:13px;">
-        Top Product
-      </p>
+    <!-- RECENT -->
 
-      <h3 id="topProduct" style="margin:8px 0 0;">
-        —
-      </h3>
+    <h3 style="margin-top:30px">
+      Recent Clicks
+    </h3>
+
+    <div id="recentClicks">
+      Loading...
     </div>
 
   </div>
 
-
-  <h3 style="margin-top:30px;">
-    Product-wise Clicks
-  </h3>
-
-  <div id="productAnalytics">
-    Loading...
-  </div>
-
-
-  <h3 style="margin-top:30px;">
-    Recent Clicks
-  </h3>
-
-  <div id="recentClicks">
-    Loading...
-  </div>
-
-</div>
 
 </section>
 
 
+
 <script>
+
 
 /* =========================================
    SUPABASE SETTINGS
@@ -650,7 +786,7 @@ const ADMIN_EMAIL =
 
 
 /* =========================================
-   HELPERS
+   HELPER
 ========================================= */
 
 const $ = id =>
@@ -686,6 +822,7 @@ function escapeHtml(value){
     .replace(/[&<>"']/g,function(match){
 
       return {
+
         "&":"&amp;",
         "<":"&lt;",
         ">":"&gt;",
@@ -964,7 +1101,7 @@ async function checkAdmin(){
 
 
 /* =========================================
-   SHOW ADMIN APP
+   SHOW APP
 ========================================= */
 
 async function showApp(){
@@ -990,6 +1127,8 @@ async function showApp(){
 
 
   await loadProducts();
+
+  await loadAnalytics();
 
 }
 
@@ -1028,6 +1167,7 @@ async function loadProducts(){
 
   const list =
     $("list");
+
 
   list.textContent =
     "Loading...";
@@ -1069,7 +1209,9 @@ async function loadProducts(){
     }
 
 
-    renderProducts(data || []);
+    renderProducts(
+      data || []
+    );
 
 
   }catch(error){
@@ -1107,31 +1249,17 @@ async function saveProduct(){
     $("price").value.trim();
 
 
-  /* IMAGE 1 */
-
   const image =
     $("image").value.trim();
-
-
-  /* IMAGE 2 */
 
   const image2 =
     $("image2").value.trim();
 
-
-  /* IMAGE 3 */
-
   const image3 =
     $("image3").value.trim();
 
-
-  /* IMAGE 4 */
-
   const image4 =
     $("image4").value.trim();
-
-
-  /* IMAGE 5 */
 
   const image5 =
     $("image5").value.trim();
@@ -1209,9 +1337,9 @@ async function saveProduct(){
   button.disabled = true;
 
   button.textContent =
-    editId ?
-      "UPDATING..." :
-      "SAVING...";
+    editId
+      ? "UPDATING..."
+      : "SAVING...";
 
 
   try{
@@ -1219,9 +1347,7 @@ async function saveProduct(){
     let response;
 
 
-    /* =========================================
-       UPDATE
-    ========================================= */
+    /* UPDATE */
 
     if(editId){
 
@@ -1255,9 +1381,7 @@ async function saveProduct(){
     }
 
 
-    /* =========================================
-       INSERT
-    ========================================= */
+    /* INSERT */
 
     else{
 
@@ -1297,30 +1421,28 @@ async function saveProduct(){
     if(!response.ok){
 
       throw new Error(
-
         text ||
         "Could not save product."
-
       );
 
     }
+
+
+    const wasEditing =
+      Boolean(editId);
 
 
     resetForm();
 
 
     showMessage(
-
       "success",
 
-      editId
-        ?
-        "Product updated successfully."
-        :
-        "Product added successfully.",
+      wasEditing
+        ? "Product updated successfully."
+        : "Product added successfully.",
 
       "success"
-
     );
 
 
@@ -1332,14 +1454,10 @@ async function saveProduct(){
     console.error(error);
 
     showMessage(
-
       "formError",
-
       error.message ||
       "Could not save product.",
-
       "error"
-
     );
 
   }finally{
@@ -1381,31 +1499,21 @@ function editProduct(product){
     product.price ?? "";
 
 
-  /* IMAGE 1 */
-
   $("image").value =
     product.image_url || "";
 
-
-  /* IMAGE 2 */
 
   $("image2").value =
     product.image_2 || "";
 
 
-  /* IMAGE 3 */
-
   $("image3").value =
     product.image_3 || "";
 
 
-  /* IMAGE 4 */
-
   $("image4").value =
     product.image_4 || "";
 
-
-  /* IMAGE 5 */
 
   $("image5").value =
     product.image_5 || "";
@@ -1485,16 +1593,17 @@ async function deleteProduct(id){
     if(!response.ok){
 
       throw new Error(
-
         text ||
         "Delete failed."
-
       );
 
     }
 
 
     await loadProducts();
+
+
+    await loadAnalytics();
 
 
   }catch(error){
@@ -1519,7 +1628,7 @@ let cachedProducts = [];
 
 
 /* =========================================
-   EDIT FROM LIST
+   EDIT BY ID
 ========================================= */
 
 function editProductById(id){
@@ -1528,7 +1637,8 @@ function editProductById(id){
     cachedProducts.find(
 
       item =>
-        Number(item.id) === Number(id)
+        Number(item.id) ===
+        Number(id)
 
     );
 
@@ -1571,6 +1681,24 @@ function renderProducts(products){
   list.innerHTML =
     products.map(function(product){
 
+      let imageCount = 0;
+
+
+      [
+        product.image_url,
+        product.image_2,
+        product.image_3,
+        product.image_4,
+        product.image_5
+      ].forEach(function(image){
+
+        if(image){
+          imageCount++;
+        }
+
+      });
+
+
       return `
 
         <div class="row">
@@ -1589,6 +1717,14 @@ function renderProducts(products){
                 .toLocaleString("en-IN")}
 
             </p>
+
+            <div class="image-count">
+
+              ${imageCount}
+              image${imageCount === 1 ? "" : "s"}
+              added
+
+            </div>
 
           </div>
 
@@ -1639,9 +1775,6 @@ function resetForm(){
   $("price").value =
     "";
 
-
-  /* CLEAR ALL IMAGES */
-
   $("image").value =
     "";
 
@@ -1657,23 +1790,346 @@ function resetForm(){
   $("image5").value =
     "";
 
-
   $("description").value =
     "";
 
   $("link").value =
     "";
 
-
   $("formTitle").textContent =
     "Add Product";
-
 
   $("cancelBtn").style.display =
     "none";
 
-
   hideMessage("formError");
+
+}
+
+
+/* =========================================
+   ANALYTICS
+========================================= */
+
+async function loadAnalytics(){
+
+  try{
+
+    const response =
+      await fetch(
+
+        SUPABASE_URL +
+        "/rest/v1/affiliate_clicks?select=*&order=clicked_at.desc",
+
+        {
+
+          method:"GET",
+
+          headers:authHeaders()
+
+        }
+
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if(!response.ok){
+
+      throw new Error(
+
+        data.message ||
+        data.hint ||
+        "Could not load analytics."
+
+      );
+
+    }
+
+
+    const clicks =
+      data || [];
+
+
+    renderAnalytics(clicks);
+
+
+  }catch(error){
+
+    console.error(error);
+
+
+    $("totalClicks").textContent =
+      "—";
+
+    $("todayClicks").textContent =
+      "—";
+
+    $("topProduct").textContent =
+      "Unable to load";
+
+
+    $("productAnalytics").innerHTML =
+      "<p class='empty'>" +
+      escapeHtml(error.message) +
+      "</p>";
+
+
+    $("recentClicks").innerHTML =
+      "<p class='empty'>" +
+      "Analytics could not be loaded." +
+      "</p>";
+
+  }
+
+}
+
+
+/* =========================================
+   RENDER ANALYTICS
+========================================= */
+
+function renderAnalytics(clicks){
+
+  /* TOTAL */
+
+  $("totalClicks").textContent =
+    clicks.length;
+
+
+  /* TODAY */
+
+  const now =
+    new Date();
+
+
+  const today =
+    now.toLocaleDateString(
+      "en-CA",
+      {
+        timeZone:"Asia/Kolkata"
+      }
+    );
+
+
+  const todayClicks =
+    clicks.filter(function(click){
+
+      const date =
+        new Date(click.clicked_at)
+          .toLocaleDateString(
+            "en-CA",
+            {
+              timeZone:"Asia/Kolkata"
+            }
+          );
+
+      return date === today;
+
+    });
+
+
+  $("todayClicks").textContent =
+    todayClicks.length;
+
+
+  /* =========================================
+     PRODUCT COUNTS
+  ========================================= */
+
+  const counts = {};
+
+
+  clicks.forEach(function(click){
+
+    const name =
+      click.product_name ||
+      "Unknown Product";
+
+
+    if(!counts[name]){
+      counts[name] = 0;
+    }
+
+
+    counts[name]++;
+
+  });
+
+
+  const sorted =
+    Object.entries(counts)
+      .sort(function(a,b){
+
+        return b[1] - a[1];
+
+      });
+
+
+  /* TOP PRODUCT */
+
+  if(sorted.length){
+
+    $("topProduct").textContent =
+      sorted[0][0];
+
+  }else{
+
+    $("topProduct").textContent =
+      "—";
+
+  }
+
+
+  /* PRODUCT TABLE */
+
+  if(!sorted.length){
+
+    $("productAnalytics").innerHTML =
+      "<p class='empty'>" +
+      "No clicks recorded yet." +
+      "</p>";
+
+  }else{
+
+    $("productAnalytics").innerHTML = `
+
+      <table class="analytics-table">
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Product
+            </th>
+
+            <th>
+              Clicks
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          ${
+            sorted.map(function(item){
+
+              return `
+
+                <tr>
+
+                  <td>
+                    ${escapeHtml(item[0])}
+                  </td>
+
+                  <td>
+                    <strong>
+                      ${item[1]}
+                    </strong>
+                  </td>
+
+                </tr>
+
+              `;
+
+            }).join("")
+          }
+
+        </tbody>
+
+      </table>
+
+    `;
+
+  }
+
+
+  /* =========================================
+     RECENT CLICKS
+  ========================================= */
+
+  const recent =
+    clicks.slice(0,10);
+
+
+  if(!recent.length){
+
+    $("recentClicks").innerHTML =
+      "<p class='empty'>" +
+      "No clicks recorded yet." +
+      "</p>";
+
+    return;
+
+  }
+
+
+  $("recentClicks").innerHTML = `
+
+    <table class="analytics-table">
+
+      <thead>
+
+        <tr>
+
+          <th>
+            Product
+          </th>
+
+          <th>
+            Date & Time
+          </th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        ${
+          recent.map(function(click){
+
+            const date =
+              new Date(click.clicked_at);
+
+
+            return `
+
+              <tr>
+
+                <td>
+                  ${escapeHtml(
+                    click.product_name ||
+                    "Unknown Product"
+                  )}
+                </td>
+
+                <td>
+                  ${date.toLocaleString(
+                    "en-IN",
+                    {
+                      timeZone:"Asia/Kolkata"
+                    }
+                  )}
+                </td>
+
+              </tr>
+
+            `;
+
+          }).join("")
+        }
+
+      </tbody>
+
+    </table>
+
+  `;
 
 }
 
@@ -1696,7 +2152,10 @@ async function init(){
     $("app").style.display =
       "block";
 
+
     await loadProducts();
+
+    await loadAnalytics();
 
   }else{
 
