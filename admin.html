@@ -175,7 +175,14 @@ textarea{
   font-size:13px;
 }
 
+.image-note{
+  font-size:12px;
+  color:#888;
+  margin-top:5px;
+}
+
 @media(max-width:600px){
+
   .row{
     align-items:flex-start;
     flex-direction:column;
@@ -184,6 +191,7 @@ textarea{
   .actions{
     flex-wrap:wrap;
   }
+
 }
 </style>
 </head>
@@ -197,8 +205,18 @@ textarea{
   </div>
 
   <div class="top-actions">
-    <a href="index.html">View Website</a>
-    <button class="logout" onclick="logout()">Logout</button>
+
+    <a href="index.html">
+      View Website
+    </a>
+
+    <button
+      class="logout"
+      onclick="logout()"
+    >
+      Logout
+    </button>
+
   </div>
 
 </header>
@@ -218,7 +236,10 @@ textarea{
       Sign in to manage WYW HERE products.
     </p>
 
-    <div id="loginError" class="message error"></div>
+    <div
+      id="loginError"
+      class="message error"
+    ></div>
 
     <div class="field">
 
@@ -233,7 +254,6 @@ textarea{
 
     </div>
 
-
     <div class="field">
 
       <label>Password</label>
@@ -246,7 +266,6 @@ textarea{
       >
 
     </div>
-
 
     <button
       id="loginBtn"
@@ -262,13 +281,11 @@ textarea{
 </section>
 
 
-
 <!-- =========================
      ADMIN APP
 ========================= -->
 
 <section id="app" class="container">
-
 
   <div class="card">
 
@@ -280,17 +297,23 @@ textarea{
       Create or update a product.
     </p>
 
+    <div
+      id="formError"
+      class="message error"
+    ></div>
 
-    <div id="formError" class="message error"></div>
-
-    <div id="success" class="message success"></div>
-
+    <div
+      id="success"
+      class="message success"
+    ></div>
 
     <input
       type="hidden"
       id="editId"
     >
 
+
+    <!-- PRODUCT NAME -->
 
     <div class="field">
 
@@ -305,6 +328,8 @@ textarea{
 
     </div>
 
+
+    <!-- CATEGORY -->
 
     <div class="field">
 
@@ -343,6 +368,8 @@ textarea{
     </div>
 
 
+    <!-- PRICE -->
+
     <div class="field">
 
       <label>
@@ -360,31 +387,90 @@ textarea{
     </div>
 
 
+    <!-- =========================
+         PRODUCT IMAGES
+    ========================= -->
+
     <div class="field">
-<label>Product Image 1 URL</label>
-<input id="image" type="url" placeholder="https://...">
-</div>
 
-<div class="field">
-<label>Product Image 2 URL</label>
-<input id="image2" type="url" placeholder="https://...">
-</div>
+      <label>
+        Product Image 1 URL
+      </label>
 
-<div class="field">
-<label>Product Image 3 URL</label>
-<input id="image3" type="url" placeholder="https://...">
-</div>
+      <input
+        id="image"
+        type="url"
+        placeholder="https://..."
+      >
 
-<div class="field">
-<label>Product Image 4 URL</label>
-<input id="image4" type="url" placeholder="https://...">
-</div>
+      <div class="image-note">
+        Main product image
+      </div>
 
-<div class="field">
-<label>Product Image 5 URL</label>
-<input id="image5" type="url" placeholder="https://...">
-</div>
+    </div>
 
+
+    <div class="field">
+
+      <label>
+        Product Image 2 URL
+      </label>
+
+      <input
+        id="image2"
+        type="url"
+        placeholder="https://..."
+      >
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Product Image 3 URL
+      </label>
+
+      <input
+        id="image3"
+        type="url"
+        placeholder="https://..."
+      >
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Product Image 4 URL
+      </label>
+
+      <input
+        id="image4"
+        type="url"
+        placeholder="https://..."
+      >
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Product Image 5 URL
+      </label>
+
+      <input
+        id="image5"
+        type="url"
+        placeholder="https://..."
+      >
+
+    </div>
+
+
+    <!-- DESCRIPTION -->
 
     <div class="field">
 
@@ -399,6 +485,8 @@ textarea{
 
     </div>
 
+
+    <!-- AFFILIATE LINK -->
 
     <div class="field">
 
@@ -415,6 +503,8 @@ textarea{
     </div>
 
 
+    <!-- BUTTONS -->
+
     <div class="actions">
 
       <button
@@ -424,7 +514,6 @@ textarea{
       >
         SAVE PRODUCT
       </button>
-
 
       <button
         id="cancelBtn"
@@ -440,6 +529,9 @@ textarea{
   </div>
 
 
+  <!-- =========================
+       PRODUCTS LIST
+  ========================= -->
 
   <div class="card">
 
@@ -453,9 +545,7 @@ textarea{
 
   </div>
 
-
 </section>
-
 
 
 <script>
@@ -493,6 +583,7 @@ function showMessage(id,text,type){
 
   element.style.display =
     "block";
+
 }
 
 
@@ -500,13 +591,14 @@ function hideMessage(id){
 
   $(id).style.display =
     "none";
+
 }
 
 
 function escapeHtml(value){
 
   return String(value ?? "")
-    .replace(/[&<>"']/g, function(match){
+    .replace(/[&<>"']/g,function(match){
 
       return {
         "&":"&amp;",
@@ -523,7 +615,7 @@ function escapeHtml(value){
 
 
 /* =========================================
-   AUTH TOKEN
+   ACCESS TOKEN
 ========================================= */
 
 function getAccessToken(){
@@ -536,7 +628,7 @@ function getAccessToken(){
 
 
 /* =========================================
-   SUPABASE AUTH LOGIN
+   LOGIN
 ========================================= */
 
 async function login(){
@@ -562,6 +654,7 @@ async function login(){
     );
 
     return;
+
   }
 
 
@@ -575,18 +668,22 @@ async function login(){
 
     const response =
       await fetch(
+
         SUPABASE_URL +
         "/auth/v1/token?grant_type=password",
+
         {
 
           method:"POST",
 
           headers:{
+
             "Content-Type":
               "application/json",
 
             "apikey":
               SUPABASE_KEY
+
           },
 
           body:JSON.stringify({
@@ -598,6 +695,7 @@ async function login(){
           })
 
         }
+
       );
 
 
@@ -608,10 +706,12 @@ async function login(){
     if(!response.ok){
 
       throw new Error(
+
         data.error_description ||
         data.msg ||
         data.message ||
         "Invalid email or password."
+
       );
 
     }
@@ -649,7 +749,7 @@ async function login(){
     );
 
 
-    showApp();
+    await showApp();
 
 
   }catch(error){
@@ -719,8 +819,10 @@ async function checkAdmin(){
 
     const response =
       await fetch(
+
         SUPABASE_URL +
         "/auth/v1/user",
+
         {
 
           method:"GET",
@@ -736,6 +838,7 @@ async function checkAdmin(){
           }
 
         }
+
       );
 
 
@@ -797,12 +900,11 @@ async function showApp(){
   $("login").style.display =
     "none";
 
-
   $("app").style.display =
     "block";
 
 
-  loadProducts();
+  await loadProducts();
 
 }
 
@@ -842,7 +944,6 @@ async function loadProducts(){
   const list =
     $("list");
 
-
   list.textContent =
     "Loading...";
 
@@ -873,9 +974,11 @@ async function loadProducts(){
     if(!response.ok){
 
       throw new Error(
+
         data.message ||
         data.hint ||
         "Could not load products."
+
       );
 
     }
@@ -918,8 +1021,36 @@ async function saveProduct(){
   const price =
     $("price").value.trim();
 
+
+  /* IMAGE 1 */
+
   const image =
     $("image").value.trim();
+
+
+  /* IMAGE 2 */
+
+  const image2 =
+    $("image2").value.trim();
+
+
+  /* IMAGE 3 */
+
+  const image3 =
+    $("image3").value.trim();
+
+
+  /* IMAGE 4 */
+
+  const image4 =
+    $("image4").value.trim();
+
+
+  /* IMAGE 5 */
+
+  const image5 =
+    $("image5").value.trim();
+
 
   const description =
     $("description").value.trim();
@@ -950,6 +1081,10 @@ async function saveProduct(){
   }
 
 
+  /* =========================================
+     PRODUCT OBJECT
+  ========================================= */
+
   const product = {
 
     name:name,
@@ -960,6 +1095,18 @@ async function saveProduct(){
 
     image_url:
       image || null,
+
+    image_2:
+      image2 || null,
+
+    image_3:
+      image3 || null,
+
+    image_4:
+      image4 || null,
+
+    image_5:
+      image5 || null,
 
     description:
       description,
@@ -987,6 +1134,10 @@ async function saveProduct(){
     let response;
 
 
+    /* =========================================
+       UPDATE
+    ========================================= */
+
     if(editId){
 
       response =
@@ -1001,9 +1152,12 @@ async function saveProduct(){
             method:"PATCH",
 
             headers:{
+
               ...authHeaders(),
+
               "Prefer":
                 "return=minimal"
+
             },
 
             body:
@@ -1013,7 +1167,14 @@ async function saveProduct(){
 
         );
 
-    }else{
+    }
+
+
+    /* =========================================
+       INSERT
+    ========================================= */
+
+    else{
 
       response =
         await fetch(
@@ -1026,9 +1187,12 @@ async function saveProduct(){
             method:"POST",
 
             headers:{
+
               ...authHeaders(),
+
               "Prefer":
                 "return=minimal"
+
             },
 
             body:
@@ -1048,8 +1212,10 @@ async function saveProduct(){
     if(!response.ok){
 
       throw new Error(
+
         text ||
         "Could not save product."
+
       );
 
     }
@@ -1059,11 +1225,17 @@ async function saveProduct(){
 
 
     showMessage(
+
       "success",
-      editId ?
-        "Product updated successfully." :
+
+      editId
+        ?
+        "Product updated successfully."
+        :
         "Product added successfully.",
+
       "success"
+
     );
 
 
@@ -1075,10 +1247,14 @@ async function saveProduct(){
     console.error(error);
 
     showMessage(
+
       "formError",
+
       error.message ||
       "Could not save product.",
+
       "error"
+
     );
 
   }finally{
@@ -1105,7 +1281,7 @@ function editProduct(product){
 
 
   $("editId").value =
-    product.id;
+    product.id || "";
 
 
   $("name").value =
@@ -1120,8 +1296,34 @@ function editProduct(product){
     product.price ?? "";
 
 
+  /* IMAGE 1 */
+
   $("image").value =
     product.image_url || "";
+
+
+  /* IMAGE 2 */
+
+  $("image2").value =
+    product.image_2 || "";
+
+
+  /* IMAGE 3 */
+
+  $("image3").value =
+    product.image_3 || "";
+
+
+  /* IMAGE 4 */
+
+  $("image4").value =
+    product.image_4 || "";
+
+
+  /* IMAGE 5 */
+
+  $("image5").value =
+    product.image_5 || "";
 
 
   $("description").value =
@@ -1178,9 +1380,12 @@ async function deleteProduct(id){
           method:"DELETE",
 
           headers:{
+
             ...authHeaders(),
+
             "Prefer":
               "return=minimal"
+
           }
 
         }
@@ -1195,8 +1400,10 @@ async function deleteProduct(id){
     if(!response.ok){
 
       throw new Error(
+
         text ||
         "Delete failed."
+
       );
 
     }
@@ -1220,10 +1427,45 @@ async function deleteProduct(id){
 
 
 /* =========================================
+   CACHED PRODUCTS
+========================================= */
+
+let cachedProducts = [];
+
+
+/* =========================================
+   EDIT FROM LIST
+========================================= */
+
+function editProductById(id){
+
+  const product =
+    cachedProducts.find(
+
+      item =>
+        Number(item.id) === Number(id)
+
+    );
+
+
+  if(product){
+
+    editProduct(product);
+
+  }
+
+}
+
+
+/* =========================================
    RENDER PRODUCTS
 ========================================= */
 
 function renderProducts(products){
+
+  cachedProducts =
+    products;
+
 
   const list =
     $("list");
@@ -1255,9 +1497,12 @@ function renderProducts(products){
             </h3>
 
             <p>
+
               ${escapeHtml(product.category)}
+
               · ₹${Number(product.price)
                 .toLocaleString("en-IN")}
+
             </p>
 
           </div>
@@ -1292,30 +1537,6 @@ function renderProducts(products){
 
 
 /* =========================================
-   EDIT FROM LIST
-========================================= */
-
-let cachedProducts = [];
-
-
-function editProductById(id){
-
-  const product =
-    cachedProducts.find(
-      item => Number(item.id) === Number(id)
-    );
-
-
-  if(product){
-
-    editProduct(product);
-
-  }
-
-}
-
-
-/* =========================================
    RESET FORM
 ========================================= */
 
@@ -1333,8 +1554,24 @@ function resetForm(){
   $("price").value =
     "";
 
+
+  /* CLEAR ALL IMAGES */
+
   $("image").value =
     "";
+
+  $("image2").value =
+    "";
+
+  $("image3").value =
+    "";
+
+  $("image4").value =
+    "";
+
+  $("image5").value =
+    "";
+
 
   $("description").value =
     "";
@@ -1342,36 +1579,18 @@ function resetForm(){
   $("link").value =
     "";
 
+
   $("formTitle").textContent =
     "Add Product";
+
 
   $("cancelBtn").style.display =
     "none";
 
+
   hideMessage("formError");
 
 }
-
-
-/* =========================================
-   OVERRIDE RENDER TO CACHE PRODUCTS
-========================================= */
-
-const originalRenderProducts =
-  renderProducts;
-
-
-renderProducts =
-  function(products){
-
-    cachedProducts =
-      products;
-
-    originalRenderProducts(
-      products
-    );
-
-  };
 
 
 /* =========================================
