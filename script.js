@@ -15,7 +15,7 @@ async function loadProducts() {
   try {
 
     const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?select=*`,
+      `${SUPABASE_URL}/rest/v1/products?select=*&order=id.desc`,
       {
         headers: {
           apikey: SUPABASE_KEY,
