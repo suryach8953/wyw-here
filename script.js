@@ -7,6 +7,7 @@ const search = document.getElementById("search");
 let category = "All";
 let products = [];
 
+
 /* =========================
    LOAD PRODUCTS
 ========================= */
@@ -53,7 +54,7 @@ async function trackAffiliateClick(product) {
 
   try {
 
-    await fetch(
+    const response = await fetch(
       `${SUPABASE_URL}/rest/v1/affiliate_clicks`,
       {
         method: "POST",
@@ -65,12 +66,33 @@ async function trackAffiliateClick(product) {
           Prefer: "return=minimal"
         },
 
+        keepalive: true,
+
         body: JSON.stringify({
           product_id: product.id,
           product_name: product.name
         })
       }
     );
+
+    if (!response.ok) {
+
+      const errorText = await response.text();
+
+      console.error(
+        "Affiliate tracking failed:",
+        errorText
+      );
+
+      return false;
+    }
+
+    console.log(
+      "Affiliate click tracked:",
+      product.name
+    );
+
+    return true;
 
   } catch (error) {
 
@@ -79,8 +101,57 @@ async function trackAffiliateClick(product) {
       error
     );
 
+    return false;
   }
+}
 
+
+/* =========================
+   BUY NOW CLICK
+========================= */
+
+async function handleBuyClick(event, product) {
+
+  event.preventDefault();
+  event.stopPropagation();
+
+  /*
+    Open blank tab immediately so browser
+    does not block the new tab.
+  */
+
+  const newTab = window.open(
+    "about:blank",
+    "_blank"
+  );
+
+
+  /*
+    Track click in Supabase
+  */
+
+  await trackAffiliateClick(product);
+
+
+  /*
+    Open Amazon affiliate link
+  */
+
+  if (newTab) {
+
+    newTab.location.href =
+      product.affiliate_link;
+
+  } else {
+
+    /*
+      If browser blocks popup,
+      open normally in current tab.
+    */
+
+    window.location.href =
+      product.affiliate_link;
+  }
 }
 
 
@@ -174,8 +245,10 @@ function render() {
               target="_blank"
               rel="nofollow sponsored noopener"
               onclick="
-                event.stopPropagation();
-                trackAffiliateClick(${JSON.stringify(p)});
+                handleBuyClick(
+                  event,
+                  ${JSON.stringify(p).replace(/"/g, '&quot;')}
+                );
               "
             >
               BUY NOW ↗
