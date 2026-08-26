@@ -9,48 +9,12 @@ let products = [];
 
 
 /* =========================
-   LOAD PRODUCTS
-========================= */
-
-async function loadProducts() {
-  try {
-
-    const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?select=*&order=id.desc`,
-      {
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${SUPABASE_KEY}`
-        }
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(await response.text());
-    }
-
-    products = await response.json();
-
-    render();
-
-  } catch (error) {
-
-    console.error("Supabase Error:", error);
-
-    grid.innerHTML = `
-      <p style="color:red">
-        Products could not be loaded.
-      </p>
-    `;
-  }
-}
-
-
-/* =========================
    TRACK AFFILIATE CLICK
 ========================= */
 
 async function trackAffiliateClick(product) {
+
+  console.log("Tracking affiliate click:", product);
 
   try {
 
@@ -60,13 +24,11 @@ async function trackAffiliateClick(product) {
         method: "POST",
 
         headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${SUPABASE_KEY}`,
+          "apikey": SUPABASE_KEY,
+          "Authorization": `Bearer ${SUPABASE_KEY}`,
           "Content-Type": "application/json",
-          Prefer: "return=minimal"
+          "Prefer": "return=representation"
         },
-
-        keepalive: true,
 
         body: JSON.stringify({
           product_id: product.id,
@@ -75,83 +37,73 @@ async function trackAffiliateClick(product) {
       }
     );
 
+    const result = await response.text();
+
+    console.log("Tracking response:", response.status, result);
+
     if (!response.ok) {
-
-      const errorText = await response.text();
-
-      console.error(
-        "Affiliate tracking failed:",
-        errorText
-      );
-
-      return false;
+      console.error("TRACKING FAILED:", result);
+    } else {
+      console.log("AFFILIATE CLICK SAVED SUCCESSFULLY");
     }
-
-    console.log(
-      "Affiliate click tracked:",
-      product.name
-    );
-
-    return true;
 
   } catch (error) {
 
-    console.error(
-      "Affiliate tracking error:",
-      error
-    );
+    console.error("Affiliate tracking error:", error);
 
-    return false;
   }
+
 }
 
 
 /* =========================
-   BUY NOW CLICK
+   LOAD PRODUCTS
 ========================= */
 
-async function handleBuyClick(event, product) {
+async function loadProducts() {
 
-  event.preventDefault();
-  event.stopPropagation();
+  try {
 
-  /*
-    Open blank tab immediately so browser
-    does not block the new tab.
-  */
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/products?select=id,name,category,price,image_url,description,affiliate_link&order=id.asc`,
+      {
+        headers: {
+          "apikey": SUPABASE_KEY,
+          "Authorization": `Bearer ${SUPABASE_KEY}`
+        }
+      }
+    );
 
-  const newTab = window.open(
-    "about:blank",
-    "_blank"
-  );
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
 
+    const data = await response.json();
 
-  /*
-    Track click in Supabase
-  */
+    products = data.map(p => ({
+      id: p.id,
+      name: p.name,
+      category: p.category,
+      price: `₹${Number(p.price).toLocaleString("en-IN")}`,
+      description: p.description || "",
+      image: p.image_url || "",
+      affiliateLink: p.affiliate_link || "#"
+    }));
 
-  await trackAffiliateClick(product);
+    render();
 
+  } catch (error) {
 
-  /*
-    Open Amazon affiliate link
-  */
+    console.error("Supabase Error:", error);
 
-  if (newTab) {
+    grid.innerHTML = `
+      <p style="color:red;">
+        Products load nahi ho rahe. Console check karo.
+      </p>
+    `;
 
-    newTab.location.href =
-      product.affiliate_link;
-
-  } else {
-
-    /*
-      If browser blocks popup,
-      open normally in current tab.
-    */
-
-    window.location.href =
-      product.affiliate_link;
   }
+
 }
 
 
@@ -161,36 +113,20 @@ async function handleBuyClick(event, product) {
 
 function render() {
 
-  const q =
-    search.value.toLowerCase().trim();
+  const q = search.value.toLowerCase().trim();
 
-  const filtered =
-    products.filter(p =>
-      (category === "All" ||
-       p.category === category) &&
-      (
-        p.name.toLowerCase().includes(q) ||
-        (p.description || "")
-          .toLowerCase()
-          .includes(q)
-      )
-    );
+  const filtered = products.filter(p =>
+    (category === "All" || p.category === category) &&
+    (
+      p.name.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q)
+    )
+  );
 
 
-  if (!filtered.length) {
+  grid.innerHTML = filtered.length
 
-    grid.innerHTML = `
-      <p style="color:#777">
-        No products found.
-      </p>
-    `;
-
-    return;
-  }
-
-
-  grid.innerHTML =
-    filtered.map(p => `
+    ? filtered.map(p => `
 
       <article
         class="product"
@@ -201,16 +137,20 @@ function render() {
         <div class="product-img">
 
           ${
-            p.image_url
-            ?
-            `<img
-              src="${p.image_url}"
-              alt="${p.name}"
-            >`
-            :
-            `<div class="placeholder">
-              ✦
-            </div>`
+            p.image
+
+            ? `
+              <img
+                src="${p.image}"
+                alt="${p.name}"
+              >
+            `
+
+            : `
+              <div class="placeholder">
+                ✦
+              </div>
+            `
           }
 
         </div>
@@ -222,33 +162,33 @@ function render() {
             ${p.category}
           </span>
 
+
           <h3>
             ${p.name}
           </h3>
 
+
           <p class="desc">
-            ${p.description || ""}
+            ${p.description}
           </p>
 
 
           <div class="bottom">
 
             <span class="price">
-              ₹${Number(p.price)
-                .toLocaleString("en-IN")}
+              ${p.price}
             </span>
 
 
             <a
               class="buy"
-              href="${p.affiliate_link}"
+              href="${p.affiliateLink}"
               target="_blank"
               rel="nofollow sponsored noopener"
+
               onclick="
-                handleBuyClick(
-                  event,
-                  ${JSON.stringify(p).replace(/"/g, '&quot;')}
-                );
+                event.stopPropagation();
+                trackAffiliateClick(${JSON.stringify(p)});
               "
             >
               BUY NOW ↗
@@ -260,7 +200,13 @@ function render() {
 
       </article>
 
-    `).join("");
+    `).join("")
+
+    : `
+      <p style="color:#777">
+        No products found.
+      </p>
+    `;
 
 }
 
@@ -273,25 +219,21 @@ document
   .querySelectorAll(".cat")
   .forEach(button => {
 
-    button.addEventListener(
-      "click",
-      () => {
+    button.addEventListener("click", () => {
 
-        document
-          .querySelectorAll(".cat")
-          .forEach(x =>
-            x.classList.remove("active")
-          );
+      document
+        .querySelectorAll(".cat")
+        .forEach(x =>
+          x.classList.remove("active")
+        );
 
-        button.classList.add("active");
+      button.classList.add("active");
 
-        category =
-          button.dataset.category;
+      category = button.dataset.category;
 
-        render();
+      render();
 
-      }
-    );
+    });
 
   });
 
