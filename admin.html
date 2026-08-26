@@ -7,375 +7,1573 @@
 
 <meta
   name="viewport"
-  content="width=device-width,initial-scale=1"
+  content="width=device-width, initial-scale=1.0"
 >
 
-<title>WYW HERE | Admin</title>
+<meta
+  name="description"
+  content="WYW HERE Admin Dashboard"
+>
+
+<title>WYW HERE | Admin Dashboard</title>
+
 
 <style>
+
+/* =========================================================
+   RESET
+========================================================= */
 
 *{
   box-sizing:border-box;
 }
 
+html{
+  scroll-behavior:smooth;
+}
+
 body{
   margin:0;
-  font-family:Arial,sans-serif;
-  background:#f5f5f2;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  background:#f4f4f1;
   color:#151515;
 }
 
-.topbar{
-  background:#151515;
-  color:#fff;
-  padding:18px 6%;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root{
+
+  --black:#111111;
+  --black-2:#1c1c1c;
+
+  --white:#ffffff;
+
+  --bg:#f4f4f1;
+  --soft:#f8f8f6;
+
+  --border:#e8e8e4;
+  --border-dark:#d8d8d3;
+
+  --text:#151515;
+  --muted:#777777;
+  --muted-2:#999999;
+
+  --green:#16833b;
+  --green-bg:#eaf8ef;
+
+  --red:#c62828;
+  --red-bg:#fff0f0;
+
+  --orange:#b86a00;
+  --orange-bg:#fff5e7;
+
+  --blue:#2457c5;
+  --blue-bg:#edf3ff;
+
+  --shadow:
+    0 8px 30px rgba(0,0,0,.055);
+
+  --shadow-hover:
+    0 12px 35px rgba(0,0,0,.09);
+
 }
 
-.logo{
-  font-size:23px;
-  font-weight:700;
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar{
+
+  position:sticky;
+  top:0;
+  z-index:1000;
+
+  height:70px;
+
+  padding:0 5%;
+
+  background:rgba(17,17,17,.97);
+
+  backdrop-filter:blur(12px);
+
+  color:#fff;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  box-shadow:
+    0 4px 20px rgba(0,0,0,.14);
+
 }
+
+
+.logo{
+
+  font-size:24px;
+  font-weight:800;
+
+  letter-spacing:-.8px;
+
+}
+
 
 .logo span{
   font-weight:400;
 }
 
+
 .top-actions{
+
   display:flex;
-  gap:15px;
   align-items:center;
+  gap:10px;
+
 }
+
 
 .top-actions a,
 .logout{
+
   color:#fff;
-  background:none;
-  border:0;
-  cursor:pointer;
+
   text-decoration:none;
-  font-size:14px;
+
+  background:transparent;
+
+  border:1px solid
+    rgba(255,255,255,.18);
+
+  border-radius:9px;
+
+  padding:9px 14px;
+
+  font-size:12px;
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:.2s;
+
 }
+
+
+.top-actions a:hover,
+.logout:hover{
+
+  background:#fff;
+  color:#111;
+
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+========================================================= */
 
 .container{
-  max-width:1200px;
-  margin:35px auto;
-  padding:0 20px;
+
+  width:min(1250px,94%);
+
+  margin:32px auto 70px;
+
 }
+
+
+/* =========================================================
+   CARDS
+========================================================= */
 
 .card{
+
   background:#fff;
-  padding:28px;
+
+  border:1px solid
+    rgba(0,0,0,.025);
+
   border-radius:18px;
-  box-shadow:0 10px 30px #0000000b;
+
+  padding:28px;
+
   margin-bottom:22px;
+
+  box-shadow:var(--shadow);
+
 }
 
-h1,
-h2,
-h3{
-  margin-top:0;
+
+.card:hover{
+  box-shadow:var(--shadow-hover);
 }
+
+
+.card h1{
+
+  margin:0 0 7px;
+
+  font-size:28px;
+
+  letter-spacing:-.7px;
+
+}
+
+
+.card h2{
+
+  margin:0 0 7px;
+
+  font-size:21px;
+
+  letter-spacing:-.3px;
+
+}
+
+
+.card h3{
+  margin:0;
+}
+
 
 .subtitle{
-  color:#777;
+
+  margin:0;
+
+  color:var(--muted);
+
+  font-size:13px;
+
+  line-height:1.6;
+
 }
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+#login{
+
+  min-height:
+    calc(100vh - 70px);
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+}
+
+
+.login{
+
+  width:min(430px,94%);
+
+  margin:0 auto;
+
+}
+
+
+.login .card{
+
+  padding:34px;
+
+}
+
+
+.login-title{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+  margin-bottom:7px;
+
+}
+
+
+.login-logo{
+
+  width:42px;
+  height:42px;
+
+  border-radius:11px;
+
+  background:#111;
+
+  color:#fff;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  font-weight:800;
+
+  font-size:16px;
+
+}
+
+
+.login h1{
+
+  font-size:25px;
+
+  margin:0;
+
+}
+
+
+.login-note{
+
+  margin-top:20px;
+
+  padding:11px 13px;
+
+  border-radius:9px;
+
+  background:#f7f7f5;
+
+  color:#777;
+
+  font-size:11px;
+
+  line-height:1.5;
+
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
 
 .field{
-  margin:16px 0;
+
+  margin:17px 0;
+
 }
 
+
 label{
+
   display:block;
-  font-size:13px;
-  font-weight:700;
+
   margin-bottom:7px;
+
+  color:#444;
+
+  font-size:11px;
+
+  font-weight:800;
+
+  letter-spacing:.35px;
+
+  text-transform:uppercase;
+
 }
+
 
 input,
 textarea,
 select{
+
   width:100%;
-  padding:12px;
+
   border:1px solid #ddd;
-  border-radius:9px;
-  font-size:14px;
+
+  border-radius:10px;
+
+  background:#fff;
+
+  color:#111;
+
   outline:none;
+
+  padding:12px 13px;
+
+  font-size:14px;
+
+  font-family:inherit;
+
+  transition:
+    border-color .2s,
+    box-shadow .2s,
+    background .2s;
+
 }
+
+
+input:hover,
+textarea:hover,
+select:hover{
+
+  border-color:#bdbdb8;
+
+}
+
 
 input:focus,
 textarea:focus,
 select:focus{
-  border-color:#151515;
+
+  border-color:#111;
+
+  box-shadow:
+    0 0 0 3px rgba(17,17,17,.06);
+
 }
+
+
+input::placeholder,
+textarea::placeholder{
+
+  color:#aaa;
+
+}
+
 
 textarea{
-  min-height:85px;
+
+  min-height:100px;
+
   resize:vertical;
+
 }
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
 
 .btn{
+
   border:0;
+
   border-radius:9px;
-  padding:12px 16px;
-  background:#151515;
+
+  padding:11px 16px;
+
+  background:#111;
+
   color:#fff;
-  font-weight:700;
+
+  font-size:12px;
+
+  font-weight:800;
+
   cursor:pointer;
+
+  transition:.2s;
+
 }
+
+
+.btn:hover{
+
+  background:#303030;
+
+  transform:translateY(-1px);
+
+}
+
+
+.btn:active{
+
+  transform:translateY(0);
+
+}
+
 
 .btn:disabled{
-  opacity:.6;
+
+  opacity:.55;
+
   cursor:not-allowed;
+
+  transform:none;
+
 }
+
+
+.btn.full{
+
+  width:100%;
+
+}
+
 
 .secondary{
-  background:#eee;
-  color:#151515;
+
+  background:#f1f1ef;
+
+  color:#111;
+
+  border:1px solid #e3e3df;
+
 }
+
+
+.secondary:hover{
+
+  background:#e7e7e3;
+
+}
+
 
 .danger{
-  background:#eee;
-  color:#b00020;
+
+  background:var(--red-bg);
+
+  color:var(--red);
+
+  border:1px solid #ffd8d8;
+
 }
+
+
+.danger:hover{
+
+  background:#ffe2e2;
+
+}
+
 
 .actions{
+
   display:flex;
-  gap:10px;
+
+  align-items:center;
+
+  gap:9px;
+
   flex-wrap:wrap;
+
 }
+
+
+/* =========================================================
+   MESSAGES
+========================================================= */
 
 .message{
+
   display:none;
+
   margin-top:14px;
-  padding:12px;
-  border-radius:9px;
+
+  padding:12px 14px;
+
+  border-radius:10px;
+
+  font-size:13px;
+
+  font-weight:600;
+
+  line-height:1.45;
+
 }
+
 
 .success{
-  background:#e8f7e8;
-  color:#28752b;
+
+  background:var(--green-bg);
+
+  color:var(--green);
+
+  border:1px solid #ccefd8;
+
 }
+
 
 .error{
-  background:#ffe9e9;
+
+  background:var(--red-bg);
+
   color:#a00000;
+
+  border:1px solid #ffd0d0;
+
 }
 
-#app{
-  display:none;
-}
 
-.login{
-  max-width:430px;
-  margin:100px auto;
-  padding:0 20px;
-}
+/* =========================================================
+   DASHBOARD HEADER
+========================================================= */
 
-.row{
-  border:1px solid #eee;
-  border-radius:12px;
-  padding:14px;
-  margin-top:10px;
+.dashboard-head{
+
   display:flex;
+
   justify-content:space-between;
-  gap:15px;
+
+  align-items:flex-start;
+
+  gap:20px;
+
+}
+
+
+.dashboard-badge{
+
+  display:inline-flex;
+
   align-items:center;
-}
 
-.row h3{
-  margin:0 0 5px;
-  font-size:16px;
-}
+  gap:7px;
 
-.row p{
-  margin:0;
-  color:#777;
-  font-size:13px;
-}
+  background:#f1f1ef;
 
-.image-note{
-  font-size:12px;
-  color:#888;
-  margin-top:5px;
-}
+  border:1px solid #e5e5e1;
 
-.image-count{
-  font-size:12px;
-  color:#777;
-  margin-top:4px;
+  padding:7px 10px;
+
+  border-radius:999px;
+
+  font-size:10px;
+
+  font-weight:800;
+
+  color:#555;
+
 }
 
 
-/* =========================
-   DASHBOARD
-========================= */
+.dashboard-dot{
+
+  width:7px;
+  height:7px;
+
+  border-radius:50%;
+
+  background:#22a447;
+
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
 
 .dashboard-grid{
+
   display:grid;
+
   grid-template-columns:
     repeat(6,1fr);
+
   gap:12px;
-  margin-top:20px;
+
+  margin-top:24px;
+
 }
+
 
 .stat{
-  background:#f5f5f2;
-  padding:18px;
+
+  position:relative;
+
+  overflow:hidden;
+
+  background:#f7f7f5;
+
+  border:1px solid #ededeb;
+
   border-radius:14px;
-  min-height:110px;
+
+  padding:18px;
+
+  min-height:108px;
+
+  transition:.2s;
+
 }
+
+
+.stat:hover{
+
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,.05);
+
+}
+
 
 .stat-label{
+
   margin:0;
+
   color:#777;
-  font-size:12px;
+
+  font-size:10px;
+
+  font-weight:800;
+
+  letter-spacing:.55px;
+
 }
+
 
 .stat-value{
-  margin:9px 0 0;
+
+  margin:10px 0 0;
+
   font-size:25px;
+
+  line-height:1.1;
+
+  letter-spacing:-.7px;
+
 }
+
 
 .stat-small{
-  font-size:20px;
+
+  font-size:19px;
+
 }
 
 
-/* =========================
+.stat-icon{
+
+  position:absolute;
+
+  right:13px;
+
+  top:13px;
+
+  width:27px;
+  height:27px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  border-radius:8px;
+
+  background:#fff;
+
+  color:#555;
+
+  font-size:11px;
+
+  border:1px solid #eee;
+
+}
+
+
+/* =========================================================
    FILTER
-========================= */
+========================================================= */
 
 .filter-box{
-  display:flex;
-  gap:10px;
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr auto;
+
+  gap:14px;
+
   align-items:end;
-  flex-wrap:wrap;
-  margin-top:20px;
+
+  margin-top:25px;
+
+  padding-top:22px;
+
+  border-top:1px solid #eee;
+
 }
 
+
 .filter-item{
-  flex:1;
-  min-width:180px;
+  min-width:0;
 }
+
 
 .filter-item label{
   margin-bottom:6px;
 }
 
+
 .quick-buttons{
+
   display:flex;
-  gap:8px;
+
+  gap:7px;
+
   flex-wrap:wrap;
+
 }
+
 
 .quick-btn{
+
   border:1px solid #ddd;
+
   background:#fff;
+
   color:#151515;
-  padding:11px 14px;
+
+  padding:10px 13px;
+
   border-radius:9px;
+
   cursor:pointer;
-  font-weight:600;
+
+  font-size:12px;
+
+  font-weight:700;
+
+  transition:.2s;
+
 }
+
+
+.quick-btn:hover{
+
+  border-color:#111;
+
+}
+
 
 .quick-btn.active{
-  background:#151515;
+
+  background:#111;
+
   color:#fff;
-  border-color:#151515;
+
+  border-color:#111;
+
 }
 
 
-/* =========================
-   TABLE
-========================= */
+/* =========================================================
+   SECTION HEADER
+========================================================= */
 
-.table-wrap{
-  overflow-x:auto;
+.section-head{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:flex-start;
+
+  gap:15px;
+
+  margin-bottom:18px;
+
 }
 
-.analytics-table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:15px;
-}
 
-.analytics-table th,
-.analytics-table td{
-  text-align:left;
-  padding:13px 10px;
-  border-bottom:1px solid #eee;
-  font-size:14px;
-}
+.section-label{
 
-.analytics-table th{
-  font-size:12px;
-  color:#777;
+  font-size:10px;
+
+  color:#999;
+
+  font-weight:800;
+
+  letter-spacing:.7px;
+
   text-transform:uppercase;
-}
 
-.empty{
-  color:#777;
-  padding:15px 0;
 }
 
 
-/* =========================
-   SALE FORM
-========================= */
+/* =========================================================
+   PRODUCT FORM
+========================================================= */
 
-.sale-grid{
+.product-form-grid{
+
   display:grid;
+
   grid-template-columns:
     1fr 1fr;
-  gap:15px;
+
+  gap:0 18px;
+
 }
+
+
+.product-form-grid .full{
+
+  grid-column:1/-1;
+
+}
+
+
+.image-fields{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:0 18px;
+
+}
+
+
+.image-fields .field{
+
+  min-width:0;
+
+}
+
+
+/* =========================================================
+   PRODUCTS
+========================================================= */
+
+.product-list{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:10px;
+
+}
+
+
+.row{
+
+  border:1px solid var(--border);
+
+  border-radius:13px;
+
+  padding:15px 16px;
+
+  display:flex;
+
+  justify-content:space-between;
+
+  gap:15px;
+
+  align-items:center;
+
+  transition:.2s;
+
+}
+
+
+.row:hover{
+
+  border-color:#d4d4cf;
+
+  box-shadow:
+    0 6px 18px rgba(0,0,0,.045);
+
+}
+
+
+.product-info{
+
+  min-width:0;
+
+}
+
+
+.product-name{
+
+  margin:0 0 5px;
+
+  font-size:14px;
+
+  font-weight:800;
+
+  white-space:nowrap;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+
+}
+
+
+.product-meta{
+
+  margin:0;
+
+  color:#777;
+
+  font-size:12px;
+
+}
+
+
+.image-count{
+
+  display:inline-block;
+
+  margin-top:6px;
+
+  color:#999;
+
+  font-size:10px;
+
+}
+
+
+/* =========================================================
+   SALES FORM
+========================================================= */
+
+.sale-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:17px;
+
+  margin-top:20px;
+
+}
+
+
+.sale-grid > div{
+  min-width:0;
+}
+
 
 .sale-grid .full{
   grid-column:1/-1;
 }
 
 
-/* =========================
-   MOBILE
-========================= */
+.sale-tip{
 
-@media(max-width:1000px){
+  margin-top:18px;
 
-  .dashboard-grid{
-    grid-template-columns:
-      repeat(3,1fr);
+  padding:12px 14px;
+
+  background:#f8f8f6;
+
+  border:1px solid #ededeb;
+
+  border-radius:10px;
+
+  font-size:11px;
+
+  color:#777;
+
+  line-height:1.5;
+
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-wrap{
+
+  overflow-x:auto;
+
+  border:1px solid #eee;
+
+  border-radius:12px;
+
+  margin-top:15px;
+
+}
+
+
+.analytics-table{
+
+  width:100%;
+
+  border-collapse:collapse;
+
+  min-width:680px;
+
+}
+
+
+.analytics-table th,
+.analytics-table td{
+
+  text-align:left;
+
+  padding:13px 14px;
+
+  border-bottom:1px solid #eee;
+
+  font-size:13px;
+
+  white-space:nowrap;
+
+}
+
+
+.analytics-table tr:last-child td{
+  border-bottom:0;
+}
+
+
+.analytics-table tbody tr{
+
+  transition:.15s;
+
+}
+
+
+.analytics-table tbody tr:hover{
+
+  background:#fafafa;
+
+}
+
+
+.analytics-table th{
+
+  background:#fafaf8;
+
+  color:#777;
+
+  font-size:10px;
+
+  font-weight:800;
+
+  letter-spacing:.5px;
+
+  text-transform:uppercase;
+
+}
+
+
+.analytics-table td strong{
+
+  font-weight:800;
+
+}
+
+
+.empty{
+
+  padding:20px 0;
+
+  color:#888;
+
+  font-size:13px;
+
+}
+
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+.badge{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  padding:5px 8px;
+
+  border-radius:999px;
+
+  font-size:10px;
+
+  font-weight:800;
+
+}
+
+
+.badge-green{
+
+  background:var(--green-bg);
+
+  color:var(--green);
+
+}
+
+
+.badge-blue{
+
+  background:var(--blue-bg);
+
+  color:var(--blue);
+
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:9px;
+
+  color:#888;
+
+  font-size:13px;
+
+  padding:12px 0;
+
+}
+
+
+.spinner{
+
+  width:15px;
+  height:15px;
+
+  border:2px solid #ddd;
+
+  border-top-color:#111;
+
+  border-radius:50%;
+
+  animation:
+    spin .7s linear infinite;
+
+}
+
+
+@keyframes spin{
+
+  to{
+    transform:rotate(360deg);
   }
 
 }
 
-@media(max-width:700px){
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.admin-footer{
+
+  text-align:center;
+
+  color:#999;
+
+  font-size:11px;
+
+  padding:10px 0 30px;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:1100px){
 
   .dashboard-grid{
-    grid-template-columns:1fr 1fr;
+
+    grid-template-columns:
+      repeat(3,1fr);
+
   }
+
+
+  .filter-box{
+
+    grid-template-columns:
+      1fr 1fr;
+
+  }
+
+
+  .filter-item:last-child{
+
+    grid-column:1/-1;
+
+  }
+
+}
+
+
+@media(max-width:800px){
+
+  .product-form-grid{
+
+    grid-template-columns:1fr;
+
+  }
+
+
+  .product-form-grid .full{
+
+    grid-column:auto;
+
+  }
+
+
+  .image-fields{
+
+    grid-template-columns:1fr;
+
+  }
+
+}
+
+
+@media(max-width:700px){
+
+  .topbar{
+
+    height:62px;
+
+    padding:0 4%;
+
+  }
+
+
+  .logo{
+
+    font-size:20px;
+
+  }
+
+
+  .top-actions{
+
+    gap:6px;
+
+  }
+
+
+  .top-actions a,
+  .logout{
+
+    padding:8px 10px;
+
+    font-size:11px;
+
+  }
+
+
+  .container{
+
+    width:94%;
+
+    margin-top:18px;
+
+  }
+
+
+  .card{
+
+    padding:20px 16px;
+
+    border-radius:15px;
+
+    margin-bottom:15px;
+
+  }
+
+
+  .card h1{
+
+    font-size:23px;
+
+  }
+
+
+  .card h2{
+
+    font-size:19px;
+
+  }
+
+
+  .dashboard-head{
+
+    flex-direction:column;
+
+  }
+
+
+  .dashboard-grid{
+
+    grid-template-columns:
+      1fr 1fr;
+
+    gap:9px;
+
+  }
+
+
+  .stat{
+
+    min-height:92px;
+
+    padding:14px;
+
+  }
+
+
+  .stat-value{
+
+    font-size:21px;
+
+  }
+
+
+  .stat-small{
+
+    font-size:17px;
+
+  }
+
+
+  .filter-box{
+
+    grid-template-columns:1fr;
+
+    gap:12px;
+
+  }
+
+
+  .filter-item:last-child{
+
+    grid-column:auto;
+
+  }
+
+
+  .quick-buttons{
+
+    width:100%;
+
+  }
+
+
+  .quick-btn{
+
+    flex:1;
+
+  }
+
 
   .sale-grid{
+
     grid-template-columns:1fr;
+
+    gap:14px;
+
   }
+
 
   .sale-grid .full{
+
     grid-column:auto;
+
   }
+
 
   .row{
+
     align-items:flex-start;
+
     flex-direction:column;
+
   }
+
+
+  .row .actions{
+
+    width:100%;
+
+  }
+
+
+  .row .actions .btn{
+
+    flex:1;
+
+  }
+
 
   .actions{
+
     width:100%;
+
   }
 
+
   .actions .btn{
+
     flex:1;
+
+  }
+
+
+  .login .card{
+
+    padding:25px 20px;
+
+  }
+
+}
+
+
+@media(max-width:420px){
+
+  .top-actions a{
+    display:none;
+  }
+
+
+  .dashboard-grid{
+
+    grid-template-columns:
+      1fr 1fr;
+
+  }
+
+
+  .stat{
+
+    padding:12px;
+
+  }
+
+
+  .stat-value{
+
+    font-size:19px;
+
+  }
+
+
+  .stat-icon{
+
+    display:none;
+
   }
 
 }
@@ -388,9 +1586,9 @@ textarea{
 <body>
 
 
-<!-- =========================
+<!-- ======================================================
      TOP BAR
-========================= -->
+======================================================= -->
 
 <header class="topbar">
 
@@ -398,11 +1596,13 @@ textarea{
     WYW<span>HERE</span>
   </div>
 
+
   <div class="top-actions">
 
     <a href="index.html">
       View Website
     </a>
+
 
     <button
       class="logout"
@@ -417,59 +1617,91 @@ textarea{
 
 
 
-<!-- =========================
+<!-- ======================================================
      LOGIN
-========================= -->
+======================================================= -->
 
-<section id="login" class="login">
+<section
+  id="login"
+>
 
-  <div class="card">
+  <div class="login">
 
-    <h1>Admin Login</h1>
+    <div class="card">
 
-    <p class="subtitle">
-      Sign in to manage WYW HERE.
-    </p>
+      <div class="login-title">
 
-    <div
-      id="loginError"
-      class="message error"
-    ></div>
+        <div class="login-logo">
+          WY
+        </div>
 
-    <div class="field">
+        <div>
 
-      <label>Email</label>
+          <h1>
+            Admin Login
+          </h1>
 
-      <input
-        id="email"
-        type="email"
-        autocomplete="username"
-        placeholder="Enter admin email"
+          <p class="subtitle">
+            Manage your WYW HERE store.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="loginError"
+        class="message error"
+      ></div>
+
+
+      <div class="field">
+
+        <label>
+          Email
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          autocomplete="username"
+          placeholder="Enter admin email"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Password
+        </label>
+
+        <input
+          id="password"
+          type="password"
+          autocomplete="current-password"
+          placeholder="Enter admin password"
+        >
+
+      </div>
+
+
+      <button
+        id="loginBtn"
+        class="btn full"
+        onclick="login()"
       >
+        LOGIN
+      </button>
+
+
+      <div class="login-note">
+        🔒 This area is restricted to the authorized WYW HERE admin account.
+      </div>
 
     </div>
-
-    <div class="field">
-
-      <label>Password</label>
-
-      <input
-        id="password"
-        type="password"
-        autocomplete="current-password"
-        placeholder="Enter admin password"
-      >
-
-    </div>
-
-    <button
-      id="loginBtn"
-      class="btn"
-      style="width:100%"
-      onclick="login()"
-    >
-      LOGIN
-    </button>
 
   </div>
 
@@ -477,32 +1709,60 @@ textarea{
 
 
 
-<!-- =========================
+<!-- ======================================================
      ADMIN APP
-========================= -->
+======================================================= -->
 
-<section id="app" class="container">
+<section
+  id="app"
+  class="container"
+>
 
 
-<!-- =========================
+<!-- ======================================================
      DASHBOARD
-========================= -->
+======================================================= -->
 
 <div class="card">
 
-  <h1>
-    Dashboard
-  </h1>
+  <div class="dashboard-head">
 
-  <p class="subtitle">
-    Affiliate performance and Amazon earnings.
-  </p>
+    <div>
+
+      <div class="section-label">
+        Overview
+      </div>
+
+      <h1>
+        Dashboard
+      </h1>
+
+      <p class="subtitle">
+        Track affiliate performance and Amazon earnings.
+      </p>
+
+    </div>
+
+
+    <div class="dashboard-badge">
+
+      <span class="dashboard-dot"></span>
+
+      Live Dashboard
+
+    </div>
+
+  </div>
 
 
   <div class="dashboard-grid">
 
 
     <div class="stat">
+
+      <div class="stat-icon">
+        ↗
+      </div>
 
       <p class="stat-label">
         TOTAL CLICKS
@@ -520,8 +1780,12 @@ textarea{
 
     <div class="stat">
 
+      <div class="stat-icon">
+        7D
+      </div>
+
       <p class="stat-label">
-        7 DAYS
+        LAST 7 DAYS
       </p>
 
       <h2
@@ -536,8 +1800,12 @@ textarea{
 
     <div class="stat">
 
+      <div class="stat-icon">
+        30D
+      </div>
+
       <p class="stat-label">
-        30 DAYS
+        LAST 30 DAYS
       </p>
 
       <h2
@@ -551,6 +1819,10 @@ textarea{
 
 
     <div class="stat">
+
+      <div class="stat-icon">
+        #
+      </div>
 
       <p class="stat-label">
         TOTAL ORDERS
@@ -568,6 +1840,10 @@ textarea{
 
     <div class="stat">
 
+      <div class="stat-icon">
+        ₹
+      </div>
+
       <p class="stat-label">
         TOTAL SALES
       </p>
@@ -576,13 +1852,17 @@ textarea{
         id="totalSales"
         class="stat-value stat-small"
       >
-        ₹0
+        ₹0.00
       </h2>
 
     </div>
 
 
     <div class="stat">
+
+      <div class="stat-icon">
+        %
+      </div>
 
       <p class="stat-label">
         COMMISSION
@@ -592,7 +1872,7 @@ textarea{
         id="totalCommission"
         class="stat-value stat-small"
       >
-        ₹0
+        ₹0.00
       </h2>
 
     </div>
@@ -601,14 +1881,15 @@ textarea{
   </div>
 
 
-  <!-- DATE FILTER -->
+  <!-- FILTER -->
 
   <div class="filter-box">
+
 
     <div class="filter-item">
 
       <label>
-        FROM DATE
+        From Date
       </label>
 
       <input
@@ -622,7 +1903,7 @@ textarea{
     <div class="filter-item">
 
       <label>
-        TO DATE
+        To Date
       </label>
 
       <input
@@ -636,27 +1917,32 @@ textarea{
     <div class="filter-item">
 
       <label>
-        QUICK FILTER
+        Quick Filter
       </label>
 
       <div class="quick-buttons">
 
         <button
+          id="quick7"
           class="quick-btn"
           onclick="setQuickFilter(7)"
         >
           7 Days
         </button>
 
+
         <button
+          id="quick30"
           class="quick-btn"
           onclick="setQuickFilter(30)"
         >
           30 Days
         </button>
 
+
         <button
-          class="quick-btn"
+          id="quickAll"
+          class="quick-btn active"
           onclick="clearFilter()"
         >
           All
@@ -672,19 +1958,31 @@ textarea{
 
 
 
-<!-- =========================
-     PRODUCT FORM
-========================= -->
+<!-- ======================================================
+     ADD PRODUCT
+======================================================= -->
 
 <div class="card">
 
-  <h2 id="formTitle">
-    Add Product
-  </h2>
+  <div class="section-head">
 
-  <p class="subtitle">
-    Create or update a product.
-  </p>
+    <div>
+
+      <div class="section-label">
+        Store Management
+      </div>
+
+      <h2 id="formTitle">
+        Add Product
+      </h2>
+
+      <p class="subtitle">
+        Add or update products displayed on WYW HERE.
+      </p>
+
+    </div>
+
+  </div>
 
 
   <div
@@ -705,174 +2003,195 @@ textarea{
   >
 
 
-  <div class="field">
-
-    <label>
-      Product Name
-    </label>
-
-    <input
-      id="name"
-      placeholder="Premium Smart Watch"
-    >
-
-  </div>
+  <div class="product-form-grid">
 
 
-  <div class="field">
+    <div class="field">
 
-    <label>
-      Category
-    </label>
+      <label>
+        Product Name
+      </label>
 
-    <select id="category">
+      <input
+        id="name"
+        placeholder="Premium Smart Watch"
+      >
 
-      <option value="">
-        Select Category
-      </option>
-
-      <option value="Gadgets">
-        Gadgets
-      </option>
-
-      <option value="Watches">
-        Watches
-      </option>
-
-      <option value="Kitchen">
-        Kitchen
-      </option>
-
-      <option value="Home">
-        Home
-      </option>
-
-      <option value="Fitness">
-        Fitness
-      </option>
-
-    </select>
-
-  </div>
+    </div>
 
 
-  <div class="field">
+    <div class="field">
 
-    <label>
-      Price
-    </label>
+      <label>
+        Category
+      </label>
 
-    <input
-      id="price"
-      type="number"
-      min="0"
-      step="0.01"
-      placeholder="2999"
-    >
+      <select id="category">
 
-  </div>
+        <option value="">
+          Select Category
+        </option>
 
+        <option value="Gadgets">
+          Gadgets
+        </option>
 
-  <div class="field">
+        <option value="Watches">
+          Watches
+        </option>
 
-    <label>
-      Product Image 1 URL
-    </label>
+        <option value="Kitchen">
+          Kitchen
+        </option>
 
-    <input
-      id="image"
-      type="url"
-      placeholder="https://..."
-    >
+        <option value="Home">
+          Home
+        </option>
 
-  </div>
+        <option value="Fitness">
+          Fitness
+        </option>
 
+      </select>
 
-  <div class="field">
-
-    <label>
-      Product Image 2 URL
-    </label>
-
-    <input
-      id="image2"
-      type="url"
-      placeholder="https://..."
-    >
-
-  </div>
+    </div>
 
 
-  <div class="field">
+    <div class="field">
 
-    <label>
-      Product Image 3 URL
-    </label>
+      <label>
+        Price ₹
+      </label>
 
-    <input
-      id="image3"
-      type="url"
-      placeholder="https://..."
-    >
+      <input
+        id="price"
+        type="number"
+        min="0"
+        step="0.01"
+        placeholder="2999"
+      >
 
-  </div>
-
-
-  <div class="field">
-
-    <label>
-      Product Image 4 URL
-    </label>
-
-    <input
-      id="image4"
-      type="url"
-      placeholder="https://..."
-    >
-
-  </div>
+    </div>
 
 
-  <div class="field">
+    <div class="field">
 
-    <label>
-      Product Image 5 URL
-    </label>
+      <label>
+        Affiliate Link
+      </label>
 
-    <input
-      id="image5"
-      type="url"
-      placeholder="https://..."
-    >
+      <input
+        id="link"
+        type="url"
+        placeholder="Paste your affiliate link"
+      >
 
-  </div>
-
-
-  <div class="field">
-
-    <label>
-      Short Description
-    </label>
-
-    <textarea
-      id="description"
-      placeholder="Write 1-2 lines about the product"
-    ></textarea>
-
-  </div>
+    </div>
 
 
-  <div class="field">
+    <div class="full">
 
-    <label>
-      Affiliate Link
-    </label>
+      <div class="section-label">
+        Product Images
+      </div>
 
-    <input
-      id="link"
-      type="url"
-      placeholder="Paste your affiliate link"
-    >
+    </div>
+
+
+    <div class="image-fields full">
+
+
+      <div class="field">
+
+        <label>
+          Image 1 URL
+        </label>
+
+        <input
+          id="image"
+          type="url"
+          placeholder="https://..."
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Image 2 URL
+        </label>
+
+        <input
+          id="image2"
+          type="url"
+          placeholder="https://..."
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Image 3 URL
+        </label>
+
+        <input
+          id="image3"
+          type="url"
+          placeholder="https://..."
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Image 4 URL
+        </label>
+
+        <input
+          id="image4"
+          type="url"
+          placeholder="https://..."
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Image 5 URL
+        </label>
+
+        <input
+          id="image5"
+          type="url"
+          placeholder="https://..."
+        >
+
+      </div>
+
+
+    </div>
+
+
+    <div class="field full">
+
+      <label>
+        Short Description
+      </label>
+
+      <textarea
+        id="description"
+        placeholder="Write 1–2 lines about the product..."
+      ></textarea>
+
+    </div>
+
 
   </div>
 
@@ -886,6 +2205,7 @@ textarea{
     >
       SAVE PRODUCT
     </button>
+
 
     <button
       id="cancelBtn"
@@ -902,37 +2222,74 @@ textarea{
 
 
 
-<!-- =========================
+<!-- ======================================================
      PRODUCTS
-========================= -->
+======================================================= -->
 
 <div class="card">
 
-  <h2>
-    Products
-  </h2>
+  <div class="section-head">
+
+    <div>
+
+      <div class="section-label">
+        Inventory
+      </div>
+
+      <h2>
+        Products
+      </h2>
+
+      <p class="subtitle">
+        Manage products currently listed on WYW HERE.
+      </p>
+
+    </div>
+
+  </div>
+
 
   <div id="list">
-    Loading...
+
+    <div class="loading">
+
+      <span class="spinner"></span>
+
+      Loading products...
+
+    </div>
+
   </div>
 
 </div>
 
 
 
-<!-- =========================
-     AMAZON SALES ENTRY
-========================= -->
+<!-- ======================================================
+     AMAZON SALE
+======================================================= -->
 
 <div class="card">
 
-  <h2>
-    Add Amazon Sale
-  </h2>
+  <div class="section-head">
 
-  <p class="subtitle">
-    Manually enter your Amazon Associates sales and commission.
-  </p>
+    <div>
+
+      <div class="section-label">
+        Amazon Associates
+      </div>
+
+      <h2>
+        Add Amazon Sale
+      </h2>
+
+      <p class="subtitle">
+        Manually record Amazon orders, sales and commission.
+      </p>
+
+    </div>
+
+  </div>
 
 
   <div
@@ -1039,7 +2396,7 @@ textarea{
 
       <input
         id="saleNotes"
-        placeholder="Optional"
+        placeholder="Optional note"
       >
 
     </div>
@@ -1057,6 +2414,12 @@ textarea{
 
     </div>
 
+  </div>
+
+
+  <div class="sale-tip">
+
+    💡 Tip: Enter the actual sales amount and commission shown in your Amazon Associates report.
 
   </div>
 
@@ -1064,66 +2427,138 @@ textarea{
 
 
 
-<!-- =========================
-     PRODUCT-WISE ANALYTICS
-========================= -->
+<!-- ======================================================
+     PRODUCT ANALYTICS
+======================================================= -->
 
 <div class="card">
 
-  <h2>
-    Product-wise Performance
-  </h2>
+  <div class="section-head">
 
-  <p class="subtitle">
-    Clicks, orders, sales, commission and conversion rate.
-  </p>
+    <div>
+
+      <div class="section-label">
+        Analytics
+      </div>
+
+      <h2>
+        Product-wise Performance
+      </h2>
+
+      <p class="subtitle">
+        Compare clicks, orders, conversion, sales and commission.
+      </p>
+
+    </div>
+
+  </div>
 
 
-  <div
-    id="productAnalytics"
-  >
-    Loading...
+  <div id="productAnalytics">
+
+    <div class="loading">
+
+      <span class="spinner"></span>
+
+      Loading analytics...
+
+    </div>
+
   </div>
 
 </div>
 
 
 
-<!-- =========================
-     AMAZON SALES HISTORY
-========================= -->
+<!-- ======================================================
+     SALES HISTORY
+======================================================= -->
 
 <div class="card">
 
-  <h2>
-    Amazon Sales History
-  </h2>
+  <div class="section-head">
 
-  <div
-    id="salesHistory"
-  >
-    Loading...
+    <div>
+
+      <div class="section-label">
+        Amazon Reports
+      </div>
+
+      <h2>
+        Amazon Sales History
+      </h2>
+
+      <p class="subtitle">
+        Recent manually recorded Amazon sales.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div id="salesHistory">
+
+    <div class="loading">
+
+      <span class="spinner"></span>
+
+      Loading sales...
+
+    </div>
+
   </div>
 
 </div>
 
 
 
-<!-- =========================
+<!-- ======================================================
      RECENT CLICKS
-========================= -->
+======================================================= -->
 
 <div class="card">
 
-  <h2>
-    Recent Affiliate Clicks
-  </h2>
+  <div class="section-head">
 
-  <div
-    id="recentClicks"
-  >
-    Loading...
+    <div>
+
+      <div class="section-label">
+        Affiliate Analytics
+      </div>
+
+      <h2>
+        Recent Affiliate Clicks
+      </h2>
+
+      <p class="subtitle">
+        Latest product clicks recorded on your website.
+      </p>
+
+    </div>
+
   </div>
+
+
+  <div id="recentClicks">
+
+    <div class="loading">
+
+      <span class="spinner"></span>
+
+      Loading clicks...
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<div class="admin-footer">
+
+  WYW HERE Admin Dashboard · Secure Management Area
 
 </div>
 
@@ -1135,23 +2570,25 @@ textarea{
 <script>
 
 
-/* =========================================
-   SUPABASE
-========================================= */
+/* =========================================================
+   SUPABASE CONFIG
+========================================================= */
 
 const SUPABASE_URL =
   "https://ncavpnittrdgylogbjfp.supabase.co";
 
+
 const SUPABASE_KEY =
   "sb_publishable_7E-WPJlMCarIj-FA3quJAw_Z6XFLWqP";
+
 
 const ADMIN_EMAIL =
   "suryamjpru8953@gmail.com";
 
 
-/* =========================================
+/* =========================================================
    HELPER
-========================================= */
+========================================================= */
 
 const $ =
   id =>
@@ -1167,6 +2604,10 @@ function showMessage(
   const element =
     $(id);
 
+  if(!element){
+    return;
+  }
+
   element.textContent =
     text;
 
@@ -1181,8 +2622,15 @@ function showMessage(
 
 function hideMessage(id){
 
-  $(id).style.display =
-    "none";
+  const element =
+    $(id);
+
+  if(element){
+
+    element.style.display =
+      "none";
+
+  }
 
 }
 
@@ -1254,9 +2702,9 @@ function localDateString(date){
 }
 
 
-/* =========================================
+/* =========================================================
    TOKEN
-========================================= */
+========================================================= */
 
 function getAccessToken(){
 
@@ -1267,9 +2715,9 @@ function getAccessToken(){
 }
 
 
-/* =========================================
+/* =========================================================
    AUTH HEADERS
-========================================= */
+========================================================= */
 
 function authHeaders(){
 
@@ -1290,9 +2738,9 @@ function authHeaders(){
 }
 
 
-/* =========================================
+/* =========================================================
    LOGIN
-========================================= */
+========================================================= */
 
 async function login(){
 
@@ -1341,11 +2789,13 @@ async function login(){
           method:"POST",
 
           headers:{
+
             "Content-Type":
               "application/json",
 
             "apikey":
               SUPABASE_KEY
+
           },
 
           body:
@@ -1396,10 +2846,12 @@ async function login(){
       data.access_token
     );
 
+
     sessionStorage.setItem(
       "wyw_refresh_token",
       data.refresh_token || ""
     );
+
 
     sessionStorage.setItem(
       "wyw_admin",
@@ -1434,9 +2886,9 @@ async function login(){
 }
 
 
-/* =========================================
+/* =========================================================
    LOGOUT
-========================================= */
+========================================================= */
 
 function logout(){
 
@@ -1457,9 +2909,9 @@ function logout(){
 }
 
 
-/* =========================================
+/* =========================================================
    AUTH CHECK
-========================================= */
+========================================================= */
 
 async function checkAdmin(){
 
@@ -1528,9 +2980,9 @@ async function checkAdmin(){
 }
 
 
-/* =========================================
+/* =========================================================
    SHOW APP
-========================================= */
+========================================================= */
 
 async function showApp(){
 
@@ -1567,9 +3019,9 @@ async function showApp(){
 }
 
 
-/* =========================================
+/* =========================================================
    PRODUCTS
-========================================= */
+========================================================= */
 
 let cachedProducts = [];
 
@@ -1580,8 +3032,17 @@ async function loadProducts(){
     $("list");
 
 
-  list.textContent =
-    "Loading...";
+  list.innerHTML = `
+
+    <div class="loading">
+
+      <span class="spinner"></span>
+
+      Loading products...
+
+    </div>
+
+  `;
 
 
   try{
@@ -1625,6 +3086,7 @@ async function loadProducts(){
       cachedProducts
     );
 
+
     populateSaleProducts();
 
 
@@ -1642,9 +3104,9 @@ async function loadProducts(){
 }
 
 
-/* =========================================
+/* =========================================================
    RENDER PRODUCTS
-========================================= */
+========================================================= */
 
 function renderProducts(products){
 
@@ -1654,109 +3116,126 @@ function renderProducts(products){
 
   if(!products.length){
 
-    list.innerHTML =
-      "<p class='subtitle'>" +
-      "No products added yet." +
-      "</p>";
+    list.innerHTML = `
+
+      <p class="empty">
+        No products added yet.
+      </p>
+
+    `;
 
     return;
 
   }
 
 
-  list.innerHTML =
-    products.map(
-      function(product){
+  list.innerHTML = `
 
-        let imageCount = 0;
+    <div class="product-list">
 
+      ${
+        products.map(
+          function(product){
 
-        [
-          product.image_url,
-          product.image_2,
-          product.image_3,
-          product.image_4,
-          product.image_5
-        ].forEach(
-          image => {
-
-            if(image){
-              imageCount++;
-            }
-
-          }
-        );
+            let imageCount = 0;
 
 
-        return `
+            [
+              product.image_url,
+              product.image_2,
+              product.image_3,
+              product.image_4,
+              product.image_5
+            ].forEach(
+              image => {
 
-          <div class="row">
+                if(image){
+                  imageCount++;
+                }
 
-            <div>
+              }
+            );
 
-              <h3>
-                ${escapeHtml(
-                  product.name
-                )}
-              </h3>
 
-              <p>
+            return `
 
-                ${escapeHtml(
-                  product.category
-                )}
+              <div class="row">
 
-                ·
+                <div class="product-info">
 
-                ${money(
-                  product.price
-                )}
+                  <h3 class="product-name">
 
-              </p>
+                    ${escapeHtml(
+                      product.name
+                    )}
 
-              <div class="image-count">
+                  </h3>
 
-                ${imageCount}
-                image${imageCount === 1 ? "" : "s"}
-                added
+
+                  <p class="product-meta">
+
+                    ${escapeHtml(
+                      product.category ||
+                      "Uncategorized"
+                    )}
+
+                    ·
+
+                    ${money(
+                      product.price
+                    )}
+
+                  </p>
+
+
+                  <span class="image-count">
+
+                    ${imageCount}
+                    image${imageCount === 1 ? "" : "s"}
+                    added
+
+                  </span>
+
+                </div>
+
+
+                <div class="actions">
+
+                  <button
+                    class="btn secondary"
+                    onclick="editProductById(${Number(product.id)})"
+                  >
+                    Edit
+                  </button>
+
+
+                  <button
+                    class="btn danger"
+                    onclick="deleteProduct(${Number(product.id)})"
+                  >
+                    Delete
+                  </button>
+
+                </div>
 
               </div>
 
-            </div>
+            `;
 
-
-            <div class="actions">
-
-              <button
-                class="btn secondary"
-                onclick="editProductById(${Number(product.id)})"
-              >
-                Edit
-              </button>
-
-
-              <button
-                class="btn danger"
-                onclick="deleteProduct(${Number(product.id)})"
-              >
-                Delete
-              </button>
-
-            </div>
-
-          </div>
-
-        `;
-
+          }
+        ).join("")
       }
-    ).join("");
+
+    </div>
+
+  `;
 
 }
 
 
-/* =========================================
+/* =========================================================
    SAVE PRODUCT
-========================================= */
+========================================================= */
 
 async function saveProduct(){
 
@@ -1837,6 +3316,7 @@ async function saveProduct(){
   button.disabled =
     true;
 
+
   button.textContent =
     editId
       ? "UPDATING..."
@@ -1862,9 +3342,12 @@ async function saveProduct(){
             method:"PATCH",
 
             headers:{
+
               ...authHeaders(),
+
               "Prefer":
                 "return=minimal"
+
             },
 
             body:
@@ -1887,9 +3370,12 @@ async function saveProduct(){
             method:"POST",
 
             headers:{
+
               ...authHeaders(),
+
               "Prefer":
                 "return=minimal"
+
             },
 
             body:
@@ -1925,9 +3411,11 @@ async function saveProduct(){
 
     showMessage(
       "success",
+
       editing
         ? "Product updated successfully."
         : "Product added successfully.",
+
       "success"
     );
 
@@ -1959,9 +3447,9 @@ async function saveProduct(){
 }
 
 
-/* =========================================
+/* =========================================================
    EDIT PRODUCT
-========================================= */
+========================================================= */
 
 function editProductById(id){
 
@@ -1981,60 +3469,88 @@ function editProductById(id){
   $("formTitle").textContent =
     "Edit Product";
 
+
   $("editId").value =
     product.id || "";
+
 
   $("name").value =
     product.name || "";
 
+
   $("category").value =
     product.category || "";
+
 
   $("price").value =
     product.price ?? "";
 
+
   $("image").value =
     product.image_url || "";
+
 
   $("image2").value =
     product.image_2 || "";
 
+
   $("image3").value =
     product.image_3 || "";
+
 
   $("image4").value =
     product.image_4 || "";
 
+
   $("image5").value =
     product.image_5 || "";
+
 
   $("description").value =
     product.description || "";
 
+
   $("link").value =
     product.affiliate_link || "";
+
 
   $("cancelBtn").style.display =
     "inline-block";
 
 
   window.scrollTo({
+
     top:0,
+
     behavior:"smooth"
+
   });
 
 }
 
 
-/* =========================================
+/* =========================================================
    DELETE PRODUCT
-========================================= */
+========================================================= */
 
 async function deleteProduct(id){
 
+  const product =
+    cachedProducts.find(
+      item =>
+        Number(item.id) ===
+        Number(id)
+    );
+
+
+  const name =
+    product?.name ||
+    "this product";
+
+
   if(
     !confirm(
-      "Delete this product?"
+      `Delete "${name}"?\n\nThis action cannot be undone.`
     )
   ){
 
@@ -2057,9 +3573,12 @@ async function deleteProduct(id){
           method:"DELETE",
 
           headers:{
+
             ...authHeaders(),
+
             "Prefer":
               "return=minimal"
+
           }
 
         }
@@ -2086,7 +3605,7 @@ async function deleteProduct(id){
     console.error(error);
 
     alert(
-      "Delete failed: " +
+      "Delete failed:\n\n" +
       error.message
     );
 
@@ -2095,68 +3614,81 @@ async function deleteProduct(id){
 }
 
 
-/* =========================================
+/* =========================================================
    RESET PRODUCT FORM
-========================================= */
+========================================================= */
 
 function resetForm(){
 
   $("editId").value =
     "";
 
+
   $("name").value =
     "";
+
 
   $("category").value =
     "";
 
+
   $("price").value =
     "";
+
 
   $("image").value =
     "";
 
+
   $("image2").value =
     "";
+
 
   $("image3").value =
     "";
 
+
   $("image4").value =
     "";
+
 
   $("image5").value =
     "";
 
+
   $("description").value =
     "";
+
 
   $("link").value =
     "";
 
+
   $("formTitle").textContent =
     "Add Product";
 
+
   $("cancelBtn").style.display =
     "none";
+
 
   hideMessage("formError");
 
 }
 
 
-/* =========================================
+/* =========================================================
    ANALYTICS DATA
-========================================= */
+========================================================= */
 
 let allClicks = [];
 
 let allSales = [];
 
 
-/* =========================================
+/* =========================================================
    LOAD CLICKS
-========================================= */
+========================================================= */
 
 async function loadAnalytics(){
 
@@ -2223,9 +3755,9 @@ async function loadAnalytics(){
 }
 
 
-/* =========================================
+/* =========================================================
    LOAD SALES
-========================================= */
+========================================================= */
 
 async function loadSales(){
 
@@ -2278,14 +3810,18 @@ async function loadSales(){
     allSales =
       [];
 
+
     $("totalOrders").textContent =
       "—";
+
 
     $("totalSales").textContent =
       "—";
 
+
     $("totalCommission").textContent =
       "—";
+
 
     $("salesHistory").innerHTML =
       "<p class='empty'>" +
@@ -2297,14 +3833,15 @@ async function loadSales(){
 }
 
 
-/* =========================================
+/* =========================================================
    DASHBOARD RENDER
-========================================= */
+========================================================= */
 
 function renderDashboard(){
 
   const filteredClicks =
     getFilteredClicks();
+
 
   const filteredSales =
     getFilteredSales();
@@ -2321,6 +3858,7 @@ function renderDashboard(){
   const sevenStart =
     new Date(now);
 
+
   sevenStart.setDate(
     sevenStart.getDate() - 6
   );
@@ -2328,6 +3866,7 @@ function renderDashboard(){
 
   const thirtyStart =
     new Date(now);
+
 
   thirtyStart.setDate(
     thirtyStart.getDate() - 29
@@ -2370,6 +3909,7 @@ function renderDashboard(){
         Number(
           sale.orders || 0
         ),
+
       0
     );
 
@@ -2384,6 +3924,7 @@ function renderDashboard(){
         Number(
           sale.sales_amount || 0
         ),
+
       0
     );
 
@@ -2398,6 +3939,7 @@ function renderDashboard(){
         Number(
           sale.commission_amount || 0
         ),
+
       0
     );
 
@@ -2424,17 +3966,21 @@ function renderDashboard(){
     filteredClicks
   );
 
+
+  renderSalesHistory();
+
 }
 
 
-/* =========================================
+/* =========================================================
    DATE FILTER
-========================================= */
+========================================================= */
 
 function getFilteredClicks(){
 
   const from =
     $("fromDate").value;
+
 
   const to =
     $("toDate").value;
@@ -2455,7 +4001,9 @@ function getFilteredClicks(){
         from &&
         date < from
       ){
+
         return false;
+
       }
 
 
@@ -2463,7 +4011,9 @@ function getFilteredClicks(){
         to &&
         date > to
       ){
+
         return false;
+
       }
 
 
@@ -2479,6 +4029,7 @@ function getFilteredSales(){
 
   const from =
     $("fromDate").value;
+
 
   const to =
     $("toDate").value;
@@ -2497,7 +4048,9 @@ function getFilteredSales(){
         from &&
         date < from
       ){
+
         return false;
+
       }
 
 
@@ -2505,7 +4058,9 @@ function getFilteredSales(){
         to &&
         date > to
       ){
+
         return false;
+
       }
 
 
@@ -2517,9 +4072,9 @@ function getFilteredSales(){
 }
 
 
-/* =========================================
+/* =========================================================
    QUICK FILTER
-========================================= */
+========================================================= */
 
 function setQuickFilter(days){
 
@@ -2553,6 +4108,39 @@ function setQuickFilter(days){
     end;
 
 
+  $("quick7")
+    .classList
+    .remove("active");
+
+
+  $("quick30")
+    .classList
+    .remove("active");
+
+
+  $("quickAll")
+    .classList
+    .remove("active");
+
+
+  if(days === 7){
+
+    $("quick7")
+      .classList
+      .add("active");
+
+  }
+
+
+  if(days === 30){
+
+    $("quick30")
+      .classList
+      .add("active");
+
+  }
+
+
   renderDashboard();
 
 }
@@ -2563,8 +4151,24 @@ function clearFilter(){
   $("fromDate").value =
     "";
 
+
   $("toDate").value =
     "";
+
+
+  $("quick7")
+    .classList
+    .remove("active");
+
+
+  $("quick30")
+    .classList
+    .remove("active");
+
+
+  $("quickAll")
+    .classList
+    .add("active");
 
 
   renderDashboard();
@@ -2572,24 +4176,63 @@ function clearFilter(){
 }
 
 
-/* =========================================
+/* =========================================================
    FILTER EVENTS
-========================================= */
+========================================================= */
 
 $("fromDate").addEventListener(
   "change",
-  renderDashboard
+  function(){
+
+    $("quick7")
+      .classList
+      .remove("active");
+
+
+    $("quick30")
+      .classList
+      .remove("active");
+
+
+    $("quickAll")
+      .classList
+      .remove("active");
+
+
+    renderDashboard();
+
+  }
 );
+
 
 $("toDate").addEventListener(
   "change",
-  renderDashboard
+  function(){
+
+    $("quick7")
+      .classList
+      .remove("active");
+
+
+    $("quick30")
+      .classList
+      .remove("active");
+
+
+    $("quickAll")
+      .classList
+      .remove("active");
+
+
+    renderDashboard();
+
+  }
 );
 
 
-/* =========================================
+/* =========================================================
    PRODUCT ANALYTICS
-========================================= */
+========================================================= */
 
 function renderProductAnalytics(
   clicks,
@@ -2609,8 +4252,11 @@ function renderProductAnalytics(
       map[product.name] = {
 
         clicks:0,
+
         orders:0,
+
         sales:0,
+
         commission:0
 
       };
@@ -2632,8 +4278,11 @@ function renderProductAnalytics(
         map[name] = {
 
           clicks:0,
+
           orders:0,
+
           sales:0,
+
           commission:0
 
         };
@@ -2660,8 +4309,11 @@ function renderProductAnalytics(
         map[name] = {
 
           clicks:0,
+
           orders:0,
+
           sales:0,
+
           commission:0
 
         };
@@ -2713,10 +4365,13 @@ function renderProductAnalytics(
 
   if(!rows.length){
 
-    container.innerHTML =
-      "<p class='empty'>" +
-      "No performance data yet." +
-      "</p>";
+    container.innerHTML = `
+
+      <p class="empty">
+        No performance data yet.
+      </p>
+
+    `;
 
     return;
 
@@ -2761,6 +4416,7 @@ function renderProductAnalytics(
 
         </thead>
 
+
         <tbody>
 
           ${
@@ -2781,26 +4437,41 @@ function renderProductAnalytics(
                   <tr>
 
                     <td>
+
                       <strong>
                         ${escapeHtml(name)}
                       </strong>
+
                     </td>
+
 
                     <td>
                       ${data.clicks}
                     </td>
 
-                    <td>
-                      ${data.orders}
-                    </td>
 
                     <td>
-                      ${conversion.toFixed(2)}%
+
+                      <span class="badge badge-blue">
+                        ${data.orders}
+                      </span>
+
                     </td>
+
+
+                    <td>
+
+                      <span class="badge badge-green">
+                        ${conversion.toFixed(2)}%
+                      </span>
+
+                    </td>
+
 
                     <td>
                       ${money(data.sales)}
                     </td>
+
 
                     <td>
                       ${money(data.commission)}
@@ -2825,9 +4496,9 @@ function renderProductAnalytics(
 }
 
 
-/* =========================================
+/* =========================================================
    RECENT CLICKS
-========================================= */
+========================================================= */
 
 function renderRecentClicks(
   clicks
@@ -2842,10 +4513,13 @@ function renderRecentClicks(
 
   if(!recent.length){
 
-    $("recentClicks").innerHTML =
-      "<p class='empty'>" +
-      "No clicks recorded yet." +
-      "</p>";
+    $("recentClicks").innerHTML = `
+
+      <p class="empty">
+        No clicks recorded yet.
+      </p>
+
+    `;
 
     return;
 
@@ -2874,6 +4548,7 @@ function renderRecentClicks(
 
         </thead>
 
+
         <tbody>
 
           ${
@@ -2883,16 +4558,23 @@ function renderRecentClicks(
                 <tr>
 
                   <td>
-                    ${escapeHtml(
-                      click.product_name ||
-                      "Unknown Product"
-                    )}
+
+                    <strong>
+                      ${escapeHtml(
+                        click.product_name ||
+                        "Unknown Product"
+                      )}
+                    </strong>
+
                   </td>
 
+
                   <td>
+
                     ${dateIndia(
                       click.clicked_at
                     )}
+
                   </td>
 
                 </tr>
@@ -2912,9 +4594,9 @@ function renderRecentClicks(
 }
 
 
-/* =========================================
+/* =========================================================
    SALE PRODUCT DROPDOWN
-========================================= */
+========================================================= */
 
 function populateSaleProducts(){
 
@@ -2972,9 +4654,9 @@ function populateSaleProducts(){
 }
 
 
-/* =========================================
+/* =========================================================
    DEFAULT SALE DATE
-========================================= */
+========================================================= */
 
 function setTodayDate(){
 
@@ -2990,9 +4672,9 @@ function setTodayDate(){
 }
 
 
-/* =========================================
+/* =========================================================
    SAVE AMAZON SALE
-========================================= */
+========================================================= */
 
 async function saveSale(){
 
@@ -3057,12 +4739,29 @@ async function saveSale(){
   }
 
 
+  if(
+    salesAmount < 0 ||
+    commissionAmount < 0
+  ){
+
+    showMessage(
+      "saleError",
+      "Sales and commission cannot be negative.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
   const button =
     $("saleBtn");
 
 
   button.disabled =
     true;
+
 
   button.textContent =
     "ADDING...";
@@ -3081,9 +4780,12 @@ async function saveSale(){
           method:"POST",
 
           headers:{
+
             ...authHeaders(),
+
             "Prefer":
               "return=minimal"
+
           },
 
           body:
@@ -3141,11 +4843,14 @@ async function saveSale(){
     $("saleOrders").value =
       "1";
 
+
     $("salesAmount").value =
       "0";
 
+
     $("commissionAmount").value =
       "0";
+
 
     $("saleNotes").value =
       "";
@@ -3178,9 +4883,9 @@ async function saveSale(){
 }
 
 
-/* =========================================
+/* =========================================================
    SALES HISTORY
-========================================= */
+========================================================= */
 
 function renderSalesHistory(){
 
@@ -3198,10 +4903,13 @@ function renderSalesHistory(){
 
   if(!sales.length){
 
-    container.innerHTML =
-      "<p class='empty'>" +
-      "No Amazon sales recorded yet." +
-      "</p>";
+    container.innerHTML = `
+
+      <p class="empty">
+        No Amazon sales recorded yet.
+      </p>
+
+    `;
 
     return;
 
@@ -3246,6 +4954,7 @@ function renderSalesHistory(){
 
         </thead>
 
+
         <tbody>
 
           ${
@@ -3260,29 +4969,48 @@ function renderSalesHistory(){
                     )}
                   </td>
 
-                  <td>
-                    ${escapeHtml(
-                      sale.product_name
-                    )}
-                  </td>
 
                   <td>
-                    ${Number(
-                      sale.orders || 0
-                    )}
+
+                    <strong>
+                      ${escapeHtml(
+                        sale.product_name
+                      )}
+                    </strong>
+
                   </td>
 
+
                   <td>
+
+                    <span class="badge badge-blue">
+
+                      ${Number(
+                        sale.orders || 0
+                      )}
+
+                    </span>
+
+                  </td>
+
+
+                  <td>
+
                     ${money(
                       sale.sales_amount
                     )}
+
                   </td>
 
+
                   <td>
+
                     ${money(
                       sale.commission_amount
                     )}
+
                   </td>
+
 
                   <td>
 
@@ -3312,15 +5040,15 @@ function renderSalesHistory(){
 }
 
 
-/* =========================================
+/* =========================================================
    DELETE SALE
-========================================= */
+========================================================= */
 
 async function deleteSale(id){
 
   if(
     !confirm(
-      "Delete this Amazon sale?"
+      "Delete this Amazon sale?\n\nThis action cannot be undone."
     )
   ){
 
@@ -3343,9 +5071,12 @@ async function deleteSale(id){
           method:"DELETE",
 
           headers:{
+
             ...authHeaders(),
+
             "Prefer":
               "return=minimal"
+
           }
 
         }
@@ -3375,7 +5106,7 @@ async function deleteSale(id){
     console.error(error);
 
     alert(
-      "Delete failed: " +
+      "Delete failed:\n\n" +
       error.message
     );
 
@@ -3384,9 +5115,27 @@ async function deleteSale(id){
 }
 
 
-/* =========================================
+/* =========================================================
+   ENTER KEY LOGIN
+========================================================= */
+
+$("password").addEventListener(
+  "keydown",
+  function(event){
+
+    if(event.key === "Enter"){
+
+      login();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
    INITIALIZE
-========================================= */
+========================================================= */
 
 async function init(){
 
@@ -3398,6 +5147,7 @@ async function init(){
 
     $("login").style.display =
       "none";
+
 
     $("app").style.display =
       "block";
@@ -3416,7 +5166,8 @@ async function init(){
   }else{
 
     $("login").style.display =
-      "block";
+      "flex";
+
 
     $("app").style.display =
       "none";
