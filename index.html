@@ -1,71 +1,521 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="WYW Here - Discover useful products, trending finds and smart picks.">
-  <title>WYW Here | Smart Product Picks</title>
-  <link rel="stylesheet" href="style.css">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="WYW HERE - Discover useful, interesting and trending products worth buying."
+  >
+
+  <title>WYW HERE | Smart Product Picks</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
 </head>
+
+
 <body>
+
+
+  <!-- =====================================================
+       HEADER
+  ===================================================== -->
+
   <header class="header">
-    <a class="logo" href="index.html">WYW<span>HERE</span></a>
+
+    <a
+      class="logo"
+      href="index.html"
+    >
+      WYW<span>HERE</span>
+    </a>
+
+
     <nav>
-      <a href="#products">Products</a>
-      <a href="#categories">Categories</a>
-      <a href="#about">About</a>
+
+      <a href="#products">
+        Products
+      </a>
+
+      <a href="#categories">
+        Categories
+      </a>
+
+      <a href="#about">
+        About
+      </a>
+
     </nav>
+
   </header>
 
+
+
   <main>
+
+
+    <!-- =====================================================
+         HERO
+    ===================================================== -->
+
     <section class="hero">
+
       <div>
-        <p class="eyebrow">CURATED FOR YOU</p>
-        <h1>Find products<br><span>worth buying.</span></h1>
-        <p class="hero-text">Trending gadgets, home essentials, watches and more — handpicked in one place.</p>
-        <a class="primary-btn" href="#products">Explore Products</a>
+
+        <p class="eyebrow">
+          CURATED FOR YOU
+        </p>
+
+
+        <h1>
+          Find products<br>
+          <span>worth buying.</span>
+        </h1>
+
+
+        <p class="hero-text">
+          Trending gadgets, home essentials, watches and more —
+          handpicked in one place.
+        </p>
+
+
+        <a
+          class="primary-btn"
+          href="#products"
+        >
+          Explore Products
+        </a>
+
       </div>
+
+
+
       <div class="hero-card">
-        <div class="spark">✦</div>
-        <p>Today's Pick</p>
-        <h3>Discover something<br>you'll love.</h3>
+
+        <div class="spark">
+          ✦
+        </div>
+
+
+        <p>
+          TODAY'S PICK
+        </p>
+
+
+        <h3>
+          Discover something<br>
+          you'll love.
+        </h3>
+
       </div>
+
     </section>
 
-    <section id="categories" class="section">
+
+
+    <!-- =====================================================
+         CATEGORIES
+    ===================================================== -->
+
+    <section
+      id="categories"
+      class="section"
+    >
+
       <div class="section-head">
-        <div><p class="eyebrow">BROWSE</p><h2>Categories</h2></div>
+
+        <div>
+
+          <p class="eyebrow">
+            BROWSE
+          </p>
+
+          <h2>
+            Categories
+          </h2>
+
+        </div>
+
       </div>
+
+
+
       <div class="categories">
-        <button data-category="All" class="cat active">All</button>
-        <button data-category="Gadgets" class="cat">Gadgets</button>
-        <button data-category="Watches" class="cat">Watches</button>
-        <button data-category="Kitchen" class="cat">Kitchen</button>
-        <button data-category="Home" class="cat">Home</button>
-        <button data-category="Fitness" class="cat">Fitness</button>
+
+        <button
+          data-category="All"
+          class="cat active"
+        >
+          All
+        </button>
+
+
+        <button
+          data-category="Gadgets"
+          class="cat"
+        >
+          Gadgets
+        </button>
+
+
+        <button
+          data-category="Watches"
+          class="cat"
+        >
+          Watches
+        </button>
+
+
+        <button
+          data-category="Kitchen"
+          class="cat"
+        >
+          Kitchen
+        </button>
+
+
+        <button
+          data-category="Home"
+          class="cat"
+        >
+          Home
+        </button>
+
+
+        <button
+          data-category="Fitness"
+          class="cat"
+        >
+          Fitness
+        </button>
+
       </div>
+
     </section>
 
-    <section id="products" class="section">
+
+
+    <!-- =====================================================
+         PRODUCTS
+    ===================================================== -->
+
+    <section
+      id="products"
+      class="section"
+    >
+
       <div class="section-head products-head">
-        <div><p class="eyebrow">OUR PICKS</p><h2>Trending Products</h2></div>
-        <input id="search" class="search" type="search" placeholder="Search products...">
+
+        <div>
+
+          <p class="eyebrow">
+            OUR PICKS
+          </p>
+
+          <h2>
+            Trending Products
+          </h2>
+
+        </div>
+
+
+        <input
+          id="search"
+          class="search"
+          type="search"
+          placeholder="Search products..."
+          aria-label="Search products"
+        >
+
       </div>
-      <div id="productGrid" class="product-grid"></div>
+
+
+
+      <div
+        id="productGrid"
+        class="product-grid"
+      ></div>
+
     </section>
 
-    <section id="about" class="about">
-      <p class="eyebrow">ABOUT WYW HERE</p>
-      <h2>Less scrolling.<br>Better picks.</h2>
-      <p>We curate useful and interesting products so you can discover your next purchase faster.</p>
+
+
+    <!-- =====================================================
+         ABOUT WYW HERE
+    ===================================================== -->
+
+    <section
+      id="about"
+      class="about"
+    >
+
+
+      <div class="about-top">
+
+
+        <!-- LEFT -->
+
+        <div>
+
+          <p class="eyebrow">
+            ABOUT WYW HERE
+          </p>
+
+
+          <h2>
+            Less scrolling.<br>
+            Better picks.
+          </h2>
+
+        </div>
+
+
+
+        <!-- RIGHT -->
+
+        <div class="about-intro">
+
+          <p>
+            WYW HERE is a place for discovering useful,
+            interesting and worth-it products without spending
+            hours searching through endless options.
+          </p>
+
+
+          <p>
+            From everyday essentials to trending gadgets,
+            watches, kitchen finds and more, we bring products
+            together so you can discover your next potential
+            favourite in one simple place.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ABOUT FEATURES -->
+
+      <div class="about-features">
+
+
+        <div class="about-feature">
+
+          <div class="feature-number">
+            01
+          </div>
+
+
+          <h3>
+            Curated with care
+          </h3>
+
+
+          <p>
+            We focus on products that are useful,
+            interesting and genuinely worth discovering.
+          </p>
+
+        </div>
+
+
+
+        <div class="about-feature">
+
+          <div class="feature-number">
+            02
+          </div>
+
+
+          <h3>
+            Made for discovery
+          </h3>
+
+
+          <p>
+            Explore products across different categories
+            without jumping between countless websites.
+          </p>
+
+        </div>
+
+
+
+        <div class="about-feature">
+
+          <div class="feature-number">
+            03
+          </div>
+
+
+          <h3>
+            Simple & useful
+          </h3>
+
+
+          <p>
+            No unnecessary clutter. Just a clean way to
+            discover products that might be right for you.
+          </p>
+
+        </div>
+
+
+      </div>
+
+
     </section>
+
+
   </main>
 
-  <footer>
-    <div class="logo">WYW<span>HERE</span></div>
-    <p>Affiliate disclosure: Some links on this website may earn us a commission at no extra cost to you.</p>
+
+
+  <!-- =====================================================
+       FOOTER
+  ===================================================== -->
+
+  <footer class="site-footer">
+
+
+    <div class="footer-main">
+
+
+      <!-- BRAND -->
+
+      <div class="footer-brand">
+
+        <a
+          class="logo"
+          href="index.html"
+        >
+          WYW<span>HERE</span>
+        </a>
+
+
+        <p>
+          Discover useful, interesting and trending products
+          across categories. WYW HERE makes it easier to find
+          your next great pick without the endless scrolling.
+        </p>
+
+      </div>
+
+
+
+      <!-- EXPLORE -->
+
+      <div class="footer-column">
+
+        <h4>
+          Explore
+        </h4>
+
+
+        <a href="#products">
+          All Products
+        </a>
+
+
+        <a href="#categories">
+          Categories
+        </a>
+
+
+        <a href="#products">
+          Top Picks
+        </a>
+
+      </div>
+
+
+
+      <!-- COMPANY -->
+
+      <div class="footer-column">
+
+        <h4>
+          Company
+        </h4>
+
+
+        <a href="#about">
+          About Us
+        </a>
+
+
+        <a href="#about">
+          Our Story
+        </a>
+
+      </div>
+
+
+
+      <!-- INFORMATION -->
+
+      <div class="footer-column">
+
+        <h4>
+          Information
+        </h4>
+
+
+        <a href="#about">
+          How It Works
+        </a>
+
+
+        <a href="#products">
+          Product Picks
+        </a>
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- FOOTER BOTTOM -->
+
+    <div class="footer-bottom">
+
+      <span>
+        © 2026 WYW HERE. All rights reserved.
+      </span>
+
+
+      <span>
+        Made for better discoveries.
+      </span>
+
+    </div>
+
+
   </footer>
 
+
+
+  <!-- =====================================================
+       JAVASCRIPT
+  ===================================================== -->
+
   <script src="script.js"></script>
+
+
 </body>
+
 </html>
