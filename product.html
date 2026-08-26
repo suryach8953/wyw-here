@@ -284,6 +284,15 @@
 
   font-weight:700;
 
+  cursor:pointer;
+
+}
+
+
+.buy-large:hover{
+
+  background:#000;
+
 }
 
 
@@ -402,9 +411,9 @@
 
 <script>
 
-/* =========================
+/* =====================================================
    SUPABASE
-========================= */
+===================================================== */
 
 const SUPABASE_URL =
   "https://ncavpnittrdgylogbjfp.supabase.co";
@@ -424,18 +433,25 @@ const id =
   ).get("id");
 
 
-/* =========================
+/* =====================================================
    GALLERY VARIABLES
-========================= */
+===================================================== */
 
 let galleryImages = [];
 
 let currentImage = 0;
 
 
-/* =========================
+/* =====================================================
+   CURRENT PRODUCT
+===================================================== */
+
+let currentProduct = null;
+
+
+/* =====================================================
    ESCAPE HTML
-========================= */
+===================================================== */
 
 function escapeHtml(value){
 
@@ -464,9 +480,205 @@ function escapeHtml(value){
 }
 
 
-/* =========================
+/* =====================================================
+   TRACK AFFILIATE CLICK
+===================================================== */
+
+async function trackAffiliateClick(){
+
+  try{
+
+    if(!currentProduct){
+
+      console.error(
+        "Affiliate tracking failed: product not loaded"
+      );
+
+      return false;
+
+    }
+
+
+    const trackingData = {
+
+      product_id: currentProduct.id,
+
+      product_name: currentProduct.name
+
+    };
+
+
+    console.log(
+      "Sending affiliate click:",
+      trackingData
+    );
+
+
+    const response = await fetch(
+
+      `${SUPABASE_URL}/rest/v1/affiliate_clicks`,
+
+      {
+
+        method:"POST",
+
+        headers:{
+
+          apikey:
+            SUPABASE_KEY,
+
+          Authorization:
+            `Bearer ${SUPABASE_KEY}`,
+
+          "Content-Type":
+            "application/json",
+
+          Prefer:
+            "return=minimal"
+
+        },
+
+        body:
+          JSON.stringify(
+            trackingData
+          ),
+
+        /*
+         * Important:
+         * Request ko page navigation ke time
+         * cancel hone se bachane ke liye.
+         */
+
+        keepalive:true
+
+      }
+
+    );
+
+
+    if(!response.ok){
+
+      const errorText =
+        await response.text();
+
+      console.error(
+        "Affiliate tracking failed:",
+        response.status,
+        errorText
+      );
+
+      return false;
+
+    }
+
+
+    console.log(
+      "Affiliate click tracked successfully"
+    );
+
+
+    return true;
+
+
+  }
+
+  catch(error){
+
+    console.error(
+      "Affiliate tracking error:",
+      error
+    );
+
+    return false;
+
+  }
+
+}
+
+
+/* =====================================================
+   BUY BUTTON
+===================================================== */
+
+async function handleAffiliateClick(event){
+
+  /*
+   * Normal link navigation ko temporarily stop karte hain.
+   */
+
+  event.preventDefault();
+
+
+  event.stopPropagation();
+
+
+  const button =
+    event.currentTarget;
+
+
+  const affiliateLink =
+    button.dataset.affiliateLink;
+
+
+  if(!affiliateLink){
+
+    console.error(
+      "Affiliate link missing"
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * New tab pehle hi open kar dete hain.
+   * Isse browser popup blocker ke chances kam hote hain.
+   */
+
+  const newWindow =
+    window.open(
+      "about:blank",
+      "_blank"
+    );
+
+
+  /*
+   * Tracking request.
+   */
+
+  await trackAffiliateClick();
+
+
+  /*
+   * Tracking ke baad affiliate website open.
+   */
+
+  if(newWindow){
+
+    newWindow.location.href =
+      affiliateLink;
+
+  }
+
+  else{
+
+    /*
+     * Agar browser ne popup block kiya
+     * to current tab me open hoga.
+     */
+
+    window.location.href =
+      affiliateLink;
+
+  }
+
+}
+
+
+/* =====================================================
    LOAD PRODUCT
-========================= */
+===================================================== */
 
 async function loadProduct(){
 
@@ -479,6 +691,12 @@ async function loadProduct(){
       return;
 
     }
+
+
+    console.log(
+      "Loading product ID:",
+      id
+    );
 
 
     const response =
@@ -529,13 +747,28 @@ async function loadProduct(){
       data[0];
 
 
+    /*
+     * Current product ko memory me save.
+     * BUY NOW ke time isi se product_id
+     * aur product_name jayega.
+     */
+
+    currentProduct = p;
+
+
+    console.log(
+      "Product loaded:",
+      currentProduct
+    );
+
+
     document.title =
       "WYW HERE | " + p.name;
 
 
-    /* =========================
+    /* =================================================
        COLLECT ALL IMAGES
-    ========================= */
+    ================================================= */
 
     galleryImages = [
 
@@ -550,31 +783,37 @@ async function loadProduct(){
       p.image_5
 
     ].filter(
+
       image =>
         image &&
         String(image).trim()
+
     );
 
 
     currentImage = 0;
 
 
-    /* =========================
+    /* =================================================
        PRODUCT HTML
-    ========================= */
+    ================================================= */
 
     content.innerHTML = `
 
       <section class="detail">
 
 
-        <!-- GALLERY -->
+        <!-- =========================
+             GALLERY
+        ========================= -->
 
         <div class="gallery">
 
 
-          <div class="detail-image"
-               id="mainImageBox">
+          <div
+            class="detail-image"
+            id="mainImageBox"
+          >
 
 
             ${
@@ -599,6 +838,7 @@ async function loadProduct(){
                 `
 
                 <button
+                  type="button"
                   class="gallery-btn gallery-prev"
                   onclick="previousImage()"
                   aria-label="Previous image"
@@ -608,6 +848,7 @@ async function loadProduct(){
 
 
                 <button
+                  type="button"
                   class="gallery-btn gallery-next"
                   onclick="nextImage()"
                   aria-label="Next image"
@@ -627,9 +868,13 @@ async function loadProduct(){
 
               :
 
-              `<div class="placeholder">
+              `
+
+              <div class="placeholder">
                 ✦
-              </div>`
+              </div>
+
+              `
 
             }
 
@@ -653,7 +898,11 @@ async function loadProduct(){
                 (image,index) => `
 
                 <div
-                  class="thumbnail ${index === 0 ? "active" : ""}"
+                  class="thumbnail ${
+                    index === 0
+                      ? "active"
+                      : ""
+                  }"
                   onclick="selectImage(${index})"
                 >
 
@@ -680,7 +929,9 @@ async function loadProduct(){
         </div>
 
 
-        <!-- PRODUCT INFORMATION -->
+        <!-- =========================
+             PRODUCT INFORMATION
+        ========================= -->
 
         <div class="detail-info">
 
@@ -716,13 +967,21 @@ async function loadProduct(){
           </p>
 
 
+          <!-- =========================
+               AFFILIATE BUTTON
+          ========================= -->
+
           <a
             class="buy-large"
             href="${escapeHtml(
-              p.affiliate_link
+              p.affiliate_link || "#"
+            )}"
+            data-affiliate-link="${escapeHtml(
+              p.affiliate_link || ""
             )}"
             target="_blank"
             rel="nofollow sponsored noopener"
+            onclick="handleAffiliateClick(event)"
           >
 
             CHECK PRICE / BUY NOW ↗
@@ -751,11 +1010,27 @@ async function loadProduct(){
     `;
 
 
+    /*
+     * Check whether affiliate link exists.
+     */
+
+    if(!p.affiliate_link){
+
+      console.warn(
+        "WARNING: This product has no affiliate_link"
+      );
+
+    }
+
+
   }
 
   catch(error){
 
-    console.error(error);
+    console.error(
+      "Product load error:",
+      error
+    );
 
 
     content.innerHTML = `
@@ -788,15 +1063,18 @@ async function loadProduct(){
 }
 
 
-/* =========================
+/* =====================================================
    SELECT IMAGE
-========================= */
+===================================================== */
 
 function selectImage(index){
 
   if(
+
     index < 0 ||
+
     index >= galleryImages.length
+
   ){
 
     return;
@@ -813,13 +1091,15 @@ function selectImage(index){
 }
 
 
-/* =========================
+/* =====================================================
    NEXT IMAGE
-========================= */
+===================================================== */
 
 function nextImage(){
 
-  if(galleryImages.length <= 1){
+  if(
+    galleryImages.length <= 1
+  ){
 
     return;
 
@@ -827,8 +1107,11 @@ function nextImage(){
 
 
   currentImage =
-    (currentImage + 1)
-    % galleryImages.length;
+    (
+      currentImage + 1
+    )
+    %
+    galleryImages.length;
 
 
   updateGallery();
@@ -836,13 +1119,15 @@ function nextImage(){
 }
 
 
-/* =========================
+/* =====================================================
    PREVIOUS IMAGE
-========================= */
+===================================================== */
 
 function previousImage(){
 
-  if(galleryImages.length <= 1){
+  if(
+    galleryImages.length <= 1
+  ){
 
     return;
 
@@ -855,7 +1140,8 @@ function previousImage(){
       1 +
       galleryImages.length
     )
-    % galleryImages.length;
+    %
+    galleryImages.length;
 
 
   updateGallery();
@@ -863,9 +1149,9 @@ function previousImage(){
 }
 
 
-/* =========================
+/* =====================================================
    UPDATE GALLERY
-========================= */
+===================================================== */
 
 function updateGallery(){
 
@@ -886,22 +1172,27 @@ function updateGallery(){
   document
     .querySelectorAll(".thumbnail")
     .forEach(
+
       (thumbnail,index) => {
 
         thumbnail.classList.toggle(
+
           "active",
+
           index === currentImage
+
         );
 
       }
+
     );
 
 }
 
 
-/* =========================
+/* =====================================================
    NOT FOUND
-========================= */
+===================================================== */
 
 function showNotFound(){
 
@@ -933,9 +1224,9 @@ function showNotFound(){
 }
 
 
-/* =========================
+/* =====================================================
    START
-========================= */
+===================================================== */
 
 loadProduct();
 
