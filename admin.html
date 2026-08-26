@@ -1,9 +1,14 @@
 <!doctype html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1"
+>
 
 <title>WYW HERE | Admin</title>
 
@@ -55,7 +60,7 @@ body{
 }
 
 .container{
-  max-width:1100px;
+  max-width:1200px;
   margin:35px auto;
   padding:0 20px;
 }
@@ -205,31 +210,90 @@ textarea{
 
 
 /* =========================
-   ANALYTICS
+   DASHBOARD
 ========================= */
 
-.analytics-grid{
+.dashboard-grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:15px;
+  grid-template-columns:
+    repeat(6,1fr);
+  gap:12px;
   margin-top:20px;
 }
 
 .stat{
   background:#f5f5f2;
-  padding:20px;
+  padding:18px;
   border-radius:14px;
+  min-height:110px;
 }
 
 .stat-label{
   margin:0;
   color:#777;
-  font-size:13px;
+  font-size:12px;
 }
 
 .stat-value{
-  margin:8px 0 0;
-  font-size:28px;
+  margin:9px 0 0;
+  font-size:25px;
+}
+
+.stat-small{
+  font-size:20px;
+}
+
+
+/* =========================
+   FILTER
+========================= */
+
+.filter-box{
+  display:flex;
+  gap:10px;
+  align-items:end;
+  flex-wrap:wrap;
+  margin-top:20px;
+}
+
+.filter-item{
+  flex:1;
+  min-width:180px;
+}
+
+.filter-item label{
+  margin-bottom:6px;
+}
+
+.quick-buttons{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.quick-btn{
+  border:1px solid #ddd;
+  background:#fff;
+  color:#151515;
+  padding:11px 14px;
+  border-radius:9px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.quick-btn.active{
+  background:#151515;
+  color:#fff;
+  border-color:#151515;
+}
+
+
+/* =========================
+   TABLE
+========================= */
+
+.table-wrap{
+  overflow-x:auto;
 }
 
 .analytics-table{
@@ -259,13 +323,46 @@ textarea{
 
 
 /* =========================
+   SALE FORM
+========================= */
+
+.sale-grid{
+  display:grid;
+  grid-template-columns:
+    1fr 1fr;
+  gap:15px;
+}
+
+.sale-grid .full{
+  grid-column:1/-1;
+}
+
+
+/* =========================
    MOBILE
 ========================= */
 
+@media(max-width:1000px){
+
+  .dashboard-grid{
+    grid-template-columns:
+      repeat(3,1fr);
+  }
+
+}
+
 @media(max-width:700px){
 
-  .analytics-grid{
+  .dashboard-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .sale-grid{
     grid-template-columns:1fr;
+  }
+
+  .sale-grid .full{
+    grid-column:auto;
   }
 
   .row{
@@ -331,7 +428,7 @@ textarea{
     <h1>Admin Login</h1>
 
     <p class="subtitle">
-      Sign in to manage WYW HERE products.
+      Sign in to manage WYW HERE.
     </p>
 
     <div
@@ -352,7 +449,6 @@ textarea{
 
     </div>
 
-
     <div class="field">
 
       <label>Password</label>
@@ -365,7 +461,6 @@ textarea{
       >
 
     </div>
-
 
     <button
       id="loginBtn"
@@ -389,87 +484,496 @@ textarea{
 <section id="app" class="container">
 
 
-  <!-- =========================
-       PRODUCT FORM
-  ========================= -->
+<!-- =========================
+     DASHBOARD
+========================= -->
 
-  <div class="card">
+<div class="card">
 
-    <h1 id="formTitle">
-      Add Product
-    </h1>
+  <h1>
+    Dashboard
+  </h1>
 
-    <p class="subtitle">
-      Create or update a product.
-    </p>
-
-
-    <div
-      id="formError"
-      class="message error"
-    ></div>
+  <p class="subtitle">
+    Affiliate performance and Amazon earnings.
+  </p>
 
 
-    <div
-      id="success"
-      class="message success"
-    ></div>
+  <div class="dashboard-grid">
 
 
-    <input
-      type="hidden"
-      id="editId"
-    >
+    <div class="stat">
+
+      <p class="stat-label">
+        TOTAL CLICKS
+      </p>
+
+      <h2
+        id="totalClicks"
+        class="stat-value"
+      >
+        0
+      </h2>
+
+    </div>
 
 
-    <!-- PRODUCT NAME -->
+    <div class="stat">
 
-    <div class="field">
+      <p class="stat-label">
+        7 DAYS
+      </p>
+
+      <h2
+        id="sevenDays"
+        class="stat-value"
+      >
+        0
+      </h2>
+
+    </div>
+
+
+    <div class="stat">
+
+      <p class="stat-label">
+        30 DAYS
+      </p>
+
+      <h2
+        id="thirtyDays"
+        class="stat-value"
+      >
+        0
+      </h2>
+
+    </div>
+
+
+    <div class="stat">
+
+      <p class="stat-label">
+        TOTAL ORDERS
+      </p>
+
+      <h2
+        id="totalOrders"
+        class="stat-value"
+      >
+        0
+      </h2>
+
+    </div>
+
+
+    <div class="stat">
+
+      <p class="stat-label">
+        TOTAL SALES
+      </p>
+
+      <h2
+        id="totalSales"
+        class="stat-value stat-small"
+      >
+        ₹0
+      </h2>
+
+    </div>
+
+
+    <div class="stat">
+
+      <p class="stat-label">
+        COMMISSION
+      </p>
+
+      <h2
+        id="totalCommission"
+        class="stat-value stat-small"
+      >
+        ₹0
+      </h2>
+
+    </div>
+
+
+  </div>
+
+
+  <!-- DATE FILTER -->
+
+  <div class="filter-box">
+
+    <div class="filter-item">
 
       <label>
-        Product Name
+        FROM DATE
       </label>
 
       <input
-        id="name"
-        placeholder="Premium Smart Watch"
+        id="fromDate"
+        type="date"
       >
 
     </div>
 
 
-    <!-- CATEGORY -->
-
-    <div class="field">
+    <div class="filter-item">
 
       <label>
-        Category
+        TO DATE
       </label>
 
-      <select id="category">
+      <input
+        id="toDate"
+        type="date"
+      >
+
+    </div>
+
+
+    <div class="filter-item">
+
+      <label>
+        QUICK FILTER
+      </label>
+
+      <div class="quick-buttons">
+
+        <button
+          class="quick-btn"
+          onclick="setQuickFilter(7)"
+        >
+          7 Days
+        </button>
+
+        <button
+          class="quick-btn"
+          onclick="setQuickFilter(30)"
+        >
+          30 Days
+        </button>
+
+        <button
+          class="quick-btn"
+          onclick="clearFilter()"
+        >
+          All
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- =========================
+     PRODUCT FORM
+========================= -->
+
+<div class="card">
+
+  <h2 id="formTitle">
+    Add Product
+  </h2>
+
+  <p class="subtitle">
+    Create or update a product.
+  </p>
+
+
+  <div
+    id="formError"
+    class="message error"
+  ></div>
+
+
+  <div
+    id="success"
+    class="message success"
+  ></div>
+
+
+  <input
+    type="hidden"
+    id="editId"
+  >
+
+
+  <div class="field">
+
+    <label>
+      Product Name
+    </label>
+
+    <input
+      id="name"
+      placeholder="Premium Smart Watch"
+    >
+
+  </div>
+
+
+  <div class="field">
+
+    <label>
+      Category
+    </label>
+
+    <select id="category">
+
+      <option value="">
+        Select Category
+      </option>
+
+      <option value="Gadgets">
+        Gadgets
+      </option>
+
+      <option value="Watches">
+        Watches
+      </option>
+
+      <option value="Kitchen">
+        Kitchen
+      </option>
+
+      <option value="Home">
+        Home
+      </option>
+
+      <option value="Fitness">
+        Fitness
+      </option>
+
+    </select>
+
+  </div>
+
+
+  <div class="field">
+
+    <label>
+      Price
+    </label>
+
+    <input
+      id="price"
+      type="number"
+      min="0"
+      step="0.01"
+      placeholder="2999"
+    >
+
+  </div>
+
+
+  <div class="field">
+
+    <label>
+      Product Image 1 URL
+    </label>
+
+    <input
+      id="image"
+      type="url"
+      placeholder="https://..."
+    >
+
+  </div>
+
+
+  <div class="field">
+
+    <label>
+      Product Image 2 URL
+    </label>
+
+    <input
+      id="image2"
+      type="url"
+      placeholder="https://..."
+    >
+
+  </div>
+
+
+  <div class="field">
+
+    <label>
+      Product Image 3 URL
+    </label>
+
+    <input
+      id="image3"
+      type="url"
+      placeholder="https://..."
+    >
+
+  </div>
+
+
+  <div class="field">
+
+    <label>
+      Product Image 4 URL
+    </label>
+
+    <input
+      id="image4"
+      type="url"
+      placeholder="https://..."
+    >
+
+  </div>
+
+
+  <div class="field">
+
+    <label>
+      Product Image 5 URL
+    </label>
+
+    <input
+      id="image5"
+      type="url"
+      placeholder="https://..."
+    >
+
+  </div>
+
+
+  <div class="field">
+
+    <label>
+      Short Description
+    </label>
+
+    <textarea
+      id="description"
+      placeholder="Write 1-2 lines about the product"
+    ></textarea>
+
+  </div>
+
+
+  <div class="field">
+
+    <label>
+      Affiliate Link
+    </label>
+
+    <input
+      id="link"
+      type="url"
+      placeholder="Paste your affiliate link"
+    >
+
+  </div>
+
+
+  <div class="actions">
+
+    <button
+      id="saveBtn"
+      class="btn"
+      onclick="saveProduct()"
+    >
+      SAVE PRODUCT
+    </button>
+
+    <button
+      id="cancelBtn"
+      class="btn secondary"
+      style="display:none"
+      onclick="resetForm()"
+    >
+      CANCEL EDIT
+    </button>
+
+  </div>
+
+</div>
+
+
+
+<!-- =========================
+     PRODUCTS
+========================= -->
+
+<div class="card">
+
+  <h2>
+    Products
+  </h2>
+
+  <div id="list">
+    Loading...
+  </div>
+
+</div>
+
+
+
+<!-- =========================
+     AMAZON SALES ENTRY
+========================= -->
+
+<div class="card">
+
+  <h2>
+    Add Amazon Sale
+  </h2>
+
+  <p class="subtitle">
+    Manually enter your Amazon Associates sales and commission.
+  </p>
+
+
+  <div
+    id="saleError"
+    class="message error"
+  ></div>
+
+
+  <div
+    id="saleSuccess"
+    class="message success"
+  ></div>
+
+
+  <div class="sale-grid">
+
+
+    <div>
+
+      <label>
+        Sale Date
+      </label>
+
+      <input
+        id="saleDate"
+        type="date"
+      >
+
+    </div>
+
+
+    <div>
+
+      <label>
+        Product
+      </label>
+
+      <select id="saleProduct">
 
         <option value="">
-          Select Category
-        </option>
-
-        <option value="Gadgets">
-          Gadgets
-        </option>
-
-        <option value="Watches">
-          Watches
-        </option>
-
-        <option value="Kitchen">
-          Kitchen
-        </option>
-
-        <option value="Home">
-          Home
-        </option>
-
-        <option value="Fitness">
-          Fitness
+          Select Product
         </option>
 
       </select>
@@ -477,291 +981,151 @@ textarea{
     </div>
 
 
-    <!-- PRICE -->
-
-    <div class="field">
+    <div>
 
       <label>
-        Price
+        Orders
       </label>
 
       <input
-        id="price"
+        id="saleOrders"
+        type="number"
+        min="1"
+        value="1"
+      >
+
+    </div>
+
+
+    <div>
+
+      <label>
+        Sales Amount ₹
+      </label>
+
+      <input
+        id="salesAmount"
         type="number"
         min="0"
         step="0.01"
-        placeholder="2999"
+        value="0"
       >
 
     </div>
 
 
-    <!-- =========================
-         IMAGE 1
-    ========================= -->
-
-    <div class="field">
+    <div>
 
       <label>
-        Product Image 1 URL
+        Commission ₹
       </label>
 
       <input
-        id="image"
-        type="url"
-        placeholder="https://..."
+        id="commissionAmount"
+        type="number"
+        min="0"
+        step="0.01"
+        value="0"
       >
-
-      <div class="image-note">
-        Main product image
-      </div>
 
     </div>
 
 
-    <!-- IMAGE 2 -->
-
-    <div class="field">
+    <div>
 
       <label>
-        Product Image 2 URL
+        Notes
       </label>
 
       <input
-        id="image2"
-        type="url"
-        placeholder="https://..."
+        id="saleNotes"
+        placeholder="Optional"
       >
 
     </div>
 
 
-    <!-- IMAGE 3 -->
-
-    <div class="field">
-
-      <label>
-        Product Image 3 URL
-      </label>
-
-      <input
-        id="image3"
-        type="url"
-        placeholder="https://..."
-      >
-
-    </div>
-
-
-    <!-- IMAGE 4 -->
-
-    <div class="field">
-
-      <label>
-        Product Image 4 URL
-      </label>
-
-      <input
-        id="image4"
-        type="url"
-        placeholder="https://..."
-      >
-
-    </div>
-
-
-    <!-- IMAGE 5 -->
-
-    <div class="field">
-
-      <label>
-        Product Image 5 URL
-      </label>
-
-      <input
-        id="image5"
-        type="url"
-        placeholder="https://..."
-      >
-
-    </div>
-
-
-    <!-- DESCRIPTION -->
-
-    <div class="field">
-
-      <label>
-        Short Description
-      </label>
-
-      <textarea
-        id="description"
-        placeholder="Write 1-2 lines about the product"
-      ></textarea>
-
-    </div>
-
-
-    <!-- AFFILIATE LINK -->
-
-    <div class="field">
-
-      <label>
-        Affiliate Link
-      </label>
-
-      <input
-        id="link"
-        type="url"
-        placeholder="Paste your affiliate link"
-      >
-
-    </div>
-
-
-    <!-- BUTTONS -->
-
-    <div class="actions">
+    <div class="full">
 
       <button
-        id="saveBtn"
+        id="saleBtn"
         class="btn"
-        onclick="saveProduct()"
+        onclick="saveSale()"
       >
-        SAVE PRODUCT
-      </button>
-
-
-      <button
-        id="cancelBtn"
-        class="btn secondary"
-        style="display:none"
-        onclick="resetForm()"
-      >
-        CANCEL EDIT
+        ADD SALE
       </button>
 
     </div>
 
-  </div>
-
-
-
-  <!-- =========================
-       PRODUCTS
-  ========================= -->
-
-  <div class="card">
-
-    <h2>
-      Products
-    </h2>
-
-    <div id="list">
-      Loading...
-    </div>
 
   </div>
 
+</div>
 
 
-  <!-- =========================
-       ANALYTICS
-  ========================= -->
 
-  <div class="card">
+<!-- =========================
+     PRODUCT-WISE ANALYTICS
+========================= -->
 
-    <h2>
-      Analytics
-    </h2>
+<div class="card">
 
-    <p class="subtitle">
-      Track affiliate clicks from your website.
-    </p>
+  <h2>
+    Product-wise Performance
+  </h2>
 
-
-    <div class="analytics-grid">
+  <p class="subtitle">
+    Clicks, orders, sales, commission and conversion rate.
+  </p>
 
 
-      <!-- TOTAL -->
-
-      <div class="stat">
-
-        <p class="stat-label">
-          Total Clicks
-        </p>
-
-        <h2
-          id="totalClicks"
-          class="stat-value"
-        >
-          0
-        </h2>
-
-      </div>
-
-
-      <!-- TODAY -->
-
-      <div class="stat">
-
-        <p class="stat-label">
-          Today's Clicks
-        </p>
-
-        <h2
-          id="todayClicks"
-          class="stat-value"
-        >
-          0
-        </h2>
-
-      </div>
-
-
-      <!-- TOP PRODUCT -->
-
-      <div class="stat">
-
-        <p class="stat-label">
-          Top Product
-        </p>
-
-        <h3
-          id="topProduct"
-          style="margin:8px 0 0"
-        >
-          —
-        </h3>
-
-      </div>
-
-    </div>
-
-
-    <!-- PRODUCT WISE -->
-
-    <h3 style="margin-top:30px">
-      Product-wise Clicks
-    </h3>
-
-    <div id="productAnalytics">
-      Loading...
-    </div>
-
-
-    <!-- RECENT -->
-
-    <h3 style="margin-top:30px">
-      Recent Clicks
-    </h3>
-
-    <div id="recentClicks">
-      Loading...
-    </div>
-
+  <div
+    id="productAnalytics"
+  >
+    Loading...
   </div>
+
+</div>
+
+
+
+<!-- =========================
+     AMAZON SALES HISTORY
+========================= -->
+
+<div class="card">
+
+  <h2>
+    Amazon Sales History
+  </h2>
+
+  <div
+    id="salesHistory"
+  >
+    Loading...
+  </div>
+
+</div>
+
+
+
+<!-- =========================
+     RECENT CLICKS
+========================= -->
+
+<div class="card">
+
+  <h2>
+    Recent Affiliate Clicks
+  </h2>
+
+  <div
+    id="recentClicks"
+  >
+    Loading...
+  </div>
+
+</div>
 
 
 </section>
@@ -772,7 +1136,7 @@ textarea{
 
 
 /* =========================================
-   SUPABASE SETTINGS
+   SUPABASE
 ========================================= */
 
 const SUPABASE_URL =
@@ -789,15 +1153,22 @@ const ADMIN_EMAIL =
    HELPER
 ========================================= */
 
-const $ = id =>
+const $ =
+  id =>
   document.getElementById(id);
 
 
-function showMessage(id,text,type){
+function showMessage(
+  id,
+  text,
+  type
+){
 
-  const element = $(id);
+  const element =
+    $(id);
 
-  element.textContent = text;
+  element.textContent =
+    text;
 
   element.className =
     "message " + type;
@@ -819,25 +1190,72 @@ function hideMessage(id){
 function escapeHtml(value){
 
   return String(value ?? "")
-    .replace(/[&<>"']/g,function(match){
+    .replace(
+      /[&<>"']/g,
+      function(match){
 
-      return {
+        return {
 
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#039;"
+          "&":"&amp;",
+          "<":"&lt;",
+          ">":"&gt;",
+          '"':"&quot;",
+          "'":"&#039;"
 
-      }[match];
+        }[match];
 
-    });
+      }
+    );
+
+}
+
+
+function money(value){
+
+  return "₹" +
+    Number(value || 0)
+      .toLocaleString(
+        "en-IN",
+        {
+          minimumFractionDigits:2,
+          maximumFractionDigits:2
+        }
+      );
+
+}
+
+
+function dateIndia(value){
+
+  if(!value){
+    return "—";
+  }
+
+  return new Date(value)
+    .toLocaleString(
+      "en-IN",
+      {
+        timeZone:"Asia/Kolkata"
+      }
+    );
+
+}
+
+
+function localDateString(date){
+
+  return date.toLocaleDateString(
+    "en-CA",
+    {
+      timeZone:"Asia/Kolkata"
+    }
+  );
 
 }
 
 
 /* =========================================
-   ACCESS TOKEN
+   TOKEN
 ========================================= */
 
 function getAccessToken(){
@@ -845,6 +1263,29 @@ function getAccessToken(){
   return sessionStorage.getItem(
     "wyw_access_token"
   );
+
+}
+
+
+/* =========================================
+   AUTH HEADERS
+========================================= */
+
+function authHeaders(){
+
+  return {
+
+    "apikey":
+      SUPABASE_KEY,
+
+    "Authorization":
+      "Bearer " +
+      getAccessToken(),
+
+    "Content-Type":
+      "application/json"
+
+  };
 
 }
 
@@ -880,7 +1321,8 @@ async function login(){
   }
 
 
-  button.disabled = true;
+  button.disabled =
+    true;
 
   button.textContent =
     "LOGGING IN...";
@@ -899,22 +1341,20 @@ async function login(){
           method:"POST",
 
           headers:{
-
             "Content-Type":
               "application/json",
 
             "apikey":
               SUPABASE_KEY
-
           },
 
-          body:JSON.stringify({
+          body:
+            JSON.stringify({
 
-            email:email,
+              email,
+              password
 
-            password:password
-
-          })
+            })
 
         }
 
@@ -928,12 +1368,10 @@ async function login(){
     if(!response.ok){
 
       throw new Error(
-
         data.error_description ||
         data.msg ||
         data.message ||
         "Invalid email or password."
-
       );
 
     }
@@ -958,12 +1396,10 @@ async function login(){
       data.access_token
     );
 
-
     sessionStorage.setItem(
       "wyw_refresh_token",
       data.refresh_token || ""
     );
-
 
     sessionStorage.setItem(
       "wyw_admin",
@@ -987,7 +1423,8 @@ async function login(){
 
   }finally{
 
-    button.disabled = false;
+    button.disabled =
+      false;
 
     button.textContent =
       "LOGIN";
@@ -1047,8 +1484,6 @@ async function checkAdmin(){
 
         {
 
-          method:"GET",
-
           headers:{
 
             "apikey":
@@ -1075,18 +1510,11 @@ async function checkAdmin(){
       await response.json();
 
 
-    if(
-      !user.email ||
-      user.email.toLowerCase() !==
+    return Boolean(
+      user.email &&
+      user.email.toLowerCase() ===
       ADMIN_EMAIL.toLowerCase()
-    ){
-
-      return false;
-
-    }
-
-
-    return true;
+    );
 
 
   }catch(error){
@@ -1130,38 +1558,21 @@ async function showApp(){
 
   await loadAnalytics();
 
-}
+  await loadSales();
 
+  populateSaleProducts();
 
-/* =========================================
-   AUTH HEADERS
-========================================= */
-
-function authHeaders(){
-
-  const token =
-    getAccessToken();
-
-
-  return {
-
-    "apikey":
-      SUPABASE_KEY,
-
-    "Authorization":
-      "Bearer " + token,
-
-    "Content-Type":
-      "application/json"
-
-  };
+  setTodayDate();
 
 }
 
 
 /* =========================================
-   LOAD PRODUCTS
+   PRODUCTS
 ========================================= */
+
+let cachedProducts = [];
+
 
 async function loadProducts(){
 
@@ -1183,9 +1594,8 @@ async function loadProducts(){
 
         {
 
-          method:"GET",
-
-          headers:authHeaders()
+          headers:
+            authHeaders()
 
         }
 
@@ -1199,19 +1609,23 @@ async function loadProducts(){
     if(!response.ok){
 
       throw new Error(
-
         data.message ||
         data.hint ||
         "Could not load products."
-
       );
 
     }
 
 
+    cachedProducts =
+      data || [];
+
+
     renderProducts(
-      data || []
+      cachedProducts
     );
+
+    populateSaleProducts();
 
 
   }catch(error){
@@ -1229,6 +1643,118 @@ async function loadProducts(){
 
 
 /* =========================================
+   RENDER PRODUCTS
+========================================= */
+
+function renderProducts(products){
+
+  const list =
+    $("list");
+
+
+  if(!products.length){
+
+    list.innerHTML =
+      "<p class='subtitle'>" +
+      "No products added yet." +
+      "</p>";
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    products.map(
+      function(product){
+
+        let imageCount = 0;
+
+
+        [
+          product.image_url,
+          product.image_2,
+          product.image_3,
+          product.image_4,
+          product.image_5
+        ].forEach(
+          image => {
+
+            if(image){
+              imageCount++;
+            }
+
+          }
+        );
+
+
+        return `
+
+          <div class="row">
+
+            <div>
+
+              <h3>
+                ${escapeHtml(
+                  product.name
+                )}
+              </h3>
+
+              <p>
+
+                ${escapeHtml(
+                  product.category
+                )}
+
+                ·
+
+                ${money(
+                  product.price
+                )}
+
+              </p>
+
+              <div class="image-count">
+
+                ${imageCount}
+                image${imageCount === 1 ? "" : "s"}
+                added
+
+              </div>
+
+            </div>
+
+
+            <div class="actions">
+
+              <button
+                class="btn secondary"
+                onclick="editProductById(${Number(product.id)})"
+              >
+                Edit
+              </button>
+
+
+              <button
+                class="btn danger"
+                onclick="deleteProduct(${Number(product.id)})"
+              >
+                Delete
+              </button>
+
+            </div>
+
+          </div>
+
+        `;
+
+      }
+    ).join("");
+
+}
+
+
+/* =========================================
    SAVE PRODUCT
 ========================================= */
 
@@ -1239,48 +1765,58 @@ async function saveProduct(){
   hideMessage("success");
 
 
-  const name =
-    $("name").value.trim();
-
-  const category =
-    $("category").value.trim();
-
-  const price =
-    $("price").value.trim();
-
-
-  const image =
-    $("image").value.trim();
-
-  const image2 =
-    $("image2").value.trim();
-
-  const image3 =
-    $("image3").value.trim();
-
-  const image4 =
-    $("image4").value.trim();
-
-  const image5 =
-    $("image5").value.trim();
-
-
-  const description =
-    $("description").value.trim();
-
-  const affiliateLink =
-    $("link").value.trim();
-
   const editId =
     $("editId").value;
 
 
+  const product = {
+
+    name:
+      $("name").value.trim(),
+
+    category:
+      $("category").value.trim(),
+
+    price:
+      Number(
+        $("price").value
+      ),
+
+    image_url:
+      $("image").value.trim() ||
+      null,
+
+    image_2:
+      $("image2").value.trim() ||
+      null,
+
+    image_3:
+      $("image3").value.trim() ||
+      null,
+
+    image_4:
+      $("image4").value.trim() ||
+      null,
+
+    image_5:
+      $("image5").value.trim() ||
+      null,
+
+    description:
+      $("description").value.trim(),
+
+    affiliate_link:
+      $("link").value.trim()
+
+  };
+
+
   if(
-    !name ||
-    !category ||
-    !price ||
-    !description ||
-    !affiliateLink
+    !product.name ||
+    !product.category ||
+    !product.price ||
+    !product.description ||
+    !product.affiliate_link
   ){
 
     showMessage(
@@ -1294,47 +1830,12 @@ async function saveProduct(){
   }
 
 
-  /* =========================================
-     PRODUCT OBJECT
-  ========================================= */
-
-  const product = {
-
-    name:name,
-
-    category:category,
-
-    price:Number(price),
-
-    image_url:
-      image || null,
-
-    image_2:
-      image2 || null,
-
-    image_3:
-      image3 || null,
-
-    image_4:
-      image4 || null,
-
-    image_5:
-      image5 || null,
-
-    description:
-      description,
-
-    affiliate_link:
-      affiliateLink
-
-  };
-
-
   const button =
     $("saveBtn");
 
 
-  button.disabled = true;
+  button.disabled =
+    true;
 
   button.textContent =
     editId
@@ -1346,8 +1847,6 @@ async function saveProduct(){
 
     let response;
 
-
-    /* UPDATE */
 
     if(editId){
 
@@ -1363,12 +1862,9 @@ async function saveProduct(){
             method:"PATCH",
 
             headers:{
-
               ...authHeaders(),
-
               "Prefer":
                 "return=minimal"
-
             },
 
             body:
@@ -1378,12 +1874,7 @@ async function saveProduct(){
 
         );
 
-    }
-
-
-    /* INSERT */
-
-    else{
+    }else{
 
       response =
         await fetch(
@@ -1396,12 +1887,9 @@ async function saveProduct(){
             method:"POST",
 
             headers:{
-
               ...authHeaders(),
-
               "Prefer":
                 "return=minimal"
-
             },
 
             body:
@@ -1428,7 +1916,7 @@ async function saveProduct(){
     }
 
 
-    const wasEditing =
+    const editing =
       Boolean(editId);
 
 
@@ -1437,11 +1925,9 @@ async function saveProduct(){
 
     showMessage(
       "success",
-
-      wasEditing
+      editing
         ? "Product updated successfully."
         : "Product added successfully.",
-
       "success"
     );
 
@@ -1477,66 +1963,64 @@ async function saveProduct(){
    EDIT PRODUCT
 ========================================= */
 
-function editProduct(product){
+function editProductById(id){
+
+  const product =
+    cachedProducts.find(
+      item =>
+        Number(item.id) ===
+        Number(id)
+    );
+
+
+  if(!product){
+    return;
+  }
+
 
   $("formTitle").textContent =
     "Edit Product";
 
-
   $("editId").value =
     product.id || "";
-
 
   $("name").value =
     product.name || "";
 
-
   $("category").value =
     product.category || "";
-
 
   $("price").value =
     product.price ?? "";
 
-
   $("image").value =
     product.image_url || "";
-
 
   $("image2").value =
     product.image_2 || "";
 
-
   $("image3").value =
     product.image_3 || "";
-
 
   $("image4").value =
     product.image_4 || "";
 
-
   $("image5").value =
     product.image_5 || "";
-
 
   $("description").value =
     product.description || "";
 
-
   $("link").value =
     product.affiliate_link || "";
-
 
   $("cancelBtn").style.display =
     "inline-block";
 
 
   window.scrollTo({
-
     top:0,
-
     behavior:"smooth"
-
   });
 
 }
@@ -1573,12 +2057,9 @@ async function deleteProduct(id){
           method:"DELETE",
 
           headers:{
-
             ...authHeaders(),
-
             "Prefer":
               "return=minimal"
-
           }
 
         }
@@ -1586,22 +2067,16 @@ async function deleteProduct(id){
       );
 
 
-    const text =
-      await response.text();
-
-
     if(!response.ok){
 
       throw new Error(
-        text ||
-        "Delete failed."
+        await response.text()
       );
 
     }
 
 
     await loadProducts();
-
 
     await loadAnalytics();
 
@@ -1621,144 +2096,7 @@ async function deleteProduct(id){
 
 
 /* =========================================
-   CACHED PRODUCTS
-========================================= */
-
-let cachedProducts = [];
-
-
-/* =========================================
-   EDIT BY ID
-========================================= */
-
-function editProductById(id){
-
-  const product =
-    cachedProducts.find(
-
-      item =>
-        Number(item.id) ===
-        Number(id)
-
-    );
-
-
-  if(product){
-
-    editProduct(product);
-
-  }
-
-}
-
-
-/* =========================================
-   RENDER PRODUCTS
-========================================= */
-
-function renderProducts(products){
-
-  cachedProducts =
-    products;
-
-
-  const list =
-    $("list");
-
-
-  if(!products.length){
-
-    list.innerHTML =
-      "<p class='subtitle'>" +
-      "No products added yet." +
-      "</p>";
-
-    return;
-
-  }
-
-
-  list.innerHTML =
-    products.map(function(product){
-
-      let imageCount = 0;
-
-
-      [
-        product.image_url,
-        product.image_2,
-        product.image_3,
-        product.image_4,
-        product.image_5
-      ].forEach(function(image){
-
-        if(image){
-          imageCount++;
-        }
-
-      });
-
-
-      return `
-
-        <div class="row">
-
-          <div>
-
-            <h3>
-              ${escapeHtml(product.name)}
-            </h3>
-
-            <p>
-
-              ${escapeHtml(product.category)}
-
-              · ₹${Number(product.price)
-                .toLocaleString("en-IN")}
-
-            </p>
-
-            <div class="image-count">
-
-              ${imageCount}
-              image${imageCount === 1 ? "" : "s"}
-              added
-
-            </div>
-
-          </div>
-
-
-          <div class="actions">
-
-            <button
-              class="btn secondary"
-              onclick="editProductById(${Number(product.id)})"
-            >
-              Edit
-            </button>
-
-
-            <button
-              class="btn danger"
-              onclick="deleteProduct(${Number(product.id)})"
-            >
-              Delete
-            </button>
-
-          </div>
-
-        </div>
-
-      `;
-
-    }).join("");
-
-}
-
-
-/* =========================================
-   RESET FORM
+   RESET PRODUCT FORM
 ========================================= */
 
 function resetForm(){
@@ -1808,7 +2146,16 @@ function resetForm(){
 
 
 /* =========================================
-   ANALYTICS
+   ANALYTICS DATA
+========================================= */
+
+let allClicks = [];
+
+let allSales = [];
+
+
+/* =========================================
+   LOAD CLICKS
 ========================================= */
 
 async function loadAnalytics(){
@@ -1823,9 +2170,8 @@ async function loadAnalytics(){
 
         {
 
-          method:"GET",
-
-          headers:authHeaders()
+          headers:
+            authHeaders()
 
         }
 
@@ -1839,47 +2185,37 @@ async function loadAnalytics(){
     if(!response.ok){
 
       throw new Error(
-
         data.message ||
         data.hint ||
-        "Could not load analytics."
-
+        "Could not load clicks."
       );
 
     }
 
 
-    const clicks =
+    allClicks =
       data || [];
 
 
-    renderAnalytics(clicks);
+    renderDashboard();
 
 
   }catch(error){
 
     console.error(error);
 
-
     $("totalClicks").textContent =
       "—";
 
-    $("todayClicks").textContent =
+    $("sevenDays").textContent =
       "—";
 
-    $("topProduct").textContent =
-      "Unable to load";
-
-
-    $("productAnalytics").innerHTML =
-      "<p class='empty'>" +
-      escapeHtml(error.message) +
-      "</p>";
-
+    $("thirtyDays").textContent =
+      "—";
 
     $("recentClicks").innerHTML =
       "<p class='empty'>" +
-      "Analytics could not be loaded." +
+      escapeHtml(error.message) +
       "</p>";
 
   }
@@ -1888,113 +2224,508 @@ async function loadAnalytics(){
 
 
 /* =========================================
-   RENDER ANALYTICS
+   LOAD SALES
 ========================================= */
 
-function renderAnalytics(clicks){
+async function loadSales(){
 
-  /* TOTAL */
+  try{
+
+    const response =
+      await fetch(
+
+        SUPABASE_URL +
+        "/rest/v1/amazon_sales?select=*&order=sale_date.desc,created_at.desc",
+
+        {
+
+          headers:
+            authHeaders()
+
+        }
+
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if(!response.ok){
+
+      throw new Error(
+        data.message ||
+        data.hint ||
+        "Could not load Amazon sales."
+      );
+
+    }
+
+
+    allSales =
+      data || [];
+
+
+    renderDashboard();
+
+    renderSalesHistory();
+
+
+  }catch(error){
+
+    console.error(error);
+
+    allSales =
+      [];
+
+    $("totalOrders").textContent =
+      "—";
+
+    $("totalSales").textContent =
+      "—";
+
+    $("totalCommission").textContent =
+      "—";
+
+    $("salesHistory").innerHTML =
+      "<p class='empty'>" +
+      escapeHtml(error.message) +
+      "</p>";
+
+  }
+
+}
+
+
+/* =========================================
+   DASHBOARD RENDER
+========================================= */
+
+function renderDashboard(){
+
+  const filteredClicks =
+    getFilteredClicks();
+
+  const filteredSales =
+    getFilteredSales();
+
 
   $("totalClicks").textContent =
-    clicks.length;
+    filteredClicks.length;
 
-
-  /* TODAY */
 
   const now =
     new Date();
 
 
-  const today =
-    now.toLocaleDateString(
-      "en-CA",
-      {
-        timeZone:"Asia/Kolkata"
-      }
+  const sevenStart =
+    new Date(now);
+
+  sevenStart.setDate(
+    sevenStart.getDate() - 6
+  );
+
+
+  const thirtyStart =
+    new Date(now);
+
+  thirtyStart.setDate(
+    thirtyStart.getDate() - 29
+  );
+
+
+  const sevenCount =
+    allClicks.filter(
+      click =>
+        new Date(
+          click.clicked_at
+        ) >= sevenStart
+    ).length;
+
+
+  const thirtyCount =
+    allClicks.filter(
+      click =>
+        new Date(
+          click.clicked_at
+        ) >= thirtyStart
+    ).length;
+
+
+  $("sevenDays").textContent =
+    sevenCount;
+
+
+  $("thirtyDays").textContent =
+    thirtyCount;
+
+
+  const orders =
+    filteredSales.reduce(
+      (
+        total,
+        sale
+      ) =>
+        total +
+        Number(
+          sale.orders || 0
+        ),
+      0
     );
 
 
-  const todayClicks =
-    clicks.filter(function(click){
+  const sales =
+    filteredSales.reduce(
+      (
+        total,
+        sale
+      ) =>
+        total +
+        Number(
+          sale.sales_amount || 0
+        ),
+      0
+    );
+
+
+  const commission =
+    filteredSales.reduce(
+      (
+        total,
+        sale
+      ) =>
+        total +
+        Number(
+          sale.commission_amount || 0
+        ),
+      0
+    );
+
+
+  $("totalOrders").textContent =
+    orders;
+
+
+  $("totalSales").textContent =
+    money(sales);
+
+
+  $("totalCommission").textContent =
+    money(commission);
+
+
+  renderProductAnalytics(
+    filteredClicks,
+    filteredSales
+  );
+
+
+  renderRecentClicks(
+    filteredClicks
+  );
+
+}
+
+
+/* =========================================
+   DATE FILTER
+========================================= */
+
+function getFilteredClicks(){
+
+  const from =
+    $("fromDate").value;
+
+  const to =
+    $("toDate").value;
+
+
+  return allClicks.filter(
+    click => {
 
       const date =
-        new Date(click.clicked_at)
-          .toLocaleDateString(
-            "en-CA",
-            {
-              timeZone:"Asia/Kolkata"
-            }
-          );
-
-      return date === today;
-
-    });
+        localDateString(
+          new Date(
+            click.clicked_at
+          )
+        );
 
 
-  $("todayClicks").textContent =
-    todayClicks.length;
+      if(
+        from &&
+        date < from
+      ){
+        return false;
+      }
 
 
-  /* =========================================
-     PRODUCT COUNTS
-  ========================================= */
-
-  const counts = {};
-
-
-  clicks.forEach(function(click){
-
-    const name =
-      click.product_name ||
-      "Unknown Product";
+      if(
+        to &&
+        date > to
+      ){
+        return false;
+      }
 
 
-    if(!counts[name]){
-      counts[name] = 0;
+      return true;
+
     }
+  );
+
+}
 
 
-    counts[name]++;
+function getFilteredSales(){
 
-  });
+  const from =
+    $("fromDate").value;
 
-
-  const sorted =
-    Object.entries(counts)
-      .sort(function(a,b){
-
-        return b[1] - a[1];
-
-      });
+  const to =
+    $("toDate").value;
 
 
-  /* TOP PRODUCT */
+  return allSales.filter(
+    sale => {
 
-  if(sorted.length){
+      const date =
+        String(
+          sale.sale_date
+        );
 
-    $("topProduct").textContent =
-      sorted[0][0];
 
-  }else{
+      if(
+        from &&
+        date < from
+      ){
+        return false;
+      }
 
-    $("topProduct").textContent =
-      "—";
+
+      if(
+        to &&
+        date > to
+      ){
+        return false;
+      }
+
+
+      return true;
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   QUICK FILTER
+========================================= */
+
+function setQuickFilter(days){
+
+  const now =
+    new Date();
+
+
+  const end =
+    localDateString(
+      now
+    );
+
+
+  const start =
+    new Date(now);
+
+
+  start.setDate(
+    start.getDate() -
+    (days - 1)
+  );
+
+
+  $("fromDate").value =
+    localDateString(
+      start
+    );
+
+
+  $("toDate").value =
+    end;
+
+
+  renderDashboard();
+
+}
+
+
+function clearFilter(){
+
+  $("fromDate").value =
+    "";
+
+  $("toDate").value =
+    "";
+
+
+  renderDashboard();
+
+}
+
+
+/* =========================================
+   FILTER EVENTS
+========================================= */
+
+$("fromDate").addEventListener(
+  "change",
+  renderDashboard
+);
+
+$("toDate").addEventListener(
+  "change",
+  renderDashboard
+);
+
+
+/* =========================================
+   PRODUCT ANALYTICS
+========================================= */
+
+function renderProductAnalytics(
+  clicks,
+  sales
+){
+
+  const container =
+    $("productAnalytics");
+
+
+  const map = {};
+
+
+  cachedProducts.forEach(
+    product => {
+
+      map[product.name] = {
+
+        clicks:0,
+        orders:0,
+        sales:0,
+        commission:0
+
+      };
+
+    }
+  );
+
+
+  clicks.forEach(
+    click => {
+
+      const name =
+        click.product_name ||
+        "Unknown Product";
+
+
+      if(!map[name]){
+
+        map[name] = {
+
+          clicks:0,
+          orders:0,
+          sales:0,
+          commission:0
+
+        };
+
+      }
+
+
+      map[name].clicks++;
+
+    }
+  );
+
+
+  sales.forEach(
+    sale => {
+
+      const name =
+        sale.product_name ||
+        "Unknown Product";
+
+
+      if(!map[name]){
+
+        map[name] = {
+
+          clicks:0,
+          orders:0,
+          sales:0,
+          commission:0
+
+        };
+
+      }
+
+
+      map[name].orders +=
+        Number(
+          sale.orders || 0
+        );
+
+
+      map[name].sales +=
+        Number(
+          sale.sales_amount || 0
+        );
+
+
+      map[name].commission +=
+        Number(
+          sale.commission_amount || 0
+        );
+
+    }
+  );
+
+
+  const rows =
+    Object.entries(map)
+      .filter(
+        ([name,data]) =>
+          data.clicks ||
+          data.orders ||
+          data.sales
+      )
+      .sort(
+        (a,b) =>
+          (
+            b[1].clicks +
+            b[1].orders
+          ) -
+          (
+            a[1].clicks +
+            a[1].orders
+          )
+      );
+
+
+  if(!rows.length){
+
+    container.innerHTML =
+      "<p class='empty'>" +
+      "No performance data yet." +
+      "</p>";
+
+    return;
 
   }
 
 
-  /* PRODUCT TABLE */
+  container.innerHTML = `
 
-  if(!sorted.length){
-
-    $("productAnalytics").innerHTML =
-      "<p class='empty'>" +
-      "No clicks recorded yet." +
-      "</p>";
-
-  }else{
-
-    $("productAnalytics").innerHTML = `
+    <div class="table-wrap">
 
       <table class="analytics-table">
 
@@ -2010,6 +2741,22 @@ function renderAnalytics(clicks){
               Clicks
             </th>
 
+            <th>
+              Orders
+            </th>
+
+            <th>
+              Conversion
+            </th>
+
+            <th>
+              Sales
+            </th>
+
+            <th>
+              Commission
+            </th>
+
           </tr>
 
         </thead>
@@ -2017,44 +2764,80 @@ function renderAnalytics(clicks){
         <tbody>
 
           ${
-            sorted.map(function(item){
+            rows.map(
+              ([name,data]) => {
 
-              return `
+                const conversion =
+                  data.clicks > 0
+                    ? (
+                        data.orders /
+                        data.clicks
+                      ) * 100
+                    : 0;
 
-                <tr>
 
-                  <td>
-                    ${escapeHtml(item[0])}
-                  </td>
+                return `
 
-                  <td>
-                    <strong>
-                      ${item[1]}
-                    </strong>
-                  </td>
+                  <tr>
 
-                </tr>
+                    <td>
+                      <strong>
+                        ${escapeHtml(name)}
+                      </strong>
+                    </td>
 
-              `;
+                    <td>
+                      ${data.clicks}
+                    </td>
 
-            }).join("")
+                    <td>
+                      ${data.orders}
+                    </td>
+
+                    <td>
+                      ${conversion.toFixed(2)}%
+                    </td>
+
+                    <td>
+                      ${money(data.sales)}
+                    </td>
+
+                    <td>
+                      ${money(data.commission)}
+                    </td>
+
+                  </tr>
+
+                `;
+
+              }
+            ).join("")
           }
 
         </tbody>
 
       </table>
 
-    `;
+    </div>
 
-  }
+  `;
+
+}
 
 
-  /* =========================================
-     RECENT CLICKS
-  ========================================= */
+/* =========================================
+   RECENT CLICKS
+========================================= */
+
+function renderRecentClicks(
+  clicks
+){
 
   const recent =
-    clicks.slice(0,10);
+    clicks.slice(
+      0,
+      10
+    );
 
 
   if(!recent.length){
@@ -2071,65 +2854,532 @@ function renderAnalytics(clicks){
 
   $("recentClicks").innerHTML = `
 
-    <table class="analytics-table">
+    <div class="table-wrap">
 
-      <thead>
+      <table class="analytics-table">
 
-        <tr>
+        <thead>
 
-          <th>
-            Product
-          </th>
+          <tr>
 
-          <th>
-            Date & Time
-          </th>
+            <th>
+              Product
+            </th>
 
-        </tr>
+            <th>
+              Date & Time
+            </th>
 
-      </thead>
+          </tr>
 
-      <tbody>
+        </thead>
 
-        ${
-          recent.map(function(click){
+        <tbody>
 
-            const date =
-              new Date(click.clicked_at);
+          ${
+            recent.map(
+              click => `
 
+                <tr>
 
-            return `
+                  <td>
+                    ${escapeHtml(
+                      click.product_name ||
+                      "Unknown Product"
+                    )}
+                  </td>
 
-              <tr>
+                  <td>
+                    ${dateIndia(
+                      click.clicked_at
+                    )}
+                  </td>
 
-                <td>
-                  ${escapeHtml(
-                    click.product_name ||
-                    "Unknown Product"
-                  )}
-                </td>
+                </tr>
 
-                <td>
-                  ${date.toLocaleString(
-                    "en-IN",
-                    {
-                      timeZone:"Asia/Kolkata"
-                    }
-                  )}
-                </td>
+              `
+            ).join("")
+          }
 
-              </tr>
+        </tbody>
 
-            `;
+      </table>
 
-          }).join("")
-        }
-
-      </tbody>
-
-    </table>
+    </div>
 
   `;
+
+}
+
+
+/* =========================================
+   SALE PRODUCT DROPDOWN
+========================================= */
+
+function populateSaleProducts(){
+
+  const select =
+    $("saleProduct");
+
+
+  if(!select){
+    return;
+  }
+
+
+  const current =
+    select.value;
+
+
+  select.innerHTML =
+    `<option value="">
+      Select Product
+    </option>`;
+
+
+  cachedProducts.forEach(
+    product => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        product.id;
+
+
+      option.textContent =
+        product.name;
+
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+  if(current){
+
+    select.value =
+      current;
+
+  }
+
+}
+
+
+/* =========================================
+   DEFAULT SALE DATE
+========================================= */
+
+function setTodayDate(){
+
+  const now =
+    new Date();
+
+
+  $("saleDate").value =
+    localDateString(
+      now
+    );
+
+}
+
+
+/* =========================================
+   SAVE AMAZON SALE
+========================================= */
+
+async function saveSale(){
+
+  hideMessage("saleError");
+
+  hideMessage("saleSuccess");
+
+
+  const productId =
+    $("saleProduct").value;
+
+
+  const product =
+    cachedProducts.find(
+      item =>
+        Number(item.id) ===
+        Number(productId)
+    );
+
+
+  const saleDate =
+    $("saleDate").value;
+
+
+  const orders =
+    Number(
+      $("saleOrders").value
+    );
+
+
+  const salesAmount =
+    Number(
+      $("salesAmount").value
+    );
+
+
+  const commissionAmount =
+    Number(
+      $("commissionAmount").value
+    );
+
+
+  const notes =
+    $("saleNotes").value.trim();
+
+
+  if(
+    !saleDate ||
+    !productId ||
+    !product ||
+    orders < 1
+  ){
+
+    showMessage(
+      "saleError",
+      "Please select product, date and valid orders.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const button =
+    $("saleBtn");
+
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "ADDING...";
+
+
+  try{
+
+    const response =
+      await fetch(
+
+        SUPABASE_URL +
+        "/rest/v1/amazon_sales",
+
+        {
+
+          method:"POST",
+
+          headers:{
+            ...authHeaders(),
+            "Prefer":
+              "return=minimal"
+          },
+
+          body:
+            JSON.stringify({
+
+              sale_date:
+                saleDate,
+
+              product_id:
+                product.id,
+
+              product_name:
+                product.name,
+
+              orders:
+                orders,
+
+              sales_amount:
+                salesAmount,
+
+              commission_amount:
+                commissionAmount,
+
+              notes:
+                notes || null
+
+            })
+
+        }
+
+      );
+
+
+    const text =
+      await response.text();
+
+
+    if(!response.ok){
+
+      throw new Error(
+        text ||
+        "Could not add sale."
+      );
+
+    }
+
+
+    showMessage(
+      "saleSuccess",
+      "Amazon sale added successfully.",
+      "success"
+    );
+
+
+    $("saleOrders").value =
+      "1";
+
+    $("salesAmount").value =
+      "0";
+
+    $("commissionAmount").value =
+      "0";
+
+    $("saleNotes").value =
+      "";
+
+
+    await loadSales();
+
+
+  }catch(error){
+
+    console.error(error);
+
+    showMessage(
+      "saleError",
+      error.message ||
+      "Could not add sale.",
+      "error"
+    );
+
+  }finally{
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "ADD SALE";
+
+  }
+
+}
+
+
+/* =========================================
+   SALES HISTORY
+========================================= */
+
+function renderSalesHistory(){
+
+  const container =
+    $("salesHistory");
+
+
+  const sales =
+    getFilteredSales()
+      .slice(
+        0,
+        30
+      );
+
+
+  if(!sales.length){
+
+    container.innerHTML =
+      "<p class='empty'>" +
+      "No Amazon sales recorded yet." +
+      "</p>";
+
+    return;
+
+  }
+
+
+  container.innerHTML = `
+
+    <div class="table-wrap">
+
+      <table class="analytics-table">
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Date
+            </th>
+
+            <th>
+              Product
+            </th>
+
+            <th>
+              Orders
+            </th>
+
+            <th>
+              Sales
+            </th>
+
+            <th>
+              Commission
+            </th>
+
+            <th>
+              Action
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          ${
+            sales.map(
+              sale => `
+
+                <tr>
+
+                  <td>
+                    ${escapeHtml(
+                      sale.sale_date
+                    )}
+                  </td>
+
+                  <td>
+                    ${escapeHtml(
+                      sale.product_name
+                    )}
+                  </td>
+
+                  <td>
+                    ${Number(
+                      sale.orders || 0
+                    )}
+                  </td>
+
+                  <td>
+                    ${money(
+                      sale.sales_amount
+                    )}
+                  </td>
+
+                  <td>
+                    ${money(
+                      sale.commission_amount
+                    )}
+                  </td>
+
+                  <td>
+
+                    <button
+                      class="btn danger"
+                      onclick="deleteSale(${Number(sale.id)})"
+                    >
+                      Delete
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              `
+            ).join("")
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================
+   DELETE SALE
+========================================= */
+
+async function deleteSale(id){
+
+  if(
+    !confirm(
+      "Delete this Amazon sale?"
+    )
+  ){
+
+    return;
+
+  }
+
+
+  try{
+
+    const response =
+      await fetch(
+
+        SUPABASE_URL +
+        "/rest/v1/amazon_sales?id=eq." +
+        encodeURIComponent(id),
+
+        {
+
+          method:"DELETE",
+
+          headers:{
+            ...authHeaders(),
+            "Prefer":
+              "return=minimal"
+          }
+
+        }
+
+      );
+
+
+    const text =
+      await response.text();
+
+
+    if(!response.ok){
+
+      throw new Error(
+        text ||
+        "Could not delete sale."
+      );
+
+    }
+
+
+    await loadSales();
+
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Delete failed: " +
+      error.message
+    );
+
+  }
 
 }
 
@@ -2157,6 +3407,12 @@ async function init(){
 
     await loadAnalytics();
 
+    await loadSales();
+
+    populateSaleProducts();
+
+    setTodayDate();
+
   }else{
 
     $("login").style.display =
@@ -2175,4 +3431,5 @@ init();
 </script>
 
 </body>
+
 </html>
