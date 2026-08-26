@@ -8,13 +8,91 @@ let category = "All";
 let products = [];
 
 
-/* =========================
+/* =========================================
+   HELPERS
+========================================= */
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/[&<>"']/g, function (match) {
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[match];
+    });
+}
+
+
+function formatPrice(value) {
+  const number = Number(value || 0);
+
+  return "₹" + number.toLocaleString("en-IN", {
+    maximumFractionDigits: 2
+  });
+}
+
+
+/* =========================================
+   LOADING STATE
+========================================= */
+
+function showLoading() {
+
+  grid.innerHTML = `
+    <div class="products-loading">
+      <div class="loader"></div>
+      <p>Finding the best picks...</p>
+    </div>
+  `;
+
+}
+
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+function showEmpty(message = "No products found.") {
+
+  grid.innerHTML = `
+    <div class="products-empty">
+      <div class="empty-icon">✦</div>
+      <h3>Nothing here yet</h3>
+      <p>${escapeHtml(message)}</p>
+    </div>
+  `;
+
+}
+
+
+/* =========================================
+   ERROR STATE
+========================================= */
+
+function showError() {
+
+  grid.innerHTML = `
+    <div class="products-empty">
+      <div class="empty-icon">!</div>
+      <h3>Something went wrong</h3>
+      <p>We couldn't load the products right now.</p>
+      <button class="retry-btn" onclick="loadProducts()">
+        TRY AGAIN
+      </button>
+    </div>
+  `;
+
+}
+
+
+/* =========================================
    TRACK AFFILIATE CLICK
-========================= */
+========================================= */
 
 async function trackAffiliateClick(product) {
-
-  console.log("Tracking affiliate click:", product);
 
   try {
 
@@ -27,7 +105,7 @@ async function trackAffiliateClick(product) {
           "apikey": SUPABASE_KEY,
           "Authorization": `Bearer ${SUPABASE_KEY}`,
           "Content-Type": "application/json",
-          "Prefer": "return=representation"
+          "Prefer": "return=minimal"
         },
 
         body: JSON.stringify({
@@ -37,219 +115,422 @@ async function trackAffiliateClick(product) {
       }
     );
 
-    const result = await response.text();
-
-    console.log("Tracking response:", response.status, result);
 
     if (!response.ok) {
-      console.error("TRACKING FAILED:", result);
-    } else {
-      console.log("AFFILIATE CLICK SAVED SUCCESSFULLY");
+
+      const errorText =
+        await response.text();
+
+      console.error(
+        "Affiliate click tracking failed:",
+        errorText
+      );
+
+      return false;
+
     }
+
+
+    console.log(
+      "Affiliate click tracked:",
+      product.name
+    );
+
+    return true;
+
 
   } catch (error) {
 
-    console.error("Affiliate tracking error:", error);
+    console.error(
+      "Affiliate click tracking error:",
+      error
+    );
+
+    return false;
 
   }
 
 }
 
 
-/* =========================
-   LOAD PRODUCTS
-========================= */
+/* =========================================
+   HANDLE BUY CLICK
+========================================= */
+
+function handleBuyClick(event, product) {
+
+  event.stopPropagation();
+
+  /*
+    Track click without blocking the Amazon
+    link. The visitor is sent to Amazon
+    immediately.
+  */
+
+  trackAffiliateClick(product);
+
+}
+
+
+/* =========================================
+   LOAD PRODUCTS FROM SUPABASE
+========================================= */
 
 async function loadProducts() {
+
+  showLoading();
+
 
   try {
 
     const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?select=id,name,category,price,image_url,description,affiliate_link&order=id.asc`,
+      `${SUPABASE_URL}/rest/v1/products?select=id,name,category,price,image_url,image_2,image_3,image_4,image_5,description,affiliate_link&order=id.asc`,
       {
+        method: "GET",
+
         headers: {
           "apikey": SUPABASE_KEY,
           "Authorization": `Bearer ${SUPABASE_KEY}`
-        }
+        },
+
+        cache: "no-store"
       }
     );
 
+
     if (!response.ok) {
-      throw new Error(await response.text());
+
+      const errorText =
+        await response.text();
+
+      throw new Error(errorText);
+
     }
 
-    const data = await response.json();
 
-    products = data.map(p => ({
-      id: p.id,
-      name: p.name,
-      category: p.category,
-      price: `₹${Number(p.price).toLocaleString("en-IN")}`,
-      description: p.description || "",
-      image: p.image_url || "",
-      affiliateLink: p.affiliate_link || "#"
-    }));
+    const data =
+      await response.json();
+
+
+    products =
+      (data || []).map(product => ({
+
+        id: product.id,
+
+        name: product.name || "",
+
+        category:
+          product.category || "Other",
+
+        price:
+          Number(product.price || 0),
+
+        description:
+          product.description || "",
+
+        image:
+          product.image_url || "",
+
+        image2:
+          product.image_2 || "",
+
+        image3:
+          product.image_3 || "",
+
+        image4:
+          product.image_4 || "",
+
+        image5:
+          product.image_5 || "",
+
+        affiliateLink:
+          product.affiliate_link || "#"
+
+      }));
+
 
     render();
 
+
   } catch (error) {
 
-    console.error("Supabase Error:", error);
+    console.error(
+      "Supabase product error:",
+      error
+    );
 
-    grid.innerHTML = `
-      <p style="color:red;">
-        Products load nahi ho rahe. Console check karo.
-      </p>
-    `;
+    showError();
 
   }
 
 }
 
 
-/* =========================
+/* =========================================
    RENDER PRODUCTS
-========================= */
+========================================= */
 
 function render() {
 
-  const q = search.value.toLowerCase().trim();
-
-  const filtered = products.filter(p =>
-    (category === "All" || p.category === category) &&
-    (
-      p.name.toLowerCase().includes(q) ||
-      p.description.toLowerCase().includes(q)
-    )
-  );
+  const query =
+    search
+      ? search.value.toLowerCase().trim()
+      : "";
 
 
-  grid.innerHTML = filtered.length
+  const filtered =
+    products.filter(product => {
 
-    ? filtered.map(p => `
-
-      <article
-        class="product"
-        onclick="location.href='product.html?id=${p.id}'"
-        style="cursor:pointer"
-      >
-
-        <div class="product-img">
-
-          ${
-            p.image
-
-            ? `
-              <img
-                src="${p.image}"
-                alt="${p.name}"
-              >
-            `
-
-            : `
-              <div class="placeholder">
-                ✦
-              </div>
-            `
-          }
-
-        </div>
+      const matchesCategory =
+        category === "All" ||
+        product.category === category;
 
 
-        <div class="product-info">
-
-          <span class="tag">
-            ${p.category}
-          </span>
-
-
-          <h3>
-            ${p.name}
-          </h3>
+      const searchableText =
+        (
+          product.name +
+          " " +
+          product.description +
+          " " +
+          product.category
+        ).toLowerCase();
 
 
-          <p class="desc">
-            ${p.description}
-          </p>
+      const matchesSearch =
+        !query ||
+        searchableText.includes(query);
 
 
-          <div class="bottom">
+      return (
+        matchesCategory &&
+        matchesSearch
+      );
 
-            <span class="price">
-              ${p.price}
-            </span>
+    });
 
 
-            <a
-              class="buy"
-              href="${p.affiliateLink}"
-              target="_blank"
-              rel="nofollow sponsored noopener"
+  if (!filtered.length) {
 
-              onclick="
-                event.stopPropagation();
-                trackAffiliateClick(${JSON.stringify(p)});
-              "
-            >
-              BUY NOW ↗
-            </a>
+    showEmpty(
+      query
+        ? `No products match "${query}".`
+        : "Products will appear here soon."
+    );
 
-          </div>
+    return;
 
-        </div>
+  }
 
-      </article>
 
-    `).join("")
-
-    : `
-      <p style="color:#777">
-        No products found.
-      </p>
-    `;
+  grid.innerHTML =
+    filtered
+      .map(renderProduct)
+      .join("");
 
 }
 
 
-/* =========================
+/* =========================================
+   PRODUCT CARD
+========================================= */
+
+function renderProduct(product) {
+
+  const image =
+    product.image;
+
+
+  const safeName =
+    escapeHtml(product.name);
+
+
+  const safeCategory =
+    escapeHtml(product.category);
+
+
+  const safeDescription =
+    escapeHtml(product.description);
+
+
+  const safeImage =
+    escapeHtml(image);
+
+
+  const safeAffiliateLink =
+    escapeHtml(product.affiliateLink);
+
+
+  return `
+
+    <article
+      class="product"
+      onclick="openProduct(${Number(product.id)})"
+      tabindex="0"
+      role="article"
+    >
+
+      <div class="product-img">
+
+        ${
+          image
+
+            ? `
+
+              <img
+                src="${safeImage}"
+                alt="${safeName}"
+                loading="lazy"
+                onerror="this.parentElement.innerHTML='<div class=&quot;placeholder&quot;>✦</div>'"
+              >
+
+            `
+
+            : `
+
+              <div class="placeholder">
+                ✦
+              </div>
+
+            `
+        }
+
+      </div>
+
+
+      <div class="product-info">
+
+        <span class="tag">
+          ${safeCategory}
+        </span>
+
+
+        <h3>
+          ${safeName}
+        </h3>
+
+
+        ${
+          product.description
+
+            ? `
+
+              <p class="desc">
+                ${safeDescription}
+              </p>
+
+            `
+
+            : ""
+        }
+
+
+        <div class="bottom">
+
+          <span class="price">
+            ${formatPrice(product.price)}
+          </span>
+
+
+          ${
+            product.affiliateLink &&
+            product.affiliateLink !== "#"
+
+              ? `
+
+                <a
+                  class="buy"
+                  href="${safeAffiliateLink}"
+                  target="_blank"
+                  rel="nofollow sponsored noopener"
+                  onclick="handleBuyClick(event, ${JSON.stringify(product).replace(/"/g, "&quot;")})"
+                >
+                  BUY NOW ↗
+                </a>
+
+              `
+
+              : `
+
+                <span class="buy disabled">
+                  VIEW ↗
+                </span>
+
+              `
+          }
+
+        </div>
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+
+/* =========================================
+   OPEN PRODUCT PAGE
+========================================= */
+
+function openProduct(id) {
+
+  window.location.href =
+    `product.html?id=${encodeURIComponent(id)}`;
+
+}
+
+
+/* =========================================
    CATEGORY FILTER
-========================= */
+========================================= */
 
 document
   .querySelectorAll(".cat")
   .forEach(button => {
 
-    button.addEventListener("click", () => {
+    button.addEventListener(
+      "click",
+      function () {
 
-      document
-        .querySelectorAll(".cat")
-        .forEach(x =>
-          x.classList.remove("active")
-        );
+        document
+          .querySelectorAll(".cat")
+          .forEach(item => {
+            item.classList.remove("active");
+          });
 
-      button.classList.add("active");
 
-      category = button.dataset.category;
+        this.classList.add("active");
 
-      render();
 
-    });
+        category =
+          this.dataset.category;
+
+
+        render();
+
+      }
+    );
 
   });
 
 
-/* =========================
+/* =========================================
    SEARCH
-========================= */
+========================================= */
 
-search.addEventListener(
-  "input",
-  render
-);
+if (search) {
+
+  search.addEventListener(
+    "input",
+    render
+  );
+
+}
 
 
-/* =========================
+/* =========================================
    START
-========================= */
+========================================= */
 
 loadProducts();
