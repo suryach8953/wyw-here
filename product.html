@@ -7,7 +7,12 @@
 
 <meta
   name="viewport"
-  content="width=device-width,initial-scale=1"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+  name="description"
+  content="Discover product details, images and the best place to buy."
 >
 
 <title>WYW HERE | Product</title>
@@ -19,49 +24,135 @@
 
 <style>
 
-/* =========================
-   PRODUCT DETAIL
-========================= */
+/* =====================================================
+   PRODUCT DETAIL — PREMIUM POLISH
+===================================================== */
+
+:root{
+  --black:#151515;
+  --dark:#222;
+  --muted:#777;
+  --light:#f5f5f2;
+  --border:#e8e8e5;
+  --white:#fff;
+  --radius:24px;
+}
+
+
+/* =====================================================
+   PAGE
+===================================================== */
+
+.product-page{
+
+  min-height:70vh;
+
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      #ffffff 0,
+      #f8f8f5 35%,
+      #f5f5f2 100%
+    );
+
+}
+
+
+/* =====================================================
+   BREADCRUMB
+===================================================== */
+
+.breadcrumb{
+
+  max-width:1180px;
+
+  margin:0 auto;
+
+  padding:28px 6% 0;
+
+  font-size:13px;
+
+  color:#888;
+
+}
+
+
+.breadcrumb a{
+
+  color:#555;
+
+  text-decoration:none;
+
+  transition:.2s;
+
+}
+
+
+.breadcrumb a:hover{
+
+  color:#111;
+
+}
+
+
+.breadcrumb span{
+
+  margin:0 8px;
+
+  color:#bbb;
+
+}
+
+
+/* =====================================================
+   MAIN DETAIL
+===================================================== */
 
 .detail{
 
-  max-width:1100px;
+  max-width:1180px;
 
-  margin:60px auto;
+  margin:30px auto 80px;
 
   padding:0 6%;
 
   display:grid;
 
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:
+    minmax(0,1.08fr)
+    minmax(0,.92fr);
 
-  gap:55px;
+  gap:70px;
 
-  align-items:center;
+  align-items:start;
 
 }
 
 
-/* =========================
+/* =====================================================
    GALLERY
-========================= */
+===================================================== */
 
 .gallery{
 
   width:100%;
 
+  position:sticky;
+
+  top:25px;
+
 }
 
 
-/* MAIN IMAGE */
-
 .detail-image{
 
-  height:500px;
+  height:570px;
 
-  background:#eee;
+  background:#eeeeeb;
 
-  border-radius:25px;
+  border:1px solid var(--border);
+
+  border-radius:28px;
 
   display:flex;
 
@@ -72,6 +163,29 @@
   overflow:hidden;
 
   position:relative;
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.07);
+
+}
+
+
+.detail-image::after{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  pointer-events:none;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.18),
+      transparent 45%
+    );
 
 }
 
@@ -84,21 +198,77 @@
 
   object-fit:cover;
 
+  transition:
+    opacity .25s ease,
+    transform .45s ease;
+
 }
 
 
-/* PLACEHOLDER */
+.detail-image:hover img{
+
+  transform:scale(1.025);
+
+}
+
+
+/* =====================================================
+   IMAGE COUNTER
+===================================================== */
+
+.image-counter{
+
+  position:absolute;
+
+  left:16px;
+
+  bottom:16px;
+
+  z-index:6;
+
+  padding:7px 11px;
+
+  border-radius:999px;
+
+  background:rgba(0,0,0,.72);
+
+  color:#fff;
+
+  font-size:12px;
+
+  font-weight:700;
+
+  backdrop-filter:blur(8px);
+
+}
+
+
+/* =====================================================
+   PLACEHOLDER
+===================================================== */
 
 .placeholder{
 
-  font-size:80px;
+  width:100%;
+
+  height:100%;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-size:90px;
 
   color:#aaa;
 
 }
 
 
-/* ARROWS */
+/* =====================================================
+   GALLERY BUTTONS
+===================================================== */
 
 .gallery-btn{
 
@@ -108,19 +278,19 @@
 
   transform:translateY(-50%);
 
-  width:42px;
+  width:46px;
 
-  height:42px;
+  height:46px;
 
-  border:0;
+  border:1px solid rgba(255,255,255,.25);
 
   border-radius:50%;
 
-  background:rgba(0,0,0,.75);
+  background:rgba(20,20,20,.78);
 
   color:#fff;
 
-  font-size:22px;
+  font-size:28px;
 
   cursor:pointer;
 
@@ -130,7 +300,14 @@
 
   justify-content:center;
 
-  z-index:5;
+  z-index:10;
+
+  transition:
+    background .2s ease,
+    transform .2s ease,
+    box-shadow .2s ease;
+
+  backdrop-filter:blur(8px);
 
 }
 
@@ -139,49 +316,69 @@
 
   background:#000;
 
+  transform:
+    translateY(-50%)
+    scale(1.06);
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.2);
+
+}
+
+
+.gallery-btn:active{
+
+  transform:
+    translateY(-50%)
+    scale(.96);
+
 }
 
 
 .gallery-prev{
 
-  left:15px;
+  left:18px;
 
 }
 
 
 .gallery-next{
 
-  right:15px;
+  right:18px;
 
 }
 
 
-/* THUMBNAILS */
+/* =====================================================
+   THUMBNAILS
+===================================================== */
 
 .thumbnails{
 
   display:flex;
 
-  gap:10px;
+  gap:11px;
 
-  margin-top:14px;
+  margin-top:15px;
 
   overflow-x:auto;
 
-  padding-bottom:5px;
+  padding:3px 2px 8px;
+
+  scrollbar-width:thin;
 
 }
 
 
 .thumbnail{
 
-  width:75px;
+  width:78px;
 
-  height:75px;
+  height:78px;
 
-  flex:0 0 75px;
+  flex:0 0 78px;
 
-  border-radius:12px;
+  border-radius:14px;
 
   overflow:hidden;
 
@@ -190,6 +387,20 @@
   border:2px solid transparent;
 
   background:#eee;
+
+  position:relative;
+
+  transition:
+    transform .2s ease,
+    border-color .2s ease,
+    opacity .2s ease;
+
+}
+
+
+.thumbnail:hover{
+
+  transform:translateY(-2px);
 
 }
 
@@ -202,55 +413,123 @@
 
   object-fit:cover;
 
+  display:block;
+
 }
 
 
 .thumbnail.active{
 
-  border-color:#151515;
+  border-color:var(--black);
+
+  box-shadow:
+    0 5px 18px rgba(0,0,0,.12);
 
 }
 
 
-/* =========================
-   PRODUCT INFO
-========================= */
+.thumbnail.active::after{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  border-radius:11px;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.3);
+
+}
+
+
+/* =====================================================
+   PRODUCT INFORMATION
+===================================================== */
+
+.detail-info{
+
+  padding-top:12px;
+
+}
+
 
 .detail-info .tag{
 
+  display:inline-flex;
+
+  align-items:center;
+
+  padding:7px 12px;
+
+  border-radius:999px;
+
+  background:#eaeae7;
+
+  color:#555;
+
   font-size:11px;
+
+  font-weight:800;
 
   text-transform:uppercase;
 
-  letter-spacing:2px;
-
-  color:#777;
+  letter-spacing:1.5px;
 
 }
 
 
 .detail-info h1{
 
-  font-family:"Space Grotesk",sans-serif;
+  font-family:
+    "Space Grotesk",
+    Arial,
+    sans-serif;
 
-  font-size:52px;
+  font-size:clamp(38px,5vw,62px);
 
-  line-height:1;
+  line-height:.98;
 
-  margin:12px 0;
+  margin:20px 0 15px;
 
-  letter-spacing:-2px;
+  letter-spacing:-3px;
+
+  color:var(--black);
 
 }
 
 
 .detail-price{
 
-  font-size:25px;
+  display:flex;
 
-  font-weight:700;
+  align-items:center;
 
-  margin:18px 0;
+  gap:12px;
+
+  font-size:30px;
+
+  font-weight:800;
+
+  margin:20px 0;
+
+  color:var(--black);
+
+}
+
+
+.detail-price::after{
+
+  content:"";
+
+  display:inline-block;
+
+  width:45px;
+
+  height:1px;
+
+  background:#ccc;
 
 }
 
@@ -259,32 +538,84 @@
 
   color:#666;
 
-  line-height:1.7;
+  font-size:16px;
 
-  max-width:520px;
+  line-height:1.8;
+
+  max-width:540px;
+
+  margin:22px 0;
+
+}
+
+
+/* =====================================================
+   BUY BOX
+===================================================== */
+
+.buy-box{
+
+  margin-top:30px;
+
+  padding:20px;
+
+  border:1px solid var(--border);
+
+  border-radius:18px;
+
+  background:rgba(255,255,255,.72);
+
+  box-shadow:
+    0 12px 35px rgba(0,0,0,.045);
+
+}
+
+
+.buy-note{
+
+  margin:0 0 13px;
+
+  font-size:12px;
+
+  color:#777;
 
 }
 
 
 .buy-large{
 
-  display:inline-block;
+  display:flex;
 
-  margin-top:25px;
+  align-items:center;
 
-  background:#151515;
+  justify-content:center;
+
+  gap:10px;
+
+  width:100%;
+
+  min-height:56px;
+
+  background:var(--black);
 
   color:#fff;
 
   text-decoration:none;
 
-  padding:16px 28px;
+  padding:16px 24px;
 
-  border-radius:12px;
+  border-radius:13px;
 
-  font-weight:700;
+  font-weight:800;
+
+  letter-spacing:.2px;
 
   cursor:pointer;
+
+  transition:
+    transform .2s ease,
+    background .2s ease,
+    box-shadow .2s ease;
 
 }
 
@@ -293,14 +624,82 @@
 
   background:#000;
 
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(0,0,0,.18);
+
 }
 
 
+.buy-large:active{
+
+  transform:translateY(0);
+
+}
+
+
+/* =====================================================
+   TRUST ROW
+===================================================== */
+
+.trust-row{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:10px;
+
+  margin-top:14px;
+
+}
+
+
+.trust-item{
+
+  text-align:center;
+
+  padding:12px 6px;
+
+  border-radius:12px;
+
+  background:#f4f4f1;
+
+  font-size:11px;
+
+  color:#666;
+
+}
+
+
+.trust-item strong{
+
+  display:block;
+
+  color:#222;
+
+  font-size:12px;
+
+  margin-bottom:3px;
+
+}
+
+
+/* =====================================================
+   BACK LINK
+===================================================== */
+
 .back-link{
 
-  display:inline-block;
+  display:inline-flex;
 
-  margin-top:20px;
+  align-items:center;
+
+  gap:7px;
+
+  margin-top:22px;
 
   color:#555;
 
@@ -308,51 +707,234 @@
 
   font-size:14px;
 
+  font-weight:600;
+
+  transition:.2s;
+
 }
 
 
-/* NOT FOUND */
+.back-link:hover{
+
+  color:#111;
+
+  transform:translateX(-3px);
+
+}
+
+
+/* =====================================================
+   NOT FOUND / ERROR
+===================================================== */
 
 .not-found{
 
   max-width:700px;
 
-  margin:100px auto;
+  margin:110px auto;
 
-  padding:30px;
+  padding:50px 25px;
 
   text-align:center;
 
 }
 
 
-/* =========================
-   MOBILE
-========================= */
+.not-found h1{
 
-@media(max-width:750px){
+  font-size:42px;
+
+  margin-bottom:10px;
+
+}
+
+
+.not-found p{
+
+  color:#777;
+
+  line-height:1.7;
+
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.product-loading{
+
+  max-width:1180px;
+
+  margin:60px auto;
+
+  padding:0 6%;
+
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:70px;
+
+}
+
+
+.skeleton{
+
+  background:
+    linear-gradient(
+      90deg,
+      #eee 25%,
+      #f7f7f5 50%,
+      #eee 75%
+    );
+
+  background-size:200% 100%;
+
+  animation:
+    skeletonLoading 1.4s infinite;
+
+  border-radius:24px;
+
+}
+
+
+.skeleton-image{
+
+  height:570px;
+
+}
+
+
+.skeleton-line{
+
+  height:18px;
+
+  margin-bottom:14px;
+
+  border-radius:8px;
+
+}
+
+
+.skeleton-title{
+
+  width:80%;
+
+  height:55px;
+
+  margin:20px 0;
+
+}
+
+
+@keyframes skeletonLoading{
+
+  from{
+    background-position:200% 0;
+  }
+
+  to{
+    background-position:-200% 0;
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:900px){
 
   .detail{
 
     grid-template-columns:1fr;
 
-    margin-top:35px;
+    gap:38px;
 
-    gap:30px;
+    margin-top:25px;
+
+  }
+
+
+  .gallery{
+
+    position:relative;
+
+    top:auto;
 
   }
 
 
   .detail-image{
 
-    height:350px;
+    height:min(560px,75vw);
+
+    min-height:350px;
 
   }
 
 
-  .detail-info h1{
+  .detail-info{
 
-    font-size:40px;
+    padding-top:0;
+
+  }
+
+}
+
+
+@media(max-width:600px){
+
+  .breadcrumb{
+
+    padding-top:20px;
+
+  }
+
+
+  .detail{
+
+    padding:0 5%;
+
+    margin-bottom:55px;
+
+  }
+
+
+  .detail-image{
+
+    min-height:300px;
+
+    height:92vw;
+
+    border-radius:20px;
+
+  }
+
+
+  .gallery-btn{
+
+    width:40px;
+
+    height:40px;
+
+    font-size:23px;
+
+  }
+
+
+  .gallery-prev{
+
+    left:10px;
+
+  }
+
+
+  .gallery-next{
+
+    right:10px;
 
   }
 
@@ -364,6 +946,61 @@
     height:65px;
 
     flex-basis:65px;
+
+    border-radius:11px;
+
+  }
+
+
+  .detail-info h1{
+
+    font-size:40px;
+
+    letter-spacing:-2px;
+
+  }
+
+
+  .detail-price{
+
+    font-size:26px;
+
+  }
+
+
+  .detail-desc{
+
+    font-size:15px;
+
+    line-height:1.7;
+
+  }
+
+
+  .buy-box{
+
+    padding:15px;
+
+  }
+
+
+  .trust-row{
+
+    grid-template-columns:1fr 1fr 1fr;
+
+  }
+
+
+  .trust-item{
+
+    font-size:10px;
+
+  }
+
+
+  .trust-item strong{
+
+    font-size:11px;
 
   }
 
@@ -377,9 +1014,9 @@
 <body>
 
 
-<!-- =========================
+<!-- =====================================================
      HEADER
-========================= -->
+===================================================== -->
 
 <header class="header">
 
@@ -401,12 +1038,83 @@
       Categories
     </a>
 
+    <a href="index.html#about">
+      About
+    </a>
+
   </nav>
 
 </header>
 
 
-<main id="content"></main>
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="product-page">
+
+
+  <!-- BREADCRUMB -->
+
+  <div class="breadcrumb">
+
+    <a href="index.html">
+      Home
+    </a>
+
+    <span>›</span>
+
+    <span>
+      Product
+    </span>
+
+  </div>
+
+
+  <!-- CONTENT -->
+
+  <div id="content">
+
+    <div class="product-loading">
+
+      <div class="skeleton skeleton-image"></div>
+
+      <div>
+
+        <div
+          class="skeleton"
+          style="width:120px;height:30px"
+        ></div>
+
+        <div class="skeleton skeleton-title"></div>
+
+        <div
+          class="skeleton"
+          style="width:180px;height:35px"
+        ></div>
+
+        <br>
+
+        <div class="skeleton skeleton-line"></div>
+
+        <div
+          class="skeleton skeleton-line"
+          style="width:90%"
+        ></div>
+
+        <div
+          class="skeleton skeleton-line"
+          style="width:70%"
+        ></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+</main>
 
 
 <script>
@@ -434,17 +1142,12 @@ const id =
 
 
 /* =====================================================
-   GALLERY VARIABLES
+   GALLERY
 ===================================================== */
 
 let galleryImages = [];
 
 let currentImage = 0;
-
-
-/* =====================================================
-   CURRENT PRODUCT
-===================================================== */
 
 let currentProduct = null;
 
@@ -455,27 +1158,44 @@ let currentProduct = null;
 
 function escapeHtml(value){
 
-  return String(value || "")
+  return String(value ?? "")
     .replace(
       /[&<>"']/g,
-      function(m){
+      function(match){
 
         return {
 
           "&":"&amp;",
-
           "<":"&lt;",
-
           ">":"&gt;",
-
           '"':"&quot;",
-
           "'":"&#039;"
 
-        }[m];
+        }[match];
 
       }
     );
+
+}
+
+
+/* =====================================================
+   FORMAT PRICE
+===================================================== */
+
+function formatPrice(value){
+
+  const number =
+    Number(value || 0);
+
+
+  return number.toLocaleString(
+    "en-IN",
+    {
+      minimumFractionDigits:0,
+      maximumFractionDigits:2
+    }
+  );
 
 }
 
@@ -490,95 +1210,55 @@ async function trackAffiliateClick(){
 
     if(!currentProduct){
 
-      console.error(
-        "Affiliate tracking failed: product not loaded"
-      );
-
       return false;
 
     }
 
 
-    const trackingData = {
+    const response =
+      await fetch(
 
-      product_id: currentProduct.id,
+        `${SUPABASE_URL}/rest/v1/affiliate_clicks`,
 
-      product_name: currentProduct.name
+        {
 
-    };
+          method:"POST",
 
+          headers:{
 
-    console.log(
-      "Sending affiliate click:",
-      trackingData
-    );
+            "apikey":
+              SUPABASE_KEY,
 
+            "Authorization":
+              `Bearer ${SUPABASE_KEY}`,
 
-    const response = await fetch(
+            "Content-Type":
+              "application/json",
 
-      `${SUPABASE_URL}/rest/v1/affiliate_clicks`,
+            "Prefer":
+              "return=minimal"
 
-      {
+          },
 
-        method:"POST",
+          body:
+            JSON.stringify({
 
-        headers:{
+              product_id:
+                currentProduct.id,
 
-          apikey:
-            SUPABASE_KEY,
+              product_name:
+                currentProduct.name
 
-          Authorization:
-            `Bearer ${SUPABASE_KEY}`,
+            }),
 
-          "Content-Type":
-            "application/json",
+          keepalive:true
 
-          Prefer:
-            "return=minimal"
+        }
 
-        },
-
-        body:
-          JSON.stringify(
-            trackingData
-          ),
-
-        /*
-         * Important:
-         * Request ko page navigation ke time
-         * cancel hone se bachane ke liye.
-         */
-
-        keepalive:true
-
-      }
-
-    );
-
-
-    if(!response.ok){
-
-      const errorText =
-        await response.text();
-
-      console.error(
-        "Affiliate tracking failed:",
-        response.status,
-        errorText
       );
 
-      return false;
 
-    }
-
-
-    console.log(
-      "Affiliate click tracked successfully"
-    );
-
-
-    return true;
-
+    return response.ok;
 
   }
 
@@ -597,17 +1277,12 @@ async function trackAffiliateClick(){
 
 
 /* =====================================================
-   BUY BUTTON
+   BUY NOW
 ===================================================== */
 
 async function handleAffiliateClick(event){
 
-  /*
-   * Normal link navigation ko temporarily stop karte hain.
-   */
-
   event.preventDefault();
-
 
   event.stopPropagation();
 
@@ -622,8 +1297,8 @@ async function handleAffiliateClick(event){
 
   if(!affiliateLink){
 
-    console.error(
-      "Affiliate link missing"
+    alert(
+      "Affiliate link is not available."
     );
 
     return;
@@ -632,8 +1307,7 @@ async function handleAffiliateClick(event){
 
 
   /*
-   * New tab pehle hi open kar dete hain.
-   * Isse browser popup blocker ke chances kam hote hain.
+   * Open new tab immediately.
    */
 
   const newWindow =
@@ -644,14 +1318,14 @@ async function handleAffiliateClick(event){
 
 
   /*
-   * Tracking request.
+   * Track click.
    */
 
   await trackAffiliateClick();
 
 
   /*
-   * Tracking ke baad affiliate website open.
+   * Continue to affiliate URL.
    */
 
   if(newWindow){
@@ -663,12 +1337,7 @@ async function handleAffiliateClick(event){
 
   else{
 
-    /*
-     * Agar browser ne popup block kiya
-     * to current tab me open hoga.
-     */
-
-    window.location.href =
+    location.href =
       affiliateLink;
 
   }
@@ -693,12 +1362,6 @@ async function loadProduct(){
     }
 
 
-    console.log(
-      "Loading product ID:",
-      id
-    );
-
-
     const response =
       await fetch(
 
@@ -708,10 +1371,10 @@ async function loadProduct(){
 
           headers:{
 
-            apikey:
+            "apikey":
               SUPABASE_KEY,
 
-            Authorization:
+            "Authorization":
               `Bearer ${SUPABASE_KEY}`
 
           }
@@ -743,51 +1406,34 @@ async function loadProduct(){
     }
 
 
-    const p =
+    const product =
       data[0];
 
 
-    /*
-     * Current product ko memory me save.
-     * BUY NOW ke time isi se product_id
-     * aur product_name jayega.
-     */
-
-    currentProduct = p;
-
-
-    console.log(
-      "Product loaded:",
-      currentProduct
-    );
+    currentProduct =
+      product;
 
 
     document.title =
-      "WYW HERE | " + p.name;
+      `WYW HERE | ${product.name}`;
 
 
     /* =================================================
-       COLLECT ALL IMAGES
+       IMAGES
     ================================================= */
 
     galleryImages = [
 
-      p.image_url,
-
-      p.image_2,
-
-      p.image_3,
-
-      p.image_4,
-
-      p.image_5
+      product.image_url,
+      product.image_2,
+      product.image_3,
+      product.image_4,
+      product.image_5
 
     ].filter(
-
       image =>
         image &&
         String(image).trim()
-
     );
 
 
@@ -795,7 +1441,7 @@ async function loadProduct(){
 
 
     /* =================================================
-       PRODUCT HTML
+       RENDER
     ================================================= */
 
     content.innerHTML = `
@@ -803,9 +1449,7 @@ async function loadProduct(){
       <section class="detail">
 
 
-        <!-- =========================
-             GALLERY
-        ========================= -->
+        <!-- GALLERY -->
 
         <div class="gallery">
 
@@ -814,7 +1458,6 @@ async function loadProduct(){
             class="detail-image"
             id="mainImageBox"
           >
-
 
             ${
               galleryImages.length
@@ -826,9 +1469,9 @@ async function loadProduct(){
               <img
                 id="mainProductImage"
                 src="${escapeHtml(galleryImages[0])}"
-                alt="${escapeHtml(p.name)}"
+                alt="${escapeHtml(product.name)}"
+                loading="eager"
               >
-
 
               ${
                 galleryImages.length > 1
@@ -864,6 +1507,14 @@ async function loadProduct(){
 
               }
 
+
+              <div
+                class="image-counter"
+                id="imageCounter"
+              >
+                1 / ${galleryImages.length}
+              </div>
+
               `
 
               :
@@ -877,7 +1528,6 @@ async function loadProduct(){
               `
 
             }
-
 
           </div>
 
@@ -897,23 +1547,28 @@ async function loadProduct(){
               ${galleryImages.map(
                 (image,index) => `
 
-                <div
-                  class="thumbnail ${
-                    index === 0
-                      ? "active"
-                      : ""
-                  }"
-                  onclick="selectImage(${index})"
-                >
-
-                  <img
-                    src="${escapeHtml(image)}"
-                    alt="Product image ${index + 1}"
+                  <div
+                    class="
+                      thumbnail
+                      ${
+                        index === 0
+                          ? "active"
+                          : ""
+                      }
+                    "
+                    onclick="selectImage(${index})"
                   >
 
-                </div>
+                    <img
+                      src="${escapeHtml(image)}"
+                      alt="Product image ${index + 1}"
+                      loading="lazy"
+                    >
 
-              `).join("")}
+                  </div>
+
+                `
+              ).join("")}
 
             </div>
 
@@ -929,72 +1584,134 @@ async function loadProduct(){
         </div>
 
 
-        <!-- =========================
-             PRODUCT INFORMATION
-        ========================= -->
+        <!-- PRODUCT INFO -->
 
         <div class="detail-info">
 
 
           <span class="tag">
 
-            ${escapeHtml(p.category)}
+            ${escapeHtml(
+              product.category ||
+              "Featured"
+            )}
 
           </span>
 
 
           <h1>
 
-            ${escapeHtml(p.name)}
+            ${escapeHtml(
+              product.name
+            )}
 
           </h1>
 
 
           <div class="detail-price">
 
-            ₹${Number(p.price)
-              .toLocaleString("en-IN")}
+            ₹${formatPrice(
+              product.price
+            )}
 
           </div>
 
 
-          <p class="detail-desc">
+          ${
+            product.description
 
-            ${escapeHtml(
-              p.description || ""
-            )}
+            ?
 
-          </p>
+            `
 
+            <p class="detail-desc">
 
-          <!-- =========================
-               AFFILIATE BUTTON
-          ========================= -->
+              ${escapeHtml(
+                product.description
+              )}
 
-          <a
-            class="buy-large"
-            href="${escapeHtml(
-              p.affiliate_link || "#"
-            )}"
-            data-affiliate-link="${escapeHtml(
-              p.affiliate_link || ""
-            )}"
-            target="_blank"
-            rel="nofollow sponsored noopener"
-            onclick="handleAffiliateClick(event)"
-          >
+            </p>
 
-            CHECK PRICE / BUY NOW ↗
+            `
 
-          </a>
+            :
+
+            ""
+
+          }
 
 
-          <br>
+          <div class="buy-box">
+
+            <p class="buy-note">
+
+              Check the latest price and availability.
+
+            </p>
+
+
+            <a
+              class="buy-large"
+              href="${escapeHtml(
+                product.affiliate_link || "#"
+              )}"
+              data-affiliate-link="${escapeHtml(
+                product.affiliate_link || ""
+              )}"
+              target="_blank"
+              rel="nofollow sponsored noopener"
+              onclick="handleAffiliateClick(event)"
+            >
+
+              CHECK PRICE / BUY NOW
+
+              <span>↗</span>
+
+            </a>
+
+
+            <div class="trust-row">
+
+              <div class="trust-item">
+
+                <strong>
+                  Curated
+                </strong>
+
+                Handpicked
+
+              </div>
+
+
+              <div class="trust-item">
+
+                <strong>
+                  Easy
+                </strong>
+
+                Shop online
+
+              </div>
+
+
+              <div class="trust-item">
+
+                <strong>
+                  Updated
+                </strong>
+
+                Price may vary
+
+              </div>
+
+            </div>
+
+          </div>
 
 
           <a
             class="back-link"
-            href="index.html"
+            href="index.html#products"
           >
 
             ← Back to products
@@ -1010,18 +1727,13 @@ async function loadProduct(){
     `;
 
 
-    /*
-     * Check whether affiliate link exists.
-     */
-
-    if(!p.affiliate_link){
+    if(!product.affiliate_link){
 
       console.warn(
-        "WARNING: This product has no affiliate_link"
+        "Affiliate link missing."
       );
 
     }
-
 
   }
 
@@ -1042,12 +1754,12 @@ async function loadProduct(){
         </h1>
 
         <p>
-          Product load nahi ho raha.
+          We couldn't load this product right now.
         </p>
 
         <a
           class="back-link"
-          href="index.html"
+          href="index.html#products"
         >
 
           ← Back to products
@@ -1070,11 +1782,8 @@ async function loadProduct(){
 function selectImage(index){
 
   if(
-
     index < 0 ||
-
     index >= galleryImages.length
-
   ){
 
     return;
@@ -1109,8 +1818,7 @@ function nextImage(){
   currentImage =
     (
       currentImage + 1
-    )
-    %
+    ) %
     galleryImages.length;
 
 
@@ -1139,8 +1847,7 @@ function previousImage(){
       currentImage -
       1 +
       galleryImages.length
-    )
-    %
+    ) %
     galleryImages.length;
 
 
@@ -1155,16 +1862,30 @@ function previousImage(){
 
 function updateGallery(){
 
-  const mainImage =
+  const image =
     document.getElementById(
       "mainProductImage"
     );
 
 
-  if(mainImage){
+  if(image){
 
-    mainImage.src =
-      galleryImages[currentImage];
+    image.style.opacity =
+      "0";
+
+
+    setTimeout(
+      () => {
+
+        image.src =
+          galleryImages[currentImage];
+
+        image.style.opacity =
+          "1";
+
+      },
+      120
+    );
 
   }
 
@@ -1172,22 +1893,125 @@ function updateGallery(){
   document
     .querySelectorAll(".thumbnail")
     .forEach(
-
       (thumbnail,index) => {
 
         thumbnail.classList.toggle(
-
           "active",
-
           index === currentImage
-
         );
 
       }
-
     );
 
+
+  const counter =
+    document.getElementById(
+      "imageCounter"
+    );
+
+
+  if(counter){
+
+    counter.textContent =
+      `${currentImage + 1} / ${galleryImages.length}`;
+
+  }
+
 }
+
+
+/* =====================================================
+   KEYBOARD GALLERY
+===================================================== */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      !galleryImages.length
+    ){
+
+      return;
+
+    }
+
+
+    if(event.key === "ArrowRight"){
+
+      nextImage();
+
+    }
+
+
+    if(event.key === "ArrowLeft"){
+
+      previousImage();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   TOUCH SWIPE
+===================================================== */
+
+let touchStartX = 0;
+
+let touchEndX = 0;
+
+
+document.addEventListener(
+  "touchstart",
+  event => {
+
+    touchStartX =
+      event.changedTouches[0].screenX;
+
+  },
+  {passive:true}
+);
+
+
+document.addEventListener(
+  "touchend",
+  event => {
+
+    touchEndX =
+      event.changedTouches[0].screenX;
+
+
+    const difference =
+      touchStartX -
+      touchEndX;
+
+
+    if(
+      Math.abs(difference) < 50
+    ){
+
+      return;
+
+    }
+
+
+    if(difference > 0){
+
+      nextImage();
+
+    }
+
+    else{
+
+      previousImage();
+
+    }
+
+  },
+  {passive:true}
+);
 
 
 /* =====================================================
@@ -1205,12 +2029,13 @@ function showNotFound(){
       </h1>
 
       <p>
-        Please go back and choose another product.
+        This product may have been removed
+        or the link may be incorrect.
       </p>
 
       <a
         class="back-link"
-        href="index.html"
+        href="index.html#products"
       >
 
         ← Back to products
