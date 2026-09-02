@@ -21,9 +21,9 @@ let currentPage = 1;
 const productsPerPage = 12;
 
 
-/* =========================================
+/* =========================================================
    HELPERS
-========================================= */
+========================================================= */
 
 function escapeHtml(value) {
 
@@ -31,17 +31,11 @@ function escapeHtml(value) {
     .replace(/[&<>"']/g, function (match) {
 
       return {
-
         "&": "&amp;",
-
         "<": "&lt;",
-
         ">": "&gt;",
-
         '"': "&quot;",
-
         "'": "&#039;"
-
       }[match];
 
     });
@@ -64,11 +58,13 @@ function formatPrice(value) {
 }
 
 
-/* =========================================
-   LOADING STATE
-========================================= */
+/* =========================================================
+   LOADING
+========================================================= */
 
 function showLoading() {
+
+  if (!grid) return;
 
   grid.innerHTML = `
 
@@ -82,16 +78,20 @@ function showLoading() {
 
   `;
 
+  removePagination();
+
 }
 
 
-/* =========================================
-   EMPTY STATE
-========================================= */
+/* =========================================================
+   EMPTY
+========================================================= */
 
 function showEmpty(
   message = "No products found."
 ) {
+
+  if (!grid) return;
 
   grid.innerHTML = `
 
@@ -113,17 +113,18 @@ function showEmpty(
 
   `;
 
-
   removePagination();
 
 }
 
 
-/* =========================================
-   ERROR STATE
-========================================= */
+/* =========================================================
+   ERROR
+========================================================= */
 
 function showError() {
+
+  if (!grid) return;
 
   grid.innerHTML = `
 
@@ -152,15 +153,14 @@ function showError() {
 
   `;
 
-
   removePagination();
 
 }
 
 
-/* =========================================
+/* =========================================================
    AFFILIATE CLICK TRACKING
-========================================= */
+========================================================= */
 
 async function trackAffiliateClick(product) {
 
@@ -237,16 +237,14 @@ async function trackAffiliateClick(product) {
       product.name
     );
 
-
     return true;
-
 
   }
 
   catch (error) {
 
     console.error(
-      "Affiliate click tracking error:",
+      "Affiliate tracking error:",
       error
     );
 
@@ -257,25 +255,17 @@ async function trackAffiliateClick(product) {
 }
 
 
-/* =========================================
+/* =========================================================
    BUY CLICK
-========================================= */
+========================================================= */
 
 function handleBuyClick(
   event,
   productId
 ) {
 
-  /*
-   * Card ke onclick ko trigger hone se roko.
-   */
-
   event.stopPropagation();
 
-
-  /*
-   * Product ID se actual product find karo.
-   */
 
   const product =
     products.find(
@@ -288,7 +278,7 @@ function handleBuyClick(
   if (!product) {
 
     console.error(
-      "Product not found for affiliate tracking:",
+      "Product not found:",
       productId
     );
 
@@ -298,8 +288,8 @@ function handleBuyClick(
 
 
   /*
-   * Affiliate tracking background mein.
-   * User ko Amazon par jaane se block nahi karega.
+   * Tracking background mein chalega.
+   * Amazon link ko block nahi karega.
    */
 
   trackAffiliateClick(product);
@@ -307,9 +297,9 @@ function handleBuyClick(
 }
 
 
-/* =========================================
-   LOAD PRODUCTS
-========================================= */
+/* =========================================================
+   LOAD PRODUCTS FROM SUPABASE
+========================================================= */
 
 async function loadProducts() {
 
@@ -401,15 +391,9 @@ async function loadProducts() {
       );
 
 
-    /*
-     * Starting page.
-     */
-
     currentPage = 1;
 
-
     render();
-
 
   }
 
@@ -427,9 +411,9 @@ async function loadProducts() {
 }
 
 
-/* =========================================
+/* =========================================================
    FILTER PRODUCTS
-========================================= */
+========================================================= */
 
 function getFilteredProducts() {
 
@@ -451,19 +435,12 @@ function getFilteredProducts() {
 
       const searchableText =
         (
-
           product.name +
-
           " " +
-
           product.description +
-
           " " +
-
           product.category
-
-        )
-        .toLowerCase();
+        ).toLowerCase();
 
 
       const matchesSearch =
@@ -482,62 +459,57 @@ function getFilteredProducts() {
 }
 
 
-/* =========================================
+/* =========================================================
    RENDER PRODUCTS
-========================================= */
+========================================================= */
 
 function render() {
 
-  const query =
-    search
-      ? search.value.toLowerCase().trim()
-      : "";
+  if (!grid) return;
+
 
   const filtered =
-    products.filter(product => {
+    getFilteredProducts();
 
-      const matchesCategory =
-        category === "All" ||
-        product.category === category;
-
-      const searchableText =
-        (
-          product.name +
-          " " +
-          product.description +
-          " " +
-          product.category
-        ).toLowerCase();
-
-      const matchesSearch =
-        !query ||
-        searchableText.includes(query);
-
-      return (
-        matchesCategory &&
-        matchesSearch
-      );
-
-    });
 
   const totalPages =
-    Math.ceil(filtered.length / productsPerPage);
+    Math.ceil(
+      filtered.length /
+      productsPerPage
+    );
 
-  /* -----------------------------------------
-     PAGE SAFETY
-  ----------------------------------------- */
+
+  /*
+   * PAGE SAFETY
+   */
 
   if (totalPages === 0) {
+
     currentPage = 1;
-  } else if (currentPage > totalPages) {
-    currentPage = totalPages;
+
   }
 
-  /* -----------------------------------------
-     EMPTY STATE
-  ----------------------------------------- */
+  else if (
+    currentPage > totalPages
+  ) {
+
+    currentPage =
+      totalPages;
+
+  }
+
+
+  /*
+   * EMPTY STATE
+   */
 
   if (!filtered.length) {
+
+    const query =
+      search
+        ? search.value.trim()
+        : "";
+
 
     showEmpty(
       query
@@ -549,76 +521,9 @@ function render() {
 
   }
 
-  /* -----------------------------------------
-     PAGINATION
-  ----------------------------------------- */
-
-  const start =
-    (currentPage - 1) * productsPerPage;
-
-  const paginatedProducts =
-    filtered.slice(
-      start,
-      start + productsPerPage
-    );
-
-  /* -----------------------------------------
-     RENDER CURRENT PAGE ONLY
-  ----------------------------------------- */
-
-  grid.innerHTML =
-    paginatedProducts
-      .map(renderProduct)
-      .join("");
-
-  /* -----------------------------------------
-     PAGINATION UI
-  ----------------------------------------- */
-
-  renderPagination(
-    filtered.length,
-    totalPages
-  );
-
-}
-
 
   /*
-   * Total pages.
-   */
-
-  const totalPages =
-    Math.ceil(
-      filtered.length /
-      productsPerPage
-    );
-
-
-  /*
-   * Safety.
-   */
-
-  if (
-    currentPage < 1
-  ) {
-
-    currentPage = 1;
-
-  }
-
-
-  if (
-    currentPage > totalPages
-  ) {
-
-    currentPage =
-      totalPages;
-
-  }
-
-
-  /*
-   * Starting index.
+   * START INDEX
    */
 
   const start =
@@ -629,7 +534,7 @@ function render() {
 
 
   /*
-   * ONLY CURRENT PAGE PRODUCTS.
+   * ONLY CURRENT PAGE
    */
 
   const paginatedProducts =
@@ -640,7 +545,7 @@ function render() {
 
 
   /*
-   * Render current page.
+   * RENDER PRODUCTS
    */
 
   grid.innerHTML =
@@ -650,7 +555,7 @@ function render() {
 
 
   /*
-   * Pagination.
+   * RENDER PAGINATION
    */
 
   renderPagination(
@@ -661,9 +566,9 @@ function render() {
 }
 
 
-/* =========================================
+/* =========================================================
    PRODUCT CARD
-========================================= */
+========================================================= */
 
 function renderProduct(product) {
 
@@ -722,8 +627,6 @@ function renderProduct(product) {
 
     >
 
-      <!-- PRODUCT IMAGE -->
-
       <div class="product-img">
 
         ${
@@ -741,6 +644,7 @@ function renderProduct(product) {
 
                 onerror="
                   this.style.display='none';
+
                   this.parentElement
                     .querySelector('.image-fallback')
                     .style.display='flex';
@@ -769,22 +673,15 @@ function renderProduct(product) {
       </div>
 
 
-      <!-- PRODUCT INFO -->
-
       <div class="product-info">
 
-
         <span class="tag">
-
           ${safeCategory}
-
         </span>
 
 
         <h3>
-
           ${safeName}
-
         </h3>
 
 
@@ -794,9 +691,7 @@ function renderProduct(product) {
             ? `
 
               <p class="desc">
-
                 ${safeDescription}
-
               </p>
 
             `
@@ -808,13 +703,10 @@ function renderProduct(product) {
 
         <div class="bottom">
 
-
           <span class="price">
-
             ${formatPrice(
               product.price
             )}
-
           </span>
 
 
@@ -854,21 +746,16 @@ function renderProduct(product) {
                 <span
                   class="buy disabled"
                 >
-
                   VIEW ↗
-
                 </span>
 
               `
 
           }
 
-
         </div>
 
-
       </div>
-
 
     </article>
 
@@ -877,9 +764,9 @@ function renderProduct(product) {
 }
 
 
-/* =========================================
+/* =========================================================
    OPEN PRODUCT PAGE
-========================================= */
+========================================================= */
 
 function openProduct(id) {
 
@@ -889,9 +776,9 @@ function openProduct(id) {
 }
 
 
-/* =========================================
+/* =========================================================
    PAGINATION
-========================================= */
+========================================================= */
 
 function renderPagination(
   totalProducts,
@@ -905,8 +792,20 @@ function renderPagination(
 
 
   /*
+   * No pagination required
+   */
+
+  if (totalPages <= 1) {
+
+    removePagination();
+
+    return;
+
+  }
+
+
+  /*
    * Create pagination container
-   * if it doesn't already exist.
    */
 
   if (!pagination) {
@@ -923,10 +822,6 @@ function renderPagination(
       "pagination";
 
 
-    /*
-     * Grid ke baad insert.
-     */
-
     grid.parentNode.insertBefore(
       pagination,
       grid.nextSibling
@@ -936,7 +831,7 @@ function renderPagination(
 
 
   /*
-   * Current products range.
+   * Current product range
    */
 
   const start =
@@ -955,15 +850,11 @@ function renderPagination(
 
 
   /*
-   * Page numbers.
+   * Page numbers
    */
 
   let pages = [];
 
-
-  /*
-   * Small number of pages.
-   */
 
   if (totalPages <= 7) {
 
@@ -984,7 +875,7 @@ function renderPagination(
     pages.push(1);
 
 
-    if (currentPage > 4) {
+    if (currentPage > 3) {
 
       pages.push("...");
 
@@ -1018,7 +909,7 @@ function renderPagination(
 
     if (
       currentPage <
-      totalPages - 3
+      totalPages - 2
     ) {
 
       pages.push("...");
@@ -1032,6 +923,10 @@ function renderPagination(
 
   }
 
+
+  /*
+   * Pagination HTML
+   */
 
   pagination.innerHTML = `
 
@@ -1049,7 +944,6 @@ function renderPagination(
 
 
     <div class="pagination-controls">
-
 
       <button
 
@@ -1070,9 +964,7 @@ function renderPagination(
         aria-label="Previous page"
 
       >
-
         ←
-
       </button>
 
 
@@ -1155,7 +1047,6 @@ function renderPagination(
 
       </button>
 
-
     </div>
 
   `;
@@ -1163,9 +1054,9 @@ function renderPagination(
 }
 
 
-/* =========================================
+/* =========================================================
    CHANGE PAGE
-========================================= */
+========================================================= */
 
 function changePage(page) {
 
@@ -1198,8 +1089,7 @@ function changePage(page) {
 
 
   /*
-   * Product section ke top par
-   * smoothly scroll.
+   * Products section par smooth scroll
    */
 
   const productsSection =
@@ -1211,8 +1101,11 @@ function changePage(page) {
   if (productsSection) {
 
     productsSection.scrollIntoView({
+
       behavior: "smooth",
+
       block: "start"
+
     });
 
   }
@@ -1220,9 +1113,9 @@ function changePage(page) {
 }
 
 
-/* =========================================
+/* =========================================================
    REMOVE PAGINATION
-========================================= */
+========================================================= */
 
 function removePagination() {
 
@@ -1241,9 +1134,9 @@ function removePagination() {
 }
 
 
-/* =========================================
+/* =========================================================
    CATEGORY FILTER
-========================================= */
+========================================================= */
 
 document
   .querySelectorAll(".cat")
@@ -1252,11 +1145,6 @@ document
     button.addEventListener(
       "click",
       function () {
-
-
-        /*
-         * Active button.
-         */
 
         document
           .querySelectorAll(".cat")
@@ -1274,17 +1162,9 @@ document
         );
 
 
-        /*
-         * Category change.
-         */
-
         category =
           this.dataset.category;
 
-
-        /*
-         * Page 1.
-         */
 
         currentPage = 1;
 
@@ -1297,9 +1177,9 @@ document
   });
 
 
-/* =========================================
+/* =========================================================
    SEARCH
-========================================= */
+========================================================= */
 
 if (search) {
 
@@ -1307,13 +1187,7 @@ if (search) {
     "input",
     function () {
 
-      /*
-       * Search change par
-       * page 1 se start.
-       */
-
       currentPage = 1;
-
 
       render();
 
@@ -1323,8 +1197,8 @@ if (search) {
 }
 
 
-/* =========================================
+/* =========================================================
    START
-========================================= */
+========================================================= */
 
 loadProducts();
