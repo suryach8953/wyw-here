@@ -488,36 +488,99 @@ function getFilteredProducts() {
 
 function render() {
 
+  const query =
+    search
+      ? search.value.toLowerCase().trim()
+      : "";
+
   const filtered =
-    getFilteredProducts();
+    products.filter(product => {
 
+      const matchesCategory =
+        category === "All" ||
+        product.category === category;
 
-  /*
-   * No products.
-   */
+      const searchableText =
+        (
+          product.name +
+          " " +
+          product.description +
+          " " +
+          product.category
+        ).toLowerCase();
+
+      const matchesSearch =
+        !query ||
+        searchableText.includes(query);
+
+      return (
+        matchesCategory &&
+        matchesSearch
+      );
+
+    });
+
+  const totalPages =
+    Math.ceil(filtered.length / productsPerPage);
+
+  /* -----------------------------------------
+     PAGE SAFETY
+  ----------------------------------------- */
+
+  if (totalPages === 0) {
+    currentPage = 1;
+  } else if (currentPage > totalPages) {
+    currentPage = totalPages;
+  }
+
+  /* -----------------------------------------
+     EMPTY STATE
+  ----------------------------------------- */
 
   if (!filtered.length) {
 
-    const query =
-      search
-        ? search.value.trim()
-        : "";
-
-
     showEmpty(
-
       query
-
         ? `No products match "${query}".`
-
         : "Products will appear here soon."
-
     );
-
 
     return;
 
   }
+
+  /* -----------------------------------------
+     PAGINATION
+  ----------------------------------------- */
+
+  const start =
+    (currentPage - 1) * productsPerPage;
+
+  const paginatedProducts =
+    filtered.slice(
+      start,
+      start + productsPerPage
+    );
+
+  /* -----------------------------------------
+     RENDER CURRENT PAGE ONLY
+  ----------------------------------------- */
+
+  grid.innerHTML =
+    paginatedProducts
+      .map(renderProduct)
+      .join("");
+
+  /* -----------------------------------------
+     PAGINATION UI
+  ----------------------------------------- */
+
+  renderPagination(
+    filtered.length,
+    totalPages
+  );
+
+}
 
 
   /*
