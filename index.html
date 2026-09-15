@@ -22,6 +22,53 @@
     href="style.css"
   >
 
+  <style>
+
+    /* =========================
+       CATEGORY SCROLL
+    ========================== */
+
+    .categories{
+      display:flex;
+      gap:12px;
+      overflow-x:auto;
+      padding-bottom:8px;
+      scrollbar-width:none;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    .categories::-webkit-scrollbar{
+      display:none;
+    }
+
+    .categories .cat{
+      flex:0 0 auto;
+      white-space:nowrap;
+    }
+
+    /* =========================
+       MOBILE NAV
+    ========================== */
+
+    @media(max-width:700px){
+
+      .header{
+        padding-left:24px;
+        padding-right:24px;
+      }
+
+      .header nav{
+        gap:14px;
+      }
+
+      .header nav a{
+        font-size:13px;
+      }
+
+    }
+
+  </style>
+
 </head>
 
 
@@ -174,6 +221,22 @@
 
 
         <button
+          data-category="Mobiles & Accessories"
+          class="cat"
+        >
+          Mobiles & Accessories
+        </button>
+
+
+        <button
+          data-category="Computers & Laptops"
+          class="cat"
+        >
+          Computers & Laptops
+        </button>
+
+
+        <button
           data-category="Watches"
           class="cat"
         >
@@ -182,10 +245,18 @@
 
 
         <button
-          data-category="Kitchen"
+          data-category="Audio"
           class="cat"
         >
-          Kitchen
+          Audio
+        </button>
+
+
+        <button
+          data-category="TV & Electronics"
+          class="cat"
+        >
+          TV & Electronics
         </button>
 
 
@@ -198,10 +269,66 @@
 
 
         <button
-          data-category="Fitness"
+          data-category="Kitchen"
           class="cat"
         >
-          Fitness
+          Kitchen
+        </button>
+
+
+        <button
+          data-category="Beauty"
+          class="cat"
+        >
+          Beauty
+        </button>
+
+
+        <button
+          data-category="Fashion"
+          class="cat"
+        >
+          Fashion
+        </button>
+
+
+        <button
+          data-category="Footwear"
+          class="cat"
+        >
+          Footwear
+        </button>
+
+
+        <button
+          data-category="Fitness & Sports"
+          class="cat"
+        >
+          Fitness & Sports
+        </button>
+
+
+        <button
+          data-category="Toys & Games"
+          class="cat"
+        >
+          Toys & Games
+        </button>
+
+
+        <button
+          data-category="Automotive"
+          class="cat"
+        >
+          Automotive
+        </button>
+
+
+        <button
+          data-category="Travel"
+          class="cat"
+        >
+          Travel
         </button>
 
       </div>
@@ -309,32 +436,56 @@
           <div class="about-points">
 
             <div>
-              <span>01</span>
-              <strong>Curated Picks</strong>
+
+              <span>
+                01
+              </span>
+
+              <strong>
+                Curated Picks
+              </strong>
+
               <p>
                 Products selected for usefulness,
                 style and everyday value.
               </p>
+
             </div>
 
 
             <div>
-              <span>02</span>
-              <strong>Simple Discovery</strong>
+
+              <span>
+                02
+              </span>
+
+              <strong>
+                Simple Discovery
+              </strong>
+
               <p>
                 Find interesting products without
                 endless searching.
               </p>
+
             </div>
 
 
             <div>
-              <span>03</span>
-              <strong>Always Exploring</strong>
+
+              <span>
+                03
+              </span>
+
+              <strong>
+                Always Exploring
+              </strong>
+
               <p>
                 New products and interesting finds
                 are added regularly.
               </p>
+
             </div>
 
           </div>
@@ -359,6 +510,9 @@
 
     <div class="footer-top">
 
+
+      <!-- BRAND -->
+
       <div class="footer-brand">
 
         <a
@@ -376,7 +530,13 @@
       </div>
 
 
+
+      <!-- LINKS -->
+
       <div class="footer-links">
+
+
+        <!-- EXPLORE -->
 
         <div>
 
@@ -402,6 +562,9 @@
         </div>
 
 
+
+        <!-- CATEGORIES -->
+
         <div>
 
           <p class="footer-title">
@@ -415,20 +578,39 @@
 
 
           <a href="#categories">
+            Mobiles & Accessories
+          </a>
+
+
+          <a href="#categories">
             Watches
           </a>
 
 
           <a href="#categories">
-            Home & Kitchen
+            Home
+          </a>
+
+
+          <a href="#categories">
+            Kitchen
+          </a>
+
+
+          <a href="#categories">
+            Fitness & Sports
           </a>
 
         </div>
+
 
       </div>
 
     </div>
 
+
+
+    <!-- FOOTER BOTTOM -->
 
     <div class="footer-bottom">
 
@@ -438,7 +620,8 @@
 
 
       <p>
-        Made for better discoveries.
+        Affiliate disclosure: Some links on this website
+        may earn us a commission at no extra cost to you.
       </p>
 
     </div>
