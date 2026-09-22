@@ -1,118 +1,81 @@
-const SUPABASE_URL =
-  "https://ncavpnittrdgylogbjfp.supabase.co";
+export default async function handler(request, response) {
 
-const SUPABASE_KEY =
-  "sb_publishable_7E-WPJlMCarIj-FA3quJAw_Z6XFLWqP";
+  const SUPABASE_URL =
+    "https://ncavpnittrdgylogbjfp.supabase.co";
 
-const SITE_URL =
-  "https://wyw-here.vercel.app";
+  const SUPABASE_KEY =
+    "sb_publishable_7E-WPJlMCarIj-FA3quJAw_Z6XFLWqP";
 
+  const SITE_URL =
+    "https://wyw-here.vercel.app";
 
-module.exports = async function handler(req, res) {
 
   try {
 
-    const response = await fetch(
-
+    const result = await fetch(
       `${SUPABASE_URL}/rest/v1/products?select=id`,
-
       {
-        method: "GET",
-
         headers: {
           apikey: SUPABASE_KEY,
-          Authorization:
-            `Bearer ${SUPABASE_KEY}`
-        },
-
-        cache: "no-store"
+          Authorization: `Bearer ${SUPABASE_KEY}`
+        }
       }
-
     );
 
 
-    if (!response.ok) {
-
+    if (!result.ok) {
       throw new Error(
-        await response.text()
+        await result.text()
       );
-
     }
 
 
     const products =
-      await response.json();
+      await result.json();
 
 
-    const urls = [];
-
-
-    // Homepage
-    urls.push(`
-      <url>
-        <loc>${SITE_URL}/</loc>
-      </url>
-    `);
-
-
-    // Product pages
-    products.forEach(product => {
-
-      if (!product.id) {
-        return;
-      }
-
-
-      urls.push(`
-        <url>
-          <loc>${SITE_URL}/product.html?id=${encodeURIComponent(product.id)}</loc>
-        </url>
-      `);
-
-    });
+    const productUrls =
+      products.map(
+        product => `
+          <url>
+            <loc>${SITE_URL}/product.html?id=${encodeURIComponent(product.id)}</loc>
+          </url>
+        `
+      ).join("");
 
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 
-      <urlset
-        xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      >
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+>
 
-        ${urls.join("")}
+  <url>
+    <loc>${SITE_URL}/</loc>
+  </url>
 
-      </urlset>
-    `;
+  ${productUrls}
+
+</urlset>`;
 
 
-    res.setHeader(
+    response.setHeader(
       "Content-Type",
       "application/xml; charset=utf-8"
     );
 
 
-    res.setHeader(
-      "Cache-Control",
-      "s-maxage=3600, stale-while-revalidate"
-    );
-
-
-    return res.status(200).send(xml);
+    response.status(200).send(xml);
 
 
   } catch (error) {
 
-    console.error(
-      "Sitemap error:",
-      error
-    );
+    console.error(error);
 
-
-    return res
+    response
       .status(500)
-      .send(
-        "Sitemap generation failed"
-      );
+      .send("Sitemap generation failed");
 
   }
 
-};
+}
