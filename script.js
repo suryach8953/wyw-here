@@ -5,20 +5,89 @@ const SUPABASE_KEY =
   "sb_publishable_7E-WPJlMCarIj-FA3quJAw_Z6XFLWqP";
 
 
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+const PRODUCTS_PER_PAGE = 12;
+
+let products = [];
+
+let selectedCategory = "All";
+
+let currentPage = 1;
+
+let currentSort = "newest";
+
+
+/* =========================================================
+   DOM
+========================================================= */
+
 const grid =
   document.getElementById("productGrid");
 
 const search =
   document.getElementById("search");
 
+const sortSelect =
+  document.getElementById("sortProducts");
 
-let category = "All";
+const resultCount =
+  document.getElementById("resultCount");
 
-let products = [];
+const categoryButtons =
+  document.querySelectorAll(".cat-v2");
 
-let currentPage = 1;
+const featuredImageWrap =
+  document.getElementById(
+    "featuredImageWrap"
+  );
 
-const productsPerPage = 12;
+const featuredCategory =
+  document.getElementById(
+    "featuredCategory"
+  );
+
+const featuredName =
+  document.getElementById(
+    "featuredName"
+  );
+
+const featuredPrice =
+  document.getElementById(
+    "featuredPrice"
+  );
+
+const featuredLink =
+  document.getElementById(
+    "featuredLink"
+  );
+
+const statProducts =
+  document.getElementById(
+    "statProducts"
+  );
+
+const currentYear =
+  document.getElementById(
+    "currentYear"
+  );
+
+const backTop =
+  document.getElementById(
+    "backTop"
+  );
+
+const mobileMenuBtn =
+  document.getElementById(
+    "mobileMenuBtn"
+  );
+
+const mobileNav =
+  document.getElementById(
+    "mobileNav"
+  );
 
 
 /* =========================================================
@@ -28,17 +97,20 @@ const productsPerPage = 12;
 function escapeHtml(value) {
 
   return String(value ?? "")
-    .replace(/[&<>"']/g, function (match) {
+    .replace(
+      /[&<>"']/g,
+      function(match) {
 
-      return {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#039;"
-      }[match];
+        return {
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#039;"
+        }[match];
 
-    });
+      }
+    );
 
 }
 
@@ -48,12 +120,57 @@ function formatPrice(value) {
   const number =
     Number(value || 0);
 
-  return "₹" + number.toLocaleString(
-    "en-IN",
-    {
-      maximumFractionDigits: 2
-    }
+  return (
+    "₹" +
+    number.toLocaleString(
+      "en-IN",
+      {
+        maximumFractionDigits: 2
+      }
+    )
   );
+
+}
+
+
+function normalizeProduct(product) {
+
+  return {
+
+    id:
+      product.id,
+
+    name:
+      product.name || "",
+
+    category:
+      product.category || "Other",
+
+    price:
+      Number(product.price || 0),
+
+    description:
+      product.description || "",
+
+    image:
+      product.image_url || "",
+
+    image2:
+      product.image_2 || "",
+
+    image3:
+      product.image_3 || "",
+
+    image4:
+      product.image_4 || "",
+
+    image5:
+      product.image_5 || "",
+
+    affiliateLink:
+      product.affiliate_link || "#"
+
+  };
 
 }
 
@@ -68,17 +185,34 @@ function showLoading() {
 
   grid.innerHTML = `
 
-    <div class="products-loading">
+    <div class="loading-grid-v2">
 
-      <div class="loader"></div>
+      ${Array.from(
+        { length: 8 },
+        () => `
 
-      <p>Finding the best picks...</p>
+          <div class="skeleton-card-v2">
+
+            <div class="skeleton-image-v2"></div>
+
+            <div class="skeleton-content-v2">
+
+              <div class="skeleton-line-v2"></div>
+
+              <div class="skeleton-line-v2 medium"></div>
+
+              <div class="skeleton-line-v2 short"></div>
+
+            </div>
+
+          </div>
+
+        `
+      ).join("")}
 
     </div>
 
   `;
-
-  removePagination();
 
 }
 
@@ -87,33 +221,51 @@ function showLoading() {
    EMPTY
 ========================================================= */
 
-function showEmpty(
-  message = "No products found."
-) {
-
-  if (!grid) return;
+function showEmpty(message) {
 
   grid.innerHTML = `
 
-    <div class="products-empty">
+    <div class="empty-v2">
 
-      <div class="empty-icon">
+      <div class="empty-icon-v2">
         ✦
       </div>
 
       <h3>
-        Nothing here yet
+        Nothing found
       </h3>
 
       <p>
-        ${escapeHtml(message)}
+        ${escapeHtml(
+          message ||
+          "Try another search or category."
+        )}
       </p>
+
+      <button
+        class="retry-v2"
+        id="clearFiltersBtn"
+      >
+        CLEAR FILTERS
+      </button>
 
     </div>
 
   `;
 
-  removePagination();
+  const clearBtn =
+    document.getElementById(
+      "clearFiltersBtn"
+    );
+
+  if (clearBtn) {
+
+    clearBtn.addEventListener(
+      "click",
+      clearFilters
+    );
+
+  }
 
 }
 
@@ -124,27 +276,25 @@ function showEmpty(
 
 function showError() {
 
-  if (!grid) return;
-
   grid.innerHTML = `
 
-    <div class="products-empty">
+    <div class="empty-v2">
 
-      <div class="empty-icon">
+      <div class="empty-icon-v2">
         !
       </div>
 
       <h3>
-        Something went wrong
+        Products could not load
       </h3>
 
       <p>
-        We couldn't load the products right now.
+        Please try again in a moment.
       </p>
 
       <button
-        class="retry-btn"
-        onclick="loadProducts()"
+        class="retry-v2"
+        id="retryProductsBtn"
       >
         TRY AGAIN
       </button>
@@ -153,27 +303,673 @@ function showError() {
 
   `;
 
-  removePagination();
+  const retryBtn =
+    document.getElementById(
+      "retryProductsBtn"
+    );
+
+  if (retryBtn) {
+
+    retryBtn.addEventListener(
+      "click",
+      loadProducts
+    );
+
+  }
 
 }
 
 
 /* =========================================================
-   AFFILIATE CLICK TRACKING
+   SUPABASE PRODUCT LOAD
 ========================================================= */
 
-async function trackAffiliateClick(product) {
+async function loadProducts() {
+
+  showLoading();
+
+  try {
+
+    const url =
+      `${SUPABASE_URL}/rest/v1/products` +
+      `?select=id,name,category,price,image_url,image_2,image_3,image_4,image_5,description,affiliate_link` +
+      `&order=id.desc`;
+
+    const response =
+      await fetch(
+        url,
+        {
+          method: "GET",
+
+          headers: {
+
+            "apikey":
+              SUPABASE_KEY,
+
+            "Authorization":
+              `Bearer ${SUPABASE_KEY}`
+
+          },
+
+          cache:
+            "no-store"
+
+        }
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        await response.text()
+      );
+
+    }
+
+
+    const data =
+      await response.json();
+
+
+    products =
+      Array.isArray(data)
+        ? data.map(normalizeProduct)
+        : [];
+
+
+    currentPage = 1;
+
+
+    updateStats();
+
+    updateCategoryCounts();
+
+    updateFeaturedProduct();
+
+    render();
+
+
+  } catch (error) {
+
+    console.error(
+      "Supabase product error:",
+      error
+    );
+
+    showError();
+
+  }
+
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+function updateStats() {
+
+  if (statProducts) {
+
+    statProducts.textContent =
+      products.length;
+
+  }
+
+}
+
+
+/* =========================================================
+   CATEGORY COUNTS
+========================================================= */
+
+function updateCategoryCounts() {
+
+  categoryButtons.forEach(
+    button => {
+
+      const category =
+        button.dataset.category;
+
+      const count =
+        category === "All"
+
+          ? products.length
+
+          : products.filter(
+              product =>
+                product.category === category
+            ).length;
+
+
+      const countElement =
+        button.querySelector(
+          ".cat-count-v2"
+        );
+
+
+      if (countElement) {
+
+        countElement.textContent =
+          count;
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   FEATURED PRODUCT
+========================================================= */
+
+function updateFeaturedProduct() {
+
+  if (!featuredImageWrap) return;
+
+
+  if (!products.length) {
+
+    featuredImageWrap.innerHTML = `
+
+      <div class="featured-empty">
+        Products coming soon...
+      </div>
+
+    `;
+
+    featuredCategory.textContent =
+      "WYW HERE";
+
+    featuredName.textContent =
+      "Discover something you'll love.";
+
+    featuredPrice.textContent =
+      "—";
+
+    featuredLink.href =
+      "#products";
+
+    return;
+
+  }
+
+
+  const featured =
+    products[0];
+
+
+  featuredImageWrap.innerHTML = `
+
+    <img
+      src="${escapeHtml(featured.image)}"
+      alt="${escapeHtml(featured.name)}"
+      loading="eager"
+      onerror="this.style.display='none';"
+    >
+
+  `;
+
+
+  featuredCategory.textContent =
+    featured.category;
+
+
+  featuredName.textContent =
+    featured.name;
+
+
+  featuredPrice.textContent =
+    formatPrice(
+      featured.price
+    );
+
+
+  featuredLink.href =
+    `product.html?id=${encodeURIComponent(
+      featured.id
+    )}`;
+
+}
+
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+function getFilteredProducts() {
+
+  const query =
+    search
+      ? search.value
+          .toLowerCase()
+          .trim()
+      : "";
+
+
+  let filtered =
+    products.filter(
+      product => {
+
+        const categoryMatch =
+          selectedCategory === "All" ||
+          product.category ===
+            selectedCategory;
+
+
+        const searchMatch =
+          !query ||
+
+          product.name
+            .toLowerCase()
+            .includes(query) ||
+
+          product.description
+            .toLowerCase()
+            .includes(query) ||
+
+          product.category
+            .toLowerCase()
+            .includes(query);
+
+
+        return (
+          categoryMatch &&
+          searchMatch
+        );
+
+      }
+    );
+
+
+  filtered =
+    [...filtered];
+
+
+  switch (currentSort) {
+
+    case "price-low":
+
+      filtered.sort(
+        (a,b) =>
+          a.price - b.price
+      );
+
+      break;
+
+
+    case "price-high":
+
+      filtered.sort(
+        (a,b) =>
+          b.price - a.price
+      );
+
+      break;
+
+
+    case "name":
+
+      filtered.sort(
+        (a,b) =>
+          a.name.localeCompare(
+            b.name
+          )
+      );
+
+      break;
+
+
+    default:
+
+      filtered.sort(
+        (a,b) =>
+          Number(b.id) -
+          Number(a.id)
+      );
+
+      break;
+
+  }
+
+
+  return filtered;
+
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function render() {
+
+  const filtered =
+    getFilteredProducts();
+
+
+  if (resultCount) {
+
+    resultCount.textContent =
+      filtered.length;
+
+  }
+
+
+  if (!filtered.length) {
+
+    showEmpty(
+      search.value.trim()
+        ? `No results for "${search.value.trim()}".`
+        : "No products available in this category."
+    );
+
+    removePagination();
+
+    return;
+
+  }
+
+
+  const totalPages =
+    Math.ceil(
+      filtered.length /
+      PRODUCTS_PER_PAGE
+    );
+
+
+  if (
+    currentPage >
+    totalPages
+  ) {
+
+    currentPage =
+      totalPages;
+
+  }
+
+
+  const start =
+    (currentPage - 1) *
+    PRODUCTS_PER_PAGE;
+
+
+  const pageProducts =
+    filtered.slice(
+      start,
+      start + PRODUCTS_PER_PAGE
+    );
+
+
+  renderProducts(
+    pageProducts
+  );
+
+
+  renderPagination(
+    totalPages
+  );
+
+}
+
+
+/* =========================================================
+   PRODUCT CARDS
+========================================================= */
+
+function renderProducts(pageProducts) {
+
+  if (!grid) return;
+
+
+  const globalStart =
+    (currentPage - 1) *
+    PRODUCTS_PER_PAGE;
+
+
+  grid.innerHTML =
+    pageProducts
+      .map(
+        (product,index) => {
+
+          const isNew =
+            globalStart + index < 4;
+
+
+          return `
+
+            <article
+              class="product-card-v2"
+              data-product-id="${product.id}"
+            >
+
+              <div
+                class="product-image-v2"
+                data-detail-id="${product.id}"
+              >
+
+                <div
+                  class="product-badges-v2"
+                >
+
+                  ${
+                    isNew
+                      ? `
+                        <span class="badge-new-v2">
+                          New
+                        </span>
+                      `
+                      : `<span></span>`
+                  }
+
+                  <span class="badge-cat-v2">
+                    ${escapeHtml(
+                      product.category
+                    )}
+                  </span>
+
+                </div>
+
+
+                ${
+                  product.image
+                    ? `
+                      <img
+                        src="${escapeHtml(
+                          product.image
+                        )}"
+                        alt="${escapeHtml(
+                          product.name
+                        )}"
+                        loading="lazy"
+                        onerror="this.style.display='none';"
+                      >
+                    `
+                    : `
+                      <div
+                        style="
+                          width:100%;
+                          height:100%;
+                          display:flex;
+                          align-items:center;
+                          justify-content:center;
+                          color:#aaa;
+                          font-size:32px;
+                        "
+                      >
+                        ✦
+                      </div>
+                    `
+                }
+
+
+                <div class="product-shine-v2"></div>
+
+              </div>
+
+
+
+              <div class="product-info-v2">
+
+                <div
+                  class="product-name-v2"
+                >
+                  ${escapeHtml(
+                    product.name
+                  )}
+                </div>
+
+
+                <div
+                  class="product-description-v2"
+                >
+                  ${escapeHtml(
+                    product.description ||
+                    "A useful find worth checking out."
+                  )}
+                </div>
+
+
+                <div class="product-bottom-v2">
+
+                  <div
+                    class="product-price-v2"
+                  >
+                    ${formatPrice(
+                      product.price
+                    )}
+                  </div>
+
+
+                  <div
+                    class="product-actions-v2"
+                  >
+
+                    <button
+                      class="details-btn-v2"
+                      data-detail-id="${product.id}"
+                      aria-label="View product"
+                      title="View product"
+                    >
+                      →
+                    </button>
+
+
+                    <button
+                      class="buy-btn-v2"
+                      data-buy-id="${product.id}"
+                    >
+                      Buy Now
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </article>
+
+          `;
+
+        }
+      )
+      .join("");
+
+
+  requestAnimationFrame(
+    () => {
+
+      const cards =
+        grid.querySelectorAll(
+          ".product-card-v2"
+        );
+
+
+      cards.forEach(
+        (card,index) => {
+
+          setTimeout(
+            () => {
+
+              card.classList.add(
+                "revealed"
+              );
+
+            },
+            index * 45
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  grid.querySelectorAll(
+    "[data-detail-id]"
+  ).forEach(
+    element => {
+
+      element.addEventListener(
+        "click",
+        () => {
+
+          const id =
+            element.dataset.detailId;
+
+          window.location.href =
+            `product.html?id=${encodeURIComponent(
+              id
+            )}`;
+
+        }
+      );
+
+    }
+  );
+
+
+  grid.querySelectorAll(
+    "[data-buy-id]"
+  ).forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        event => {
+
+          event.stopPropagation();
+
+          const id =
+            button.dataset.buyId;
+
+          handleBuyClick(id);
+
+        }
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   AFFILIATE TRACKING
+========================================================= */
+
+async function trackAffiliateClick(
+  product
+) {
 
   try {
 
     if (!product) {
-
-      console.error(
-        "Affiliate tracking: product missing"
-      );
-
       return false;
-
     }
 
 
@@ -182,7 +978,8 @@ async function trackAffiliateClick(product) {
         `${SUPABASE_URL}/rest/v1/affiliate_clicks`,
         {
 
-          method: "POST",
+          method:
+            "POST",
 
           headers: {
 
@@ -211,7 +1008,8 @@ async function trackAffiliateClick(product) {
 
             }),
 
-          keepalive: true
+          keepalive:
+            true
 
         }
       );
@@ -219,12 +1017,9 @@ async function trackAffiliateClick(product) {
 
     if (!response.ok) {
 
-      const errorText =
-        await response.text();
-
       console.error(
         "Affiliate tracking failed:",
-        errorText
+        await response.text()
       );
 
       return false;
@@ -232,16 +1027,9 @@ async function trackAffiliateClick(product) {
     }
 
 
-    console.log(
-      "Affiliate click tracked:",
-      product.name
-    );
-
     return true;
 
-  }
-
-  catch (error) {
+  } catch (error) {
 
     console.error(
       "Affiliate tracking error:",
@@ -260,12 +1048,8 @@ async function trackAffiliateClick(product) {
 ========================================================= */
 
 function handleBuyClick(
-  event,
   productId
 ) {
-
-  event.stopPropagation();
-
 
   const product =
     products.find(
@@ -287,491 +1071,40 @@ function handleBuyClick(
   }
 
 
-  /*
-   * Tracking background mein chalega.
-   * Amazon link ko block nahi karega.
-   */
-
-  trackAffiliateClick(product);
-
-}
-
-
-/* =========================================================
-   LOAD PRODUCTS FROM SUPABASE
-========================================================= */
-
-async function loadProducts() {
-
-  showLoading();
-
-
-  try {
-
-    const response =
-      await fetch(
-
-        `${SUPABASE_URL}/rest/v1/products?select=id,name,category,price,image_url,image_2,image_3,image_4,image_5,description,affiliate_link&order=id.asc`,
-
-        {
-
-          method: "GET",
-
-          headers: {
-
-            "apikey":
-              SUPABASE_KEY,
-
-            "Authorization":
-              `Bearer ${SUPABASE_KEY}`
-
-          },
-
-          cache: "no-store"
-
-        }
-
-      );
-
-
-    if (!response.ok) {
-
-      const errorText =
-        await response.text();
-
-      throw new Error(
-        errorText
-      );
-
-    }
-
-
-    const data =
-      await response.json();
-
-
-    products =
-      (data || []).map(
-        product => ({
-
-          id:
-            product.id,
-
-          name:
-            product.name || "",
-
-          category:
-            product.category || "Other",
-
-          price:
-            Number(product.price || 0),
-
-          description:
-            product.description || "",
-
-          image:
-            product.image_url || "",
-
-          image2:
-            product.image_2 || "",
-
-          image3:
-            product.image_3 || "",
-
-          image4:
-            product.image_4 || "",
-
-          image5:
-            product.image_5 || "",
-
-          affiliateLink:
-            product.affiliate_link || "#"
-
-        })
-      );
-
-
-    currentPage = 1;
-
-    render();
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "Supabase product error:",
-      error
-    );
-
-    showError();
-
-  }
-
-}
-
-
-/* =========================================================
-   FILTER PRODUCTS
-========================================================= */
-
-function getFilteredProducts() {
-
-  const query =
-    search
-      ? search.value
-          .toLowerCase()
-          .trim()
-      : "";
-
-
-  return products.filter(
-    product => {
-
-      const matchesCategory =
-        category === "All" ||
-        product.category === category;
-
-
-      const searchableText =
-        (
-          product.name +
-          " " +
-          product.description +
-          " " +
-          product.category
-        ).toLowerCase();
-
-
-      const matchesSearch =
-        !query ||
-        searchableText.includes(query);
-
-
-      return (
-        matchesCategory &&
-        matchesSearch
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   RENDER PRODUCTS
-========================================================= */
-
-function render() {
-
-  if (!grid) return;
-
-
-  const filtered =
-    getFilteredProducts();
-
-
-  const totalPages =
-    Math.ceil(
-      filtered.length /
-      productsPerPage
-    );
-
-
-  /*
-   * PAGE SAFETY
-   */
-
-  if (totalPages === 0) {
-
-    currentPage = 1;
-
-  }
-
-  else if (
-    currentPage > totalPages
+  if (
+    !product.affiliateLink ||
+    product.affiliateLink === "#"
   ) {
 
-    currentPage =
-      totalPages;
-
-  }
-
-
-  /*
-   * EMPTY STATE
-   */
-
-  if (!filtered.length) {
-
-    const query =
-      search
-        ? search.value.trim()
-        : "";
-
-
-    showEmpty(
-      query
-        ? `No products match "${query}".`
-        : "Products will appear here soon."
-    );
+    window.location.href =
+      `product.html?id=${encodeURIComponent(
+        product.id
+      )}`;
 
     return;
 
   }
 
 
-  /*
-   * START INDEX
-   */
-
-  const start =
-    (
-      currentPage - 1
-    ) *
-    productsPerPage;
-
-
-  /*
-   * ONLY CURRENT PAGE
-   */
-
-  const paginatedProducts =
-    filtered.slice(
-      start,
-      start + productsPerPage
-    );
-
-
-  /*
-   * RENDER PRODUCTS
-   */
-
-  grid.innerHTML =
-    paginatedProducts
-      .map(renderProduct)
-      .join("");
-
-
-  /*
-   * RENDER PAGINATION
-   */
-
-  renderPagination(
-    filtered.length,
-    totalPages
+  trackAffiliateClick(
+    product
   );
 
-}
 
+  /*
+    Small delay lets the tracking request start
+    before opening the affiliate destination.
+  */
 
-/* =========================================================
-   PRODUCT CARD
-========================================================= */
+  setTimeout(
+    () => {
 
-function renderProduct(product) {
+      window.location.href =
+        product.affiliateLink;
 
-  const image =
-    product.image;
-
-
-  const safeName =
-    escapeHtml(
-      product.name
-    );
-
-
-  const safeCategory =
-    escapeHtml(
-      product.category
-    );
-
-
-  const safeDescription =
-    escapeHtml(
-      product.description
-    );
-
-
-  const safeImage =
-    escapeHtml(
-      image
-    );
-
-
-  const safeAffiliateLink =
-    escapeHtml(
-      product.affiliateLink
-    );
-
-
-  return `
-
-    <article
-
-      class="product"
-
-      onclick="
-        openProduct(${Number(product.id)})
-      "
-
-      tabindex="0"
-
-      role="article"
-
-      onkeydown="
-        if(event.key === 'Enter')
-        openProduct(${Number(product.id)})
-      "
-
-    >
-
-      <div class="product-img">
-
-        ${
-          image
-
-            ? `
-
-              <img
-
-                src="${safeImage}"
-
-                alt="${safeName}"
-
-                loading="lazy"
-
-                onerror="
-                  this.style.display='none';
-
-                  this.parentElement
-                    .querySelector('.image-fallback')
-                    .style.display='flex';
-                "
-
-              >
-
-              <div
-                class="placeholder image-fallback"
-                style="display:none"
-              >
-                ✦
-              </div>
-
-            `
-
-            : `
-
-              <div class="placeholder">
-                ✦
-              </div>
-
-            `
-        }
-
-      </div>
-
-
-      <div class="product-info">
-
-        <span class="tag">
-          ${safeCategory}
-        </span>
-
-
-        <h3>
-          ${safeName}
-        </h3>
-
-
-        ${
-          product.description
-
-            ? `
-
-              <p class="desc">
-                ${safeDescription}
-              </p>
-
-            `
-
-            : ""
-
-        }
-
-
-        <div class="bottom">
-
-          <span class="price">
-            ${formatPrice(
-              product.price
-            )}
-          </span>
-
-
-          ${
-            product.affiliateLink &&
-            product.affiliateLink !== "#"
-
-              ? `
-
-                <a
-
-                  class="buy"
-
-                  href="${safeAffiliateLink}"
-
-                  target="_blank"
-
-                  rel="nofollow sponsored noopener"
-
-                  onclick="
-                    handleBuyClick(
-                      event,
-                      ${Number(product.id)}
-                    )
-                  "
-
-                >
-
-                  BUY NOW ↗
-
-                </a>
-
-              `
-
-              : `
-
-                <span
-                  class="buy disabled"
-                >
-                  VIEW ↗
-                </span>
-
-              `
-
-          }
-
-        </div>
-
-      </div>
-
-    </article>
-
-  `;
-
-}
-
-
-/* =========================================================
-   OPEN PRODUCT PAGE
-========================================================= */
-
-function openProduct(id) {
-
-  window.location.href =
-    `product.html?id=${encodeURIComponent(id)}`;
+    },
+    90
+  );
 
 }
 
@@ -781,275 +1114,200 @@ function openProduct(id) {
 ========================================================= */
 
 function renderPagination(
-  totalProducts,
   totalPages
 ) {
 
-  let pagination =
-    document.getElementById(
-      "pagination"
-    );
+  removePagination();
 
-
-  /*
-   * No pagination required
-   */
 
   if (totalPages <= 1) {
-
-    removePagination();
-
     return;
-
   }
 
 
-  /*
-   * Create pagination container
-   */
-
-  if (!pagination) {
-
-    pagination =
-      document.createElement(
-        "div"
-      );
-
-    pagination.id =
-      "pagination";
-
-    pagination.className =
-      "pagination";
-
-
-    grid.parentNode.insertBefore(
-      pagination,
-      grid.nextSibling
+  const pagination =
+    document.createElement(
+      "div"
     );
 
-  }
+
+  pagination.id =
+    "pagination";
 
 
-  /*
-   * Current product range
-   */
-
-  const start =
-    (
-      (currentPage - 1) *
-      productsPerPage
-    ) + 1;
+  pagination.className =
+    "pagination-v2";
 
 
-  const end =
+  const previous =
+    document.createElement(
+      "button"
+    );
+
+
+  previous.textContent =
+    "←";
+
+
+  previous.disabled =
+    currentPage === 1;
+
+
+  previous.addEventListener(
+    "click",
+    () => {
+
+      if (
+        currentPage > 1
+      ) {
+
+        changePage(
+          currentPage - 1
+        );
+
+      }
+
+    }
+  );
+
+
+  pagination.appendChild(
+    previous
+  );
+
+
+  const maxButtons =
+    5;
+
+
+  let startPage =
+    Math.max(
+      1,
+      currentPage -
+      Math.floor(
+        maxButtons / 2
+      )
+    );
+
+
+  let endPage =
     Math.min(
-      currentPage *
-      productsPerPage,
-      totalProducts
+      totalPages,
+      startPage + maxButtons - 1
     );
 
 
-  /*
-   * Page numbers
-   */
+  if (
+    endPage - startPage <
+    maxButtons - 1
+  ) {
 
-  let pages = [];
-
-
-  if (totalPages <= 7) {
-
-    for (
-      let i = 1;
-      i <= totalPages;
-      i++
-    ) {
-
-      pages.push(i);
-
-    }
+    startPage =
+      Math.max(
+        1,
+        endPage - maxButtons + 1
+      );
 
   }
 
-  else {
 
-    pages.push(1);
+  for (
+    let page = startPage;
+    page <= endPage;
+    page++
+  ) {
 
-
-    if (currentPage > 3) {
-
-      pages.push("...");
-
-    }
-
-
-    const pageStart =
-      Math.max(
-        2,
-        currentPage - 1
+    const button =
+      document.createElement(
+        "button"
       );
 
 
-    const pageEnd =
-      Math.min(
-        totalPages - 1,
-        currentPage + 1
-      );
-
-
-    for (
-      let i = pageStart;
-      i <= pageEnd;
-      i++
-    ) {
-
-      pages.push(i);
-
-    }
+    button.textContent =
+      page;
 
 
     if (
-      currentPage <
-      totalPages - 2
+      page === currentPage
     ) {
 
-      pages.push("...");
+      button.classList.add(
+        "active"
+      );
 
     }
 
 
-    pages.push(
-      totalPages
+    button.addEventListener(
+      "click",
+      () => {
+
+        changePage(
+          page
+        );
+
+      }
+    );
+
+
+    pagination.appendChild(
+      button
     );
 
   }
 
 
-  /*
-   * Pagination HTML
-   */
-
-  pagination.innerHTML = `
-
-    <div class="pagination-info">
-
-      Showing
-      <strong>${start}</strong>
-      –
-      <strong>${end}</strong>
-      of
-      <strong>${totalProducts}</strong>
-      products
-
-    </div>
+  const next =
+    document.createElement(
+      "button"
+    );
 
 
-    <div class="pagination-controls">
-
-      <button
-
-        class="page-btn prev-btn"
-
-        ${
-          currentPage === 1
-            ? "disabled"
-            : ""
-        }
-
-        onclick="
-          changePage(
-            ${currentPage - 1}
-          )
-        "
-
-        aria-label="Previous page"
-
-      >
-        ←
-      </button>
+  next.textContent =
+    "→";
 
 
-      <div class="page-numbers">
-
-        ${
-          pages
-            .map(page => {
-
-              if (
-                page === "..."
-              ) {
-
-                return `
-
-                  <span
-                    class="page-dots"
-                  >
-                    …
-                  </span>
-
-                `;
-
-              }
+  next.disabled =
+    currentPage === totalPages;
 
 
-              return `
+  next.addEventListener(
+    "click",
+    () => {
 
-                <button
+      if (
+        currentPage <
+        totalPages
+      ) {
 
-                  class="
-                    page-btn
-                    ${
-                      page === currentPage
-                        ? "active"
-                        : ""
-                    }
-                  "
+        changePage(
+          currentPage + 1
+        );
 
-                  onclick="
-                    changePage(${page})
-                  "
+      }
 
-                >
-
-                  ${page}
-
-                </button>
-
-              `;
-
-            })
-            .join("")
-        }
-
-      </div>
+    }
+  );
 
 
-      <button
+  pagination.appendChild(
+    next
+  );
 
-        class="page-btn next-btn"
 
-        ${
-          currentPage === totalPages
-            ? "disabled"
-            : ""
-        }
+  const productsSection =
+    document.getElementById(
+      "products"
+    );
 
-        onclick="
-          changePage(
-            ${currentPage + 1}
-          )
-        "
 
-        aria-label="Next page"
+  if (productsSection) {
 
-      >
+    productsSection.appendChild(
+      pagination
+    );
 
-        →
-
-      </button>
-
-    </div>
-
-  `;
+  }
 
 }
 
@@ -1058,7 +1316,9 @@ function renderPagination(
    CHANGE PAGE
 ========================================================= */
 
-function changePage(page) {
+function changePage(
+  page
+) {
 
   const filtered =
     getFilteredProducts();
@@ -1067,7 +1327,7 @@ function changePage(page) {
   const totalPages =
     Math.ceil(
       filtered.length /
-      productsPerPage
+      PRODUCTS_PER_PAGE
     );
 
 
@@ -1088,10 +1348,6 @@ function changePage(page) {
   render();
 
 
-  /*
-   * Products section par smooth scroll
-   */
-
   const productsSection =
     document.getElementById(
       "products"
@@ -1100,11 +1356,13 @@ function changePage(page) {
 
   if (productsSection) {
 
-    productsSection.scrollIntoView({
+    window.scrollTo({
 
-      behavior: "smooth",
+      top:
+        productsSection.offsetTop - 75,
 
-      block: "start"
+      behavior:
+        "smooth"
 
     });
 
@@ -1135,38 +1393,36 @@ function removePagination() {
 
 
 /* =========================================================
-   CATEGORY FILTER
+   CATEGORY
 ========================================================= */
 
-document
-  .querySelectorAll(".cat")
-  .forEach(button => {
+categoryButtons.forEach(
+  button => {
 
     button.addEventListener(
       "click",
-      function () {
+      () => {
 
-        document
-          .querySelectorAll(".cat")
-          .forEach(item => {
-
+        categoryButtons.forEach(
+          item =>
             item.classList.remove(
               "active"
-            );
+            )
+        );
 
-          });
 
-
-        this.classList.add(
+        button.classList.add(
           "active"
         );
 
 
-        category =
-          this.dataset.category;
+        selectedCategory =
+          button.dataset.category ||
+          "All";
 
 
-        currentPage = 1;
+        currentPage =
+          1;
 
 
         render();
@@ -1174,7 +1430,8 @@ document
       }
     );
 
-  });
+  }
+);
 
 
 /* =========================================================
@@ -1185,9 +1442,10 @@ if (search) {
 
   search.addEventListener(
     "input",
-    function () {
+    () => {
 
-      currentPage = 1;
+      currentPage =
+        1;
 
       render();
 
@@ -1198,7 +1456,290 @@ if (search) {
 
 
 /* =========================================================
+   SORT
+========================================================= */
+
+if (sortSelect) {
+
+  sortSelect.addEventListener(
+    "change",
+    () => {
+
+      currentSort =
+        sortSelect.value;
+
+      currentPage =
+        1;
+
+      render();
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   CLEAR FILTERS
+========================================================= */
+
+function clearFilters() {
+
+  selectedCategory =
+    "All";
+
+
+  currentPage =
+    1;
+
+
+  if (search) {
+
+    search.value =
+      "";
+
+  }
+
+
+  if (sortSelect) {
+
+    sortSelect.value =
+      "newest";
+
+    currentSort =
+      "newest";
+
+  }
+
+
+  categoryButtons.forEach(
+    item => {
+
+      item.classList.remove(
+        "active"
+      );
+
+    }
+  );
+
+
+  const allButton =
+    document.querySelector(
+      '.cat-v2[data-category="All"]'
+    );
+
+
+  if (allButton) {
+
+    allButton.classList.add(
+      "active"
+    );
+
+  }
+
+
+  render();
+
+}
+
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+if (
+  mobileMenuBtn &&
+  mobileNav
+) {
+
+  mobileMenuBtn.addEventListener(
+    "click",
+    () => {
+
+      const isOpen =
+        mobileNav.classList.toggle(
+          "open"
+        );
+
+
+      mobileMenuBtn.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+      );
+
+    }
+  );
+
+
+  mobileNav
+    .querySelectorAll("a")
+    .forEach(
+      link => {
+
+        link.addEventListener(
+          "click",
+          () => {
+
+            mobileNav.classList.remove(
+              "open"
+            );
+
+            mobileMenuBtn.setAttribute(
+              "aria-expanded",
+              "false"
+            );
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   REVEAL ON SCROLL
+========================================================= */
+
+function initReveal() {
+
+  const elements =
+    document.querySelectorAll(
+      ".reveal-v2"
+    );
+
+
+  if (
+    !("IntersectionObserver" in window)
+  ) {
+
+    elements.forEach(
+      element =>
+        element.classList.add(
+          "visible"
+        )
+    );
+
+    return;
+
+  }
+
+
+  const observer =
+    new IntersectionObserver(
+      entries => {
+
+        entries.forEach(
+          entry => {
+
+            if (
+              entry.isIntersecting
+            ) {
+
+              entry.target.classList.add(
+                "visible"
+              );
+
+              observer.unobserve(
+                entry.target
+              );
+
+            }
+
+          }
+        );
+
+      },
+      {
+        threshold:
+          0.12
+      }
+    );
+
+
+  elements.forEach(
+    element =>
+      observer.observe(
+        element
+      )
+  );
+
+}
+
+
+/* =========================================================
+   BACK TO TOP
+========================================================= */
+
+window.addEventListener(
+  "scroll",
+  () => {
+
+    if (!backTop) return;
+
+
+    if (
+      window.scrollY > 500
+    ) {
+
+      backTop.classList.add(
+        "show"
+      );
+
+    } else {
+
+      backTop.classList.remove(
+        "show"
+      );
+
+    }
+
+  },
+  {
+    passive:true
+  }
+);
+
+
+if (backTop) {
+
+  backTop.addEventListener(
+    "click",
+    () => {
+
+      window.scrollTo({
+
+        top:0,
+
+        behavior:
+          "smooth"
+
+      });
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   YEAR
+========================================================= */
+
+if (currentYear) {
+
+  currentYear.textContent =
+    new Date()
+      .getFullYear();
+
+}
+
+
+/* =========================================================
    START
 ========================================================= */
+
+initReveal();
 
 loadProducts();
