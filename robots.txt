@@ -3,4 +3,4 @@ Allow: /
 
 Disallow: /admin.html
 
-Sitemap: https://wyw-here.vercel.app/sitemap.xml
+Sitemap: https://wyw-here.vercel.app/api/sitemap
